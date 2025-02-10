@@ -65,8 +65,10 @@ public class Client extends Persona {
     
     public boolean CheckTargetaCredito(String targeta) {
         try {
-            Integer.parseInt(targeta);
+            Integer.valueOf(targeta);
             return true;
+        } catch (NumberFormatException e) {
+            return false;
         } catch (Exception e) {
             return false;
         }

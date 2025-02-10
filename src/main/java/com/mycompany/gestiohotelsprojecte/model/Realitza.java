@@ -9,21 +9,22 @@ package com.mycompany.gestiohotelsprojecte.model;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Realitza {
-    private int estat_Per_Empleat;
+    
+    private Estat estat_Per_Empleat;
     private int ID_Empleat;
     private int ID_Tasca;
 
-    public Realitza(int estat_Per_Empleat, int ID_Empleat, int ID_Tasca) {
+    public Realitza(Estat estat_Per_Empleat, int ID_Empleat, int ID_Tasca) {
         this.estat_Per_Empleat = estat_Per_Empleat;
         this.ID_Empleat = ID_Empleat;
         this.ID_Tasca = ID_Tasca;
     }
     
-    public int getEstat_Per_Empleat() {
+    public Estat getEstat_Per_Empleat() {
         return estat_Per_Empleat;
     }
 
-    public void setEstat_Per_Empleat(int estat_Per_Empleat) {
+    public void setEstat_Per_Empleat(Estat estat_Per_Empleat) {
         this.estat_Per_Empleat = estat_Per_Empleat;
     }
 

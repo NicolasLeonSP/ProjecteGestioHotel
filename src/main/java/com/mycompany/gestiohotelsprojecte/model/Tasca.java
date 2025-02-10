@@ -7,13 +7,6 @@ import java.sql.Date;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Tasca {
-    
-    enum Estat {
-        No_Iniciada,
-        En_Progres,
-        Completada
-    }
-    
     private int ID_Tasca;
     private String descripcio;
     private Date data_Creacio;

@@ -13,14 +13,14 @@ public class Empleat extends Persona {
         Actiu,
         Baixa,
         Permis
-    }
+}
     
     private int ID_Empleat;
     private String lloc_Feina;
     private Date data_Contractacio;
     private int salari_Brut;
-    private final Estat_Laboral estat_Laboral;
-    
+    private Estat_Laboral estat_Laboral;
+
     public Empleat(String lloc_Feina, Date data_Contractacio, int salari_Brut, Estat_Laboral estat_Laboral, String nom, String cognom, String adreça, String document_Identitat, Date data_Naixement, String telefon, String email) {
         super(nom, cognom, adreça, document_Identitat, data_Naixement, telefon, email);
         this.lloc_Feina = lloc_Feina;
@@ -59,6 +59,14 @@ public class Empleat extends Persona {
 
     public void setSalari_Brut(int salari_Brut) {
         this.salari_Brut = salari_Brut;
+    }
+
+    public Estat_Laboral getEstat_Laboral() {
+        return estat_Laboral;
+    }
+
+    public void setEstat_Laboral(Estat_Laboral estat_Laboral) {
+        this.estat_Laboral = estat_Laboral;
     }
     
     
