@@ -1,6 +1,7 @@
 package com.mycompany.gestiohotelsprojecte.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 /**
  *
@@ -86,5 +87,25 @@ public class Persona {
         this.email = email;
     }
     
+    public boolean checkDateNacimiento(){
+        if (data_Naixement.after(Date.valueOf(LocalDate.now()))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     
+    public boolean checkTelefono(){
+        try {
+            String[] telefonoPartido = telefon.split(" ");
+            String telefonoJunto = "";
+            for (int i = 0; i < telefonoPartido.length; i++) {
+                telefonoJunto+=telefonoPartido[i];
+            }
+            Integer.valueOf(telefonoJunto);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

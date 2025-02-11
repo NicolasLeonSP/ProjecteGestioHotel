@@ -36,6 +36,15 @@ public class App extends Application {
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
+        fxmlLoader.setControllerFactory(controllerType -> {
+           if (controllerType==PrimaryController.class){
+               return controlador;
+           }
+            if (controllerType==SecondaryController.class){
+               return controlador2;
+           }
+            return null;
+        });
         return fxmlLoader.load();
     }
 
