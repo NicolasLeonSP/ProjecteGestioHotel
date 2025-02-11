@@ -13,7 +13,6 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.PrimaryController">
    <children>
       <SplitPane layoutX="1.0" layoutY="3.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0">
@@ -68,19 +67,19 @@
                               </TabPane>
                            </items>
                         </SplitPane>
-                        <TextField layoutX="62.0" layoutY="14.0" />
+                        <TextField fx:id="textNom" layoutX="62.0" layoutY="14.0" />
                         <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" />
-                        <TextField layoutX="323.0" layoutY="14.0" />
+                        <TextField fx:id="textCognom" layoutX="323.0" layoutY="14.0" />
                         <Text layoutX="261.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cognom" />
-                        <TextField layoutX="63.0" layoutY="51.0" />
+                        <TextField fx:id="textAdreça" layoutX="63.0" layoutY="51.0" />
                         <Text layoutX="9.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adreça" />
-                        <TextField layoutX="323.0" layoutY="51.0" />
+                        <TextField fx:id="textDNI" layoutX="323.0" layoutY="51.0" />
                         <Text layoutX="257.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
-                        <DatePicker layoutX="134.0" layoutY="90.0" />
+                        <DatePicker fx:id="textData" layoutX="134.0" layoutY="90.0" />
                         <Text layoutX="10.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Naixement" />
-                        <TextField layoutX="69.0" layoutY="129.0" />
+                        <TextField fx:id="textTelefon" layoutX="69.0" layoutY="129.0" />
                         <Text layoutX="11.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefon" />
-                        <TextField layoutX="330.0" layoutY="129.0" />
+                        <TextField fx:id="textEmail" layoutX="330.0" layoutY="129.0" />
                         <Text layoutX="264.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
                         <ComboBox layoutX="71.0" layoutY="168.0" prefHeight="24.0" prefWidth="171.0" promptText="Seleccioni un tipus" />
                         <Text layoutX="11.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus" />
@@ -95,7 +94,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <Button layoutX="20.0" layoutY="413.0" mnemonicParsing="false" text="Crear" />
+      <Button layoutX="20.0" layoutY="413.0" mnemonicParsing="false" onAction="#crearCliente" text="Crear" />
       <Button layoutX="99.0" layoutY="413.0" mnemonicParsing="false" text="Reiniciar" />
    </children>
 </AnchorPane>

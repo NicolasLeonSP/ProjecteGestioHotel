@@ -6,7 +6,7 @@ import java.sql.Date;
  *
  * @author Nicolas Leon Sapoznik Pancani
  */
-public abstract class Persona {
+public class Persona {
     private int ID_Persona;
     private String nom;
     private String cognom;

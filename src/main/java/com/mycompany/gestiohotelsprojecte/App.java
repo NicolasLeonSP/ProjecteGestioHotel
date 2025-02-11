@@ -1,5 +1,6 @@
 package com.mycompany.gestiohotelsprojecte;
 
+import com.mycompany.gestiohotelsprojecte.model.Model;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,11 +13,18 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
-
+    
     private static Scene scene;
+    private Model model;
+    private static PrimaryController controlador;
+    private static SecondaryController controlador2;
 
     @Override
     public void start(Stage stage) throws IOException {
+        model = new Model();
+        controlador = new PrimaryController();
+        controlador2 = new SecondaryController();
+        controlador.injecta(model);
         scene = new Scene(loadFXML("primary"), 640, 480);
         stage.setScene(scene);
         stage.show();
