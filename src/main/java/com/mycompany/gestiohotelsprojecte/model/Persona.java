@@ -2,12 +2,14 @@ package com.mycompany.gestiohotelsprojecte.model;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
  * @author Nicolas Leon Sapoznik Pancani
  */
-public class Persona {
+public abstract class Persona {
     private int ID_Persona;
     private String nom;
     private String cognom;
@@ -96,16 +98,42 @@ public class Persona {
     }
     
     public boolean checkTelefono(){
-        try {
-            String[] telefonoPartido = telefon.split(" ");
-            String telefonoJunto = "";
-            for (int i = 0; i < telefonoPartido.length; i++) {
-                telefonoJunto+=telefonoPartido[i];
-            }
-            Integer.valueOf(telefonoJunto);
+        Pattern regexTelefono = Pattern.compile("^(\\+34|0034|34)?[6789]\\d{8}$", Pattern.CASE_INSENSITIVE);
+        Matcher telefonoCheck = regexTelefono.matcher(telefon);
+        if (telefonoCheck.find()) {
             return true;
-        } catch (Exception e) {
+        } else {
             return false;
+        }
+    }
+    
+    public boolean checkEmail(){
+        Pattern regexEmail = Pattern.compile("^(.+)@(.+).(.+)$", Pattern.CASE_INSENSITIVE);
+        Matcher EmailCheck = regexEmail.matcher(email);
+        if (EmailCheck.find()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public String checkDNI(){
+        Pattern regexDNI = Pattern.compile("^[0-9]{8}[A-Z]{1}$",Pattern.CASE_INSENSITIVE);
+        Matcher DNICheck = regexDNI.matcher(document_Identitat);
+        if (!DNICheck.find()) {
+            return "1";
+        } else {
+            String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            String docCheck = document_Identitat;
+            
+            docCheck = docCheck.replace(docCheck.charAt(8), ' ').strip();
+            char letra = letras.charAt(Integer.parseInt(docCheck) % letras.length());
+            String dniEntero = "" + docCheck + letra;
+            if (dniEntero.equals(document_Identitat)) {
+                return "0";
+            } else {
+                return "2" + letra;
+            }
         }
     }
 }

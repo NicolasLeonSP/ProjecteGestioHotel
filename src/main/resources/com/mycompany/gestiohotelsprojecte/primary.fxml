@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Menu?>
@@ -13,9 +14,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.PrimaryController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.PrimaryController">
    <children>
-      <SplitPane layoutX="1.0" layoutY="3.0" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0">
+      <SplitPane layoutX="1.0" layoutY="3.0" orientation="VERTICAL" prefHeight="418.0" prefWidth="600.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="42.0" prefWidth="598.0">
                <children>
@@ -27,46 +28,8 @@
                         <Menu mnemonicParsing="false" text="Tasques" />
                     </menus>
                   </MenuBar>
-                  <AnchorPane layoutX="-2.0" layoutY="60.0" minHeight="0.0" minWidth="0.0" prefHeight="279.0" prefWidth="598.0">
+                  <AnchorPane layoutX="-2.0" layoutY="60.0" minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="598.0">
                      <children>
-                        <SplitPane layoutX="-1.0" layoutY="206.0" prefHeight="150.0" prefWidth="600.0">
-                           <items>
-                              <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-                                 <tabs>
-                                    <Tab disable="true" text="Empleat">
-                                       <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <TextField layoutX="109.0" layoutY="14.0" />
-                                                <Text layoutX="24.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lloc Feina" />
-                                                <TextField layoutX="384.0" layoutY="14.0" />
-                                                <Text layoutX="299.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salari Brut" />
-                                                <Text layoutX="299.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estat Laboral" />
-                                                <ComboBox layoutX="405.0" layoutY="54.0" prefWidth="150.0" />
-                                                <DatePicker layoutX="150.0" layoutY="54.0" prefHeight="24.0" prefWidth="145.0" />
-                                                <Text layoutX="24.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Contratacio" />
-                                             </children>
-                                          </AnchorPane>
-                                       </content>
-                                    </Tab>
-                                    <Tab disable="true" text="Client">
-                                       <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <DatePicker layoutX="140.0" layoutY="14.0" />
-                                                <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Registre" />
-                                                <ComboBox layoutX="140.0" layoutY="47.0" prefHeight="24.0" prefWidth="171.0" promptText="Seleccioni un tipus" />
-                                                <Text layoutX="20.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Client" />
-                                                <TextField layoutX="214.0" layoutY="76.0" />
-                                                <Text layoutX="14.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Targeta de Credit (Opcional)" />
-                                             </children>
-                                          </AnchorPane>
-                                       </content>
-                                    </Tab>
-                                 </tabs>
-                              </TabPane>
-                           </items>
-                        </SplitPane>
                         <TextField fx:id="textNom" layoutX="62.0" layoutY="14.0" />
                         <Text layoutX="10.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom" />
                         <TextField fx:id="textCognom" layoutX="323.0" layoutY="14.0" />
@@ -81,8 +44,9 @@
                         <Text layoutX="11.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefon" />
                         <TextField fx:id="textEmail" layoutX="330.0" layoutY="129.0" />
                         <Text layoutX="264.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email" />
-                        <ComboBox layoutX="71.0" layoutY="168.0" prefHeight="24.0" prefWidth="171.0" promptText="Seleccioni un tipus" />
                         <Text layoutX="11.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus" />
+                        <CheckBox fx:id="isCliente" layoutX="72.0" layoutY="171.0" mnemonicParsing="false" onAction="#changeCheckboxes" text="Client" />
+                        <CheckBox fx:id="isEmpleado" layoutX="148.0" layoutY="171.0" mnemonicParsing="false" onAction="#changeCheckboxes" text="Empleat" />
                      </children>
                   </AnchorPane>
                   <Text layoutX="5.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creacio de Empleats i Clients">
@@ -90,11 +54,49 @@
                         <Font size="20.0" />
                      </font>
                   </Text>
+                  <SplitPane layoutX="-4.0" layoutY="266.0" prefHeight="150.0" prefWidth="600.0">
+                     <items>
+                        <TabPane fx:id="ClientEmpleat" prefHeight="160.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">
+                           <tabs>
+                              <Tab disable="true" text="Client">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="125.0" prefWidth="598.0">
+                                       <children>
+                                          <DatePicker layoutX="140.0" layoutY="14.0" />
+                                          <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Registre" />
+                                          <ComboBox layoutX="140.0" layoutY="47.0" prefHeight="24.0" prefWidth="171.0" promptText="Seleccioni un tipus" />
+                                          <Text layoutX="20.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Client" />
+                                          <TextField layoutX="214.0" layoutY="76.0" />
+                                          <Text layoutX="14.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Targeta de Credit (Opcional)" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab disable="true" text="Empleat">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <TextField layoutX="109.0" layoutY="14.0" />
+                                          <Text layoutX="24.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lloc Feina" />
+                                          <TextField layoutX="384.0" layoutY="14.0" />
+                                          <Text layoutX="299.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salari Brut" />
+                                          <Text layoutX="299.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estat Laboral" />
+                                          <ComboBox layoutX="405.0" layoutY="54.0" prefWidth="150.0" />
+                                          <DatePicker layoutX="150.0" layoutY="54.0" prefHeight="24.0" prefWidth="145.0" />
+                                          <Text layoutX="24.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Contratacio" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                           </tabs>
+                        </TabPane>
+                     </items>
+                  </SplitPane>
                </children>
             </AnchorPane>
         </items>
       </SplitPane>
-      <Button layoutX="20.0" layoutY="413.0" mnemonicParsing="false" onAction="#crearCliente" text="Crear" />
-      <Button layoutX="99.0" layoutY="413.0" mnemonicParsing="false" text="Reiniciar" />
+      <Button layoutX="14.0" layoutY="429.0" mnemonicParsing="false" onAction="#crearCliente" text="Crear" />
+      <Button layoutX="93.0" layoutY="429.0" mnemonicParsing="false" text="Reiniciar" />
    </children>
 </AnchorPane>

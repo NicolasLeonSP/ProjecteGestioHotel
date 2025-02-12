@@ -21,8 +21,9 @@ public class Empleat extends Persona {
     private int salari_Brut;
     private Estat_Laboral estat_Laboral;
 
-    public Empleat(String lloc_Feina, Date data_Contractacio, int salari_Brut, Estat_Laboral estat_Laboral, String nom, String cognom, String adreça, String document_Identitat, Date data_Naixement, String telefon, String email) {
+    public Empleat(String nom, String cognom, String adreça, String document_Identitat, Date data_Naixement, String telefon, String email, int ID_Empleat, String lloc_Feina, Date data_Contractacio, int salari_Brut, Estat_Laboral estat_Laboral) {
         super(nom, cognom, adreça, document_Identitat, data_Naixement, telefon, email);
+        this.ID_Empleat = ID_Empleat;
         this.lloc_Feina = lloc_Feina;
         this.data_Contractacio = data_Contractacio;
         this.salari_Brut = salari_Brut;
