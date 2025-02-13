@@ -12,13 +12,6 @@ import java.sql.Date;
  */
 public class Client extends Persona {
     
-    enum Tipus_Client {
-        Empresa,
-        Empleados,
-        Individual,
-        VIP
-    }
-    
     private int ID_Client;
     private Date data_Registre;
     private Tipus_Client tipus_Client;
@@ -31,7 +24,7 @@ public class Client extends Persona {
         this.tipus_Client = tipus_Client;
         this.targeta_Credit = targeta_Credit;
     }
-
+    
     public int getID_Client() {
         return ID_Client;
     }
@@ -62,17 +55,6 @@ public class Client extends Persona {
 
     public void setTargeta_Credit(String targeta_Credit) {
         this.targeta_Credit = targeta_Credit;
-    }
-    
-    public boolean CheckTargetaCredito(String targeta) {
-        try {
-            Integer.valueOf(targeta);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        } catch (Exception e) {
-            return false;
-        }
     }
     
 }

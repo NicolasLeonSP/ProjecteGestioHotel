@@ -8,13 +8,6 @@ import java.sql.Date;
 
 
 public class Empleat extends Persona {
-    
-    enum Estat_Laboral {
-        Actiu,
-        Baixa,
-        Permis
-}
-    
     private int ID_Empleat;
     private String lloc_Feina;
     private Date data_Contractacio;
