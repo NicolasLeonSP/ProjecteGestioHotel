@@ -8,7 +8,7 @@ package com.mycompany.gestiohotelsprojecte.model;
  *
  * @author Nicolas Leon Sapoznik Pancani
  */
-enum Estat_Laboral {
+public enum Estat_Laboral {
     Actiu,
     Baixa,
     Permis

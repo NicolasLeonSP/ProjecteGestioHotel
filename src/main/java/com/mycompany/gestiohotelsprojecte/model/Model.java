@@ -3,6 +3,7 @@ package com.mycompany.gestiohotelsprojecte.model;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -68,9 +69,9 @@ public class Model {
         if (!checkDate(date)) {
             msgError += "- Verifique que la fecha de registro del cliente sea correcta, ya que supera la fecha actual.\n";
         }
-        if (credito != "") {
+        if (!credito.equals("")) {
             if (!checkTargetaCredito(credito)) {
-                msgError += "- Verifique que su tarjeta de credito este escrito en un formato correcto. Ej (1111 1111 1111 1111 o 111111111111111)";
+                msgError += "- Verifique que su tarjeta de credito este escrito en un formato correcto. Ej (1111 1111 1111 1111 o 111111111111111)\n";
             }
         }
         return msgError;
@@ -79,7 +80,7 @@ public class Model {
     public String checkEmpleado(Date date, String salario) {
         String msgError = "";
         if (!checkDate(date)) {
-            msgError += "- Verifique que la fecha de registro del cliente sea correcta, ya que supera la fecha actual.\n";
+            msgError += "- Verifique que la fecha de contratacion del empleado sea correcta, ya que supera la fecha actual.\n";
         }
         if (!checkStringToInt(salario)) {
             msgError += "- Verifique que su salario sean solo numeros.";
@@ -140,5 +141,71 @@ public class Model {
             PersonaSubidaBaseDeDatos = false;
             return PersonaSubidaBaseDeDatos;
         }
+    }
+    
+    public Boolean altaEmpleado(Empleat empleado) {
+        boolean EmpleadoSubidoABaseDeDatos = true;
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO EMPLEAT VALUES (?,?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, empleado.getID_Persona());
+            orden.setString(2, empleado.getLloc_Feina());
+            orden.setDate(3, empleado.getData_Contractacio());
+            orden.setInt(4, empleado.getSalari_Brut());
+            orden.setString(5, empleado.getEstat_Laboral().toString());
+            orden.executeUpdate();
+            return EmpleadoSubidoABaseDeDatos;
+        } catch (SQLException e) {
+            System.out.println(e);
+            EmpleadoSubidoABaseDeDatos = false;
+            return EmpleadoSubidoABaseDeDatos;
+        } catch (Exception e) {
+            System.out.println(e);
+            EmpleadoSubidoABaseDeDatos = false;
+            return EmpleadoSubidoABaseDeDatos;
+        }
+    }public Boolean altaCliente(Client cliente) {
+        boolean ClienteSubidoABaseDeDatos = true;
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO CLIENT VALUES (?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, cliente.getID_Persona());
+            orden.setDate(2, cliente.getData_Registre());
+            orden.setString(3, cliente.getTipus_Client().toString());
+            orden.setString(4, cliente.getTargeta_Credit().replace(" ", ""));
+            orden.executeUpdate();
+            return ClienteSubidoABaseDeDatos;
+        } catch (SQLException e) {
+            System.out.println(e);
+            ClienteSubidoABaseDeDatos = false;
+            return ClienteSubidoABaseDeDatos;
+        } catch (Exception e) {
+            System.out.println(e);
+            ClienteSubidoABaseDeDatos = false;
+            return ClienteSubidoABaseDeDatos;
+        }
+    }
+    
+    public int getIdPersona(String document_Identitat){
+        int ID_Persona = 0;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT ID_Persona FROM PERSONA WHERE Document_Identitat = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, document_Identitat);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                ID_Persona = resultados.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        } catch (Exception e) {
+            System.out.println(e);
+            return 0;
+        }
+        return ID_Persona;
     }
 }
