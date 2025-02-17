@@ -4,7 +4,7 @@ package com.mycompany.gestiohotelsprojecte.model;
  *
  * @author Nicolas Leon Sapoznik Pancani
  */
-enum Tipus_IVA {
+public enum Tipus_IVA {
 
     Tipo_Cero(0),
     Reduccio(7),
@@ -16,7 +16,7 @@ enum Tipus_IVA {
         Por_IVA = num;
     }
 
-    public double getPorIVA() {
+    public int getPorIVA() {
         return Por_IVA;
     }
 

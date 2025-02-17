@@ -85,7 +85,6 @@ public class PrimaryController {
                     if (isCliente.isSelected()) {
                         if (TipusClient.getValue() != null && dataRegistre.getValue() != null) {
                             dateClient = new java.sql.Date(Date.from(dataRegistre.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
-                            
                             if (!textTargetaCredit.getText().isEmpty()) {
                                 targetaCreditASubir = textTargetaCredit.getText();
                             } else {
@@ -136,6 +135,7 @@ public class PrimaryController {
                                 }
                             }
                             alterMos(textSubido, false);
+                            restartCampos();
                         } else {
                             alterMos("Error. El documento de identitad dado esta en uso, o algo ha fallado en el proceso de subida.", true);
                         }
@@ -159,10 +159,11 @@ public class PrimaryController {
         }
 
     }
-
+    
     @FXML
-    private void switchToSecondary() throws IOException {
-        App.setRoot("secondary");
+    private void restartCampos() throws IOException {
+        // Al cambiar de pestaña, se reinician los campos introducidos
+        App.setRoot("primary");
     }
 
     public void initialize() {
@@ -192,6 +193,16 @@ public class PrimaryController {
 
     public void injecta(Model obj) {
         model = obj;
+    }
+    
+    @FXML
+    private void switchToPersona() throws IOException {
+        App.setRoot("primary");
+    }
+
+    @FXML
+    private void switchToReserves() throws IOException {
+        App.setRoot("secondary");
     }
 
 }

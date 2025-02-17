@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -18,12 +19,17 @@ import javafx.collections.ObservableList;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Model {
+
     ObservableList tipoCliente = FXCollections.observableArrayList();
     ObservableList estatLaboral = FXCollections.observableArrayList();
+    ObservableList tipoIVA = FXCollections.observableArrayList();
+    ObservableList tipoReserva = FXCollections.observableArrayList();
+    ObservableList habitaciones = FXCollections.observableArrayList();
+    int IDClienteReserva;
 
     public Model() {
     }
-    
+
     public void initModel() {
         for (Tipus_Client value : Tipus_Client.values()) {
             tipoCliente.add(value);
@@ -31,6 +37,20 @@ public class Model {
         for (Estat_Laboral value : Estat_Laboral.values()) {
             estatLaboral.add(value);
         }
+        for (Tipus_IVA value : Tipus_IVA.values()) {
+            tipoIVA.add(value);
+        }
+        for (Tipus_Reserva value : Tipus_Reserva.values()) {
+            tipoReserva.add(value);
+        }
+    }
+
+    public int getIDClienteReserva() {
+        return IDClienteReserva;
+    }
+
+    public ObservableList getHabitaciones() {
+        return habitaciones;
     }
 
     public ObservableList getTipoCliente() {
@@ -40,7 +60,15 @@ public class Model {
     public ObservableList getEstatLaboral() {
         return estatLaboral;
     }
-    
+
+    public ObservableList getTipoIVA() {
+        return tipoIVA;
+    }
+
+    public ObservableList getTipoReserva() {
+        return tipoReserva;
+    }
+
     public String checkPersona(Persona persona) {
         String msgError = "";
         if (!checkDate(persona.getData_Naixement())) {
@@ -69,7 +97,7 @@ public class Model {
         if (!checkDate(date)) {
             msgError += "- Verifique que la fecha de registro del cliente sea correcta, ya que supera la fecha actual.\n";
         }
-        if (!credito.equals("")) {
+        if (credito != null) {
             if (!checkTargetaCredito(credito)) {
                 msgError += "- Verifique que su tarjeta de credito este escrito en un formato correcto. Ej (1111 1111 1111 1111 o 111111111111111)\n";
             }
@@ -117,6 +145,34 @@ public class Model {
         }
     }
 
+    public String altaReserva(Reserva reserva) {
+        String ReservaMensaje = "";
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO RESERVA (data_Reserva, data_Inici, data_Fi, tipus_Reserva, tipus_IVA, preu_Total_Reserva, ID_Client, ID_Habitacio) VALUES (?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDate(1, reserva.getData_Reserva());
+            orden.setDate(2, reserva.getData_Inici());
+            orden.setDate(3, reserva.getData_Fi());
+            orden.setString(4, reserva.getTipus_Reserva().name());
+            orden.setInt(5, reserva.getTipus_IVA().getPorIVA());
+            orden.setDouble(6, reserva.getPreu_Total_Reserva());
+            orden.setInt(7, reserva.getID_Client());
+            orden.setInt(8, reserva.getID_Habitacio());
+            orden.executeUpdate();
+            return ReservaMensaje;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            ReservaMensaje = e.toString();
+            return ReservaMensaje;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            ReservaMensaje = e.toString();
+            return ReservaMensaje;
+        }
+    
+    }
+    
     public Boolean altaPersona(Persona persona) {
         boolean PersonaSubidaBaseDeDatos = true;
         Connection conectar = new Connexio().connecta();
@@ -142,7 +198,7 @@ public class Model {
             return PersonaSubidaBaseDeDatos;
         }
     }
-    
+
     public Boolean altaEmpleado(Empleat empleado) {
         boolean EmpleadoSubidoABaseDeDatos = true;
         Connection conectar = new Connexio().connecta();
@@ -153,7 +209,7 @@ public class Model {
             orden.setString(2, empleado.getLloc_Feina());
             orden.setDate(3, empleado.getData_Contractacio());
             orden.setInt(4, empleado.getSalari_Brut());
-            orden.setString(5, empleado.getEstat_Laboral().toString());
+            orden.setString(5, empleado.getEstat_Laboral().name());
             orden.executeUpdate();
             return EmpleadoSubidoABaseDeDatos;
         } catch (SQLException e) {
@@ -165,7 +221,9 @@ public class Model {
             EmpleadoSubidoABaseDeDatos = false;
             return EmpleadoSubidoABaseDeDatos;
         }
-    }public Boolean altaCliente(Client cliente) {
+    }
+
+    public Boolean altaCliente(Client cliente) {
         boolean ClienteSubidoABaseDeDatos = true;
         Connection conectar = new Connexio().connecta();
         String sql = "INSERT INTO CLIENT VALUES (?,?,?,?)";
@@ -173,7 +231,7 @@ public class Model {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setInt(1, cliente.getID_Persona());
             orden.setDate(2, cliente.getData_Registre());
-            orden.setString(3, cliente.getTipus_Client().toString());
+            orden.setString(3, cliente.getTipus_Client().name());
             orden.setString(4, cliente.getTargeta_Credit().replace(" ", ""));
             orden.executeUpdate();
             return ClienteSubidoABaseDeDatos;
@@ -187,8 +245,9 @@ public class Model {
             return ClienteSubidoABaseDeDatos;
         }
     }
-    
-    public int getIdPersona(String document_Identitat){
+
+    // Conseguir solo el ID de la persona
+    public int getIdPersona(String document_Identitat) {
         int ID_Persona = 0;
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT ID_Persona FROM PERSONA WHERE Document_Identitat = ?";
@@ -207,5 +266,44 @@ public class Model {
             return 0;
         }
         return ID_Persona;
+    }
+
+    // Conseguir toda la persona
+    public int getIDClient(String document_Identitat) {
+        int ID_Persona = 0;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT ID_Client FROM CLIENT WHERE Document_Identitat = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, document_Identitat);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                ID_Persona = resultados.getInt(1);
+                IDClienteReserva = ID_Persona;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            return 0;
+        } catch (Exception e) {
+            System.out.println(e);
+            return 0;
+        }
+        return ID_Persona;
+    }
+
+    public void recargarHabitaciones() {
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT Numero_Habitacio FROM HABITACIO";
+        try {
+            Statement orden = conectar.createStatement();
+            ResultSet resultados = orden.executeQuery(sql);
+            while (resultados.next()) {
+                habitaciones.add(String.valueOf(resultados.getInt(1)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 }

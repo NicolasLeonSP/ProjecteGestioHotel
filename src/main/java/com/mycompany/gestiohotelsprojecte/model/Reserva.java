@@ -7,10 +7,7 @@ import java.sql.Date;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Reserva {
-    enum Tipus_Reserva {
-        AD,
-        MP
-    }
+
     private int ID_Reserva;
     private Date data_Reserva;
     private Date data_Inici;
@@ -18,18 +15,28 @@ public class Reserva {
     private Tipus_Reserva tipus_Reserva;
     private Tipus_IVA tipus_IVA;
     private double preu_Total_Reserva;
+    private int ID_Client;
     private int ID_Habitacio;
 
-    public Reserva(Date data_Reserva, Date data_Inici, Date data_Fi, Tipus_Reserva tipus_Reserva, Tipus_IVA tipus_IVA, double preu_Total_Reserva, int ID_Habitacio) {
+    public Reserva(Date data_Reserva, Date data_Inici, Date data_Fi, Tipus_Reserva tipus_Reserva, Tipus_IVA tipus_IVA, double preu_Total_Reserva, int ID_Client, int ID_Habitacio) {
         this.data_Reserva = data_Reserva;
         this.data_Inici = data_Inici;
         this.data_Fi = data_Fi;
         this.tipus_Reserva = tipus_Reserva;
         this.tipus_IVA = tipus_IVA;
         this.preu_Total_Reserva = preu_Total_Reserva;
+        this.ID_Client = ID_Client;
         this.ID_Habitacio = ID_Habitacio;
     }
 
+    public int getID_Client() {
+        return ID_Client;
+    }
+
+    public void setID_Client(int ID_Client) {
+        this.ID_Client = ID_Client;
+    }
+    
     public int getID_Habitacio() {
         return ID_Habitacio;
     }
@@ -93,7 +100,5 @@ public class Reserva {
     public void setPreu_Total_Reserva(double preu_Total_Reserva) {
         this.preu_Total_Reserva = preu_Total_Reserva;
     }
-    
-    
-    
+
 }

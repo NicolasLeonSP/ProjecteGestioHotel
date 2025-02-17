@@ -6,6 +6,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -22,10 +23,22 @@
                <children>
                   <MenuBar layoutX="-2.0" layoutY="2.0" prefHeight="33.0" prefWidth="598.0">
                     <menus>
-                      <Menu mnemonicParsing="false" text="Empleats i Clients" />
-                      <Menu mnemonicParsing="false" text="Reserves" />
-                      <Menu mnemonicParsing="false" text="Factures" />
-                        <Menu mnemonicParsing="false" text="Tasques" />
+                      <Menu mnemonicParsing="false" text="Empleats i Clients">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
+                           </items></Menu>
+                      <Menu mnemonicParsing="false" onAction="#switchToReserves" text="Reserves">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#switchToReserves" text="Entrar" />
+                           </items></Menu>
+                      <Menu mnemonicParsing="false" text="Factures">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
+                           </items></Menu>
+                        <Menu mnemonicParsing="false" text="Tasques">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
+                           </items></Menu>
                     </menus>
                   </MenuBar>
                   <AnchorPane layoutX="-2.0" layoutY="60.0" minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="598.0">
@@ -97,6 +110,6 @@
         </items>
       </SplitPane>
       <Button layoutX="14.0" layoutY="429.0" mnemonicParsing="false" onAction="#crearPersona" text="Crear" />
-      <Button layoutX="93.0" layoutY="429.0" mnemonicParsing="false" text="Reiniciar" />
+      <Button layoutX="93.0" layoutY="429.0" mnemonicParsing="false" onAction="#restartCampos" text="Reiniciar" />
    </children>
 </AnchorPane>

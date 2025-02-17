@@ -25,6 +25,7 @@ public class App extends Application {
         controlador = new PrimaryController();
         controlador2 = new SecondaryController();
         controlador.injecta(model);
+        controlador2.injecta(model);
         scene = new Scene(loadFXML("primary"));
         stage.setScene(scene);
         stage.show();
