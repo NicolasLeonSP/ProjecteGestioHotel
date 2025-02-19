@@ -23,14 +23,14 @@ import javafx.collections.ObservableList;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Model {
-    
+
     ObservableList tipoCliente = FXCollections.observableArrayList();
     ObservableList estatLaboral = FXCollections.observableArrayList();
     ObservableList tipoReserva = FXCollections.observableArrayList();
     ObservableList habitaciones = FXCollections.observableArrayList();
+    ObservableList reservas = FXCollections.observableArrayList();
     private int IDClienteReserva;
     private Tipus_Client TipusClienteReserva;
-
 
     public Model() {
     }
@@ -53,6 +53,10 @@ public class Model {
 
     public int getIDClienteReserva() {
         return IDClienteReserva;
+    }
+
+    public ObservableList getReservas() {
+        return reservas;
     }
 
     public void setTipusClienteReserva(Tipus_Client TipusClienteReserva) {
@@ -154,7 +158,7 @@ public class Model {
             return false;
         }
     }
-    
+
     public Tipus_Client getTipoCliente(String tipoCliente) {
         Tipus_Client cliente = null;
         for (Tipus_Client e : Tipus_Client.values()) {
@@ -164,6 +168,7 @@ public class Model {
         }
         return cliente;
     }
+
     public Tipus_IVA getIVAClient(Tipus_Client TipusClient) {
         switch (TipusClient) {
             case Regular:
@@ -176,6 +181,30 @@ public class Model {
                 return Tipus_IVA.Reduccio;
             case Empleados:
                 return Tipus_IVA.Tipo_Cero;
+            default:
+                return null;
+        }
+    }
+    
+    public Tipus_IVA getIVAFromValue(int Iva) {
+        switch (Iva) {
+            case 0:
+                return Tipus_IVA.Tipo_Cero;
+            case 7:
+                return Tipus_IVA.Reduccio;
+            case 21:
+                return Tipus_IVA.General;
+            default:
+                return null;
+        }
+    }
+    
+    public Tipus_Reserva getReservaFromString(String tipo) {
+        switch (tipo) {
+            case "AD":
+                return Tipus_Reserva.AD;
+            case "MP":
+                return Tipus_Reserva.MP;
             default:
                 return null;
         }
@@ -206,9 +235,9 @@ public class Model {
             ReservaMensaje = e.toString();
             return ReservaMensaje;
         }
-    
+
     }
-    
+
     public Boolean altaPersona(Persona persona) {
         boolean PersonaSubidaBaseDeDatos = true;
         Connection conectar = new Connexio().connecta();
@@ -348,20 +377,37 @@ public class Model {
         }
         return ID_Habitacio;
     }
-    // Por hacer
-    // public Reserva getReserva(){
-        
-    //}
+    // Solucionar error getReserva
+    public Reserva getReserva(int ID_Reserva) {
+        Reserva reserva = null;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT * FROM RESERVA WHERE ID_Reserva = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Reserva);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                reserva = new Reserva(resultados.getDate(1),resultados.getDate(2), resultados.getDate(3), getReservaFromString(resultados.getString(4)), getIVAFromValue(resultados.getInt(5)), resultados.getDouble(6), resultados.getInt(7), resultados.getInt(8));
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return reserva;
+    }
+
     // Por hacer
     public void recargarCodigoReserva(String document_Identitat) {
         Connection conectar = new Connexio().connecta();
-        String sql = "SELECT Numero_Habitacio FROM HABITACIO";
+        String sql = "SELECT ID_Reserva FROM RESERVA WHERE ID_Client = (SELECT ID_Client FROM CLIENT WHERE ID_Client = (SELECT ID_Persona FROM PERSONA WHERE Document_Identitat = ?))";
         try {
-            Statement orden = conectar.createStatement();
-            ResultSet resultados = orden.executeQuery(sql);
-            habitaciones.clear();
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, document_Identitat);
+            ResultSet resultados = orden.executeQuery();
+            reservas.clear();
             while (resultados.next()) {
-                habitaciones.add(String.valueOf(resultados.getInt(1)));
+                reservas.add(String.valueOf(resultados.getInt(1)));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -369,7 +415,7 @@ public class Model {
             System.out.println(e);
         }
     }
-    
+
     public void recargarHabitaciones() {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT Numero_Habitacio FROM HABITACIO";

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<AnchorPane fx:id="Principal" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.MenuBarController">
+   <children>
+      <BorderPane layoutX="289.0" layoutY="140.0" prefHeight="585.0" prefWidth="626.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <MenuBar prefHeight="30.0" prefWidth="650.0" BorderPane.alignment="CENTER">
+               <menus>
+                  <Menu text="Empleats i Clients">
+                     <items>
+                        <MenuItem onAction="#cambiarPersona" text="Entrar" />
+                     </items>
+                  </Menu>
+                  <Menu text="Reserves">
+                     <items>
+                        <MenuItem onAction="#cambiarReserva" text="Entrar" />
+                     </items>
+                  </Menu>
+                  <Menu text="Factures">
+                     <items>
+                        <MenuItem text="About" />
+                     </items>
+                  </Menu>
+                  <Menu text="Tasques">
+                     <items>
+                        <MenuItem text="About" />
+                     </items>
+                  </Menu>
+               </menus>
+            </MenuBar>
+         </top>
+         <center>
+            <AnchorPane fx:id="Centre" prefHeight="520.0" prefWidth="650.0" BorderPane.alignment="CENTER" />
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

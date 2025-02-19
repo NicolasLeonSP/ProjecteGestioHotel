@@ -194,15 +194,4 @@ public class PrimaryController {
     public void injecta(Model obj) {
         model = obj;
     }
-    
-    @FXML
-    private void switchToPersona() throws IOException {
-        App.setRoot("primary");
-    }
-
-    @FXML
-    private void switchToReserves() throws IOException {
-        App.setRoot("secondary");
-    }
-
 }

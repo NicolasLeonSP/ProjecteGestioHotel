@@ -6,27 +6,24 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 /**
  * JavaFX App
  */
 public class App extends Application {
-    
+
     private static Scene scene;
     private Model model;
-    private static PrimaryController controlador;
-    private static SecondaryController controlador2;
+    private static MenuBarController controladormenu;
 
     @Override
     public void start(Stage stage) throws IOException {
         model = new Model();
-        controlador = new PrimaryController();
-        controlador2 = new SecondaryController();
-        controlador.injecta(model);
-        controlador2.injecta(model);
-        scene = new Scene(loadFXML("primary"));
+        controladormenu = new MenuBarController();
+        controladormenu.injecta(model);
+        
+        scene = new Scene(loadFXML("MenuBar"));
         stage.setScene(scene);
         stage.show();
     }
@@ -38,12 +35,9 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         fxmlLoader.setControllerFactory(controllerType -> {
-           if (controllerType==PrimaryController.class){
-               return controlador;
-           }
-            if (controllerType==SecondaryController.class){
-               return controlador2;
-           }
+            if (controllerType == MenuBarController.class) {
+                return controladormenu;
+            }
             return null;
         });
         return fxmlLoader.load();

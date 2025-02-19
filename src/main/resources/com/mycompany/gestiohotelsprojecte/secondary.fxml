@@ -3,9 +3,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -14,121 +11,93 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="543.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.SecondaryController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.SecondaryController">
    <children>
-      <SplitPane layoutX="1.0" layoutY="3.0" orientation="VERTICAL" prefHeight="539.0" prefWidth="600.0">
-         <items>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="472.0" prefWidth="598.0">
-               <children>
-                  <MenuBar layoutX="-2.0" layoutY="2.0" prefHeight="33.0" prefWidth="598.0">
-                     <menus>
-                        <Menu mnemonicParsing="false" text="Empleats i Clients">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
-                           </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" onAction="#switchToReserves" text="Reserves">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToReserves" text="Entrar" />
-                           </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Factures">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
-                           </items>
-                        </Menu>
-                        <Menu mnemonicParsing="false" text="Tasques">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
-                           </items>
-                        </Menu>
-                     </menus>
-                  </MenuBar>
-                  <Text layoutX="5.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestio de reserves">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                  </Text>
-                  <SplitPane dividerPositions="0.373134328358209" layoutX="-2.0" layoutY="70.0" orientation="VERTICAL" prefHeight="469.0" prefWidth="600.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="163.0" prefWidth="598.0">
+      <AnchorPane layoutX="1.0" minHeight="0.0" minWidth="0.0" prefHeight="522.0" prefWidth="598.0">
+         <children>
+            <Text layoutX="14.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestio de reserves">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <SplitPane dividerPositions="0.373134328358209" layoutX="-1.0" layoutY="53.0" orientation="VERTICAL" prefHeight="469.0" prefWidth="600.0">
+               <items>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="163.0" prefWidth="598.0">
+                     <children>
+                        <AnchorPane layoutY="36.0" minHeight="0.0" minWidth="0.0" prefHeight="98.0" prefWidth="598.0">
                            <children>
-                              <AnchorPane layoutY="36.0" minHeight="0.0" minWidth="0.0" prefHeight="98.0" prefWidth="598.0">
-                                 <children>
-                                    <TextField fx:id="textDNI" layoutX="80.0" layoutY="14.0" />
-                                    <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
-                                    <Button layoutX="13.0" layoutY="60.0" mnemonicParsing="false" onAction="#buscarPersona" text="Buscar" />
-                                 </children>
-                              </AnchorPane>
-                              <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Persona fent la reserva">
-                                 <font>
-                                    <Font size="18.0" />
-                                 </font>
-                              </Text>
+                              <TextField fx:id="textDNI" layoutX="80.0" layoutY="14.0" />
+                              <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
+                              <Button layoutX="13.0" layoutY="60.0" mnemonicParsing="false" onAction="#buscarPersona" text="Buscar" />
                            </children>
                         </AnchorPane>
-                      <AnchorPane fx:id="Reserva" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <TabPane layoutX="-3.0" prefHeight="269.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
-                                <tabs>
-                                  <Tab text="Creacio">
-                                    <content>
-                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <DatePicker fx:id="dataIniciCreacion" layoutX="16.0" layoutY="45.0" />
-                                                <DatePicker fx:id="dataFinalCreacion" layoutX="315.0" layoutY="45.0" />
-                                                <Text layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data inici" />
-                                                <Text layoutX="315.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data final" />
-                                                <ComboBox fx:id="habitacionsCreacion" layoutX="315.0" layoutY="112.0" prefHeight="24.0" prefWidth="202.0" />
-                                                <Text layoutX="315.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Habitacions" />
-                                                <ComboBox fx:id="tipusReservaCreacion" layoutX="14.0" layoutY="112.0" prefWidth="150.0" />
-                                                <Text layoutX="14.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Reserva" />
-                                                <Button layoutX="14.0" layoutY="166.0" mnemonicParsing="false" onAction="#crearReserva" text="Crear" />
-                                                <Button layoutX="78.0" layoutY="166.0" mnemonicParsing="false" onAction="#restartCamposCreacion" text="Reiniciar" />
-                                             </children>
-                                          </AnchorPane>
-                                    </content>
-                                  </Tab>
-                                  <Tab text="Edicio">
-                                    <content>
-                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <ComboBox layoutX="33.0" layoutY="44.0" prefWidth="150.0" />
-                                                <Text layoutX="36.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Reserva" />
-                                                <DatePicker fx:id="dataIniciEdicion" layoutX="38.0" layoutY="104.0" />
-                                                <DatePicker fx:id="dataFinalEdicion" layoutX="337.0" layoutY="104.0" />
-                                                <Text layoutX="36.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data inici" />
-                                                <Text layoutX="337.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data final" />
-                                                <ComboBox fx:id="habitacionsEdicion" layoutX="337.0" layoutY="171.0" prefHeight="24.0" prefWidth="202.0" />
-                                                <Text layoutX="337.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Habitacions" />
-                                                <ComboBox fx:id="tipusReservaEdicion" layoutX="36.0" layoutY="171.0" prefWidth="150.0" />
-                                                <Text layoutX="36.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Reserva" />
-                                                <Button layoutX="36.0" layoutY="212.0" mnemonicParsing="false" text="Editar" />
-                                                <Button layoutX="137.0" layoutY="212.0" mnemonicParsing="false" text="Reiniciar" />
-                                             </children>
-                                          </AnchorPane>
-                                    </content>
-                                  </Tab>
-                                    <Tab text="Eliminacio">
-                                       <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                             <children>
-                                                <ComboBox layoutX="39.0" layoutY="46.0" prefWidth="150.0" />
-                                                <Text layoutX="42.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Reserva" />
-                                                <Button layoutX="35.0" layoutY="107.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="146.0" style="-fx-background-color: red;" text="Eliminar" textFill="WHITE" />
-                                             </children>
-                                          </AnchorPane>
-                                       </content>
-                                    </Tab>
-                                </tabs>
-                              </TabPane>
-                           </children>
-                        </AnchorPane>
-                    </items>
-                  </SplitPane>
-               </children>
-            </AnchorPane>
-         </items>
-      </SplitPane>
+                        <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Persona fent la reserva">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="Reserva" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <TabPane layoutX="-3.0" prefHeight="269.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+                           <tabs>
+                              <Tab text="Creacio">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <DatePicker fx:id="dataIniciCreacion" layoutX="16.0" layoutY="45.0" />
+                                          <DatePicker fx:id="dataFinalCreacion" layoutX="315.0" layoutY="45.0" />
+                                          <Text layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data inici" />
+                                          <Text layoutX="315.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data final" />
+                                          <ComboBox fx:id="habitacionsCreacion" layoutX="315.0" layoutY="112.0" prefHeight="24.0" prefWidth="202.0" />
+                                          <Text layoutX="315.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Habitacions" />
+                                          <ComboBox fx:id="tipusReservaCreacion" layoutX="14.0" layoutY="112.0" prefWidth="150.0" />
+                                          <Text layoutX="14.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Reserva" />
+                                          <Button layoutX="14.0" layoutY="166.0" mnemonicParsing="false" onAction="#crearReserva" text="Crear" />
+                                          <Button layoutX="78.0" layoutY="166.0" mnemonicParsing="false" onAction="#restartCamposCreacion" text="Reiniciar" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Edicio">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ComboBox fx:id="reservaEdicio" layoutX="33.0" layoutY="44.0" onAction="#reservaEdicionSeleccionada" prefWidth="150.0" />
+                                          <Text layoutX="36.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Reserva" />
+                                          <DatePicker fx:id="dataIniciEdicion" layoutX="38.0" layoutY="104.0" />
+                                          <DatePicker fx:id="dataFinalEdicion" layoutX="337.0" layoutY="104.0" />
+                                          <Text layoutX="36.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data inici" />
+                                          <Text layoutX="337.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data final" />
+                                          <ComboBox fx:id="habitacionsEdicion" layoutX="337.0" layoutY="171.0" prefHeight="24.0" prefWidth="202.0" />
+                                          <Text layoutX="337.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Habitacions" />
+                                          <ComboBox fx:id="tipusReservaEdicion" layoutX="36.0" layoutY="171.0" prefWidth="150.0" />
+                                          <Text layoutX="36.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Reserva" />
+                                          <Button layoutX="36.0" layoutY="212.0" mnemonicParsing="false" text="Editar" />
+                                          <Button layoutX="137.0" layoutY="212.0" mnemonicParsing="false" text="Reiniciar" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab text="Eliminacio">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ComboBox fx:id="reservaEliminacio" layoutX="39.0" layoutY="46.0" prefWidth="150.0" />
+                                          <Text layoutX="42.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Reserva" />
+                                          <Button layoutX="35.0" layoutY="107.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="146.0" style="-fx-background-color: red;" text="Eliminar" textFill="WHITE" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                           </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+               </items>
+            </SplitPane>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

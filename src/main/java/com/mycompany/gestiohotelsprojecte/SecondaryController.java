@@ -2,8 +2,6 @@ package com.mycompany.gestiohotelsprojecte;
 
 import com.mycompany.gestiohotelsprojecte.model.Model;
 import com.mycompany.gestiohotelsprojecte.model.Reserva;
-import com.mycompany.gestiohotelsprojecte.model.Tipus_Client;
-import com.mycompany.gestiohotelsprojecte.model.Tipus_IVA;
 import com.mycompany.gestiohotelsprojecte.model.Tipus_Reserva;
 import java.io.IOException;
 import java.sql.Date;
@@ -39,6 +37,10 @@ public class SecondaryController {
     ComboBox habitacionsEdicion;
     @FXML
     ComboBox tipusReservaEdicion;
+    @FXML
+    ComboBox reservaEdicio;
+    @FXML
+    ComboBox reservaEliminacio;
 
     // Funcion para crear una alerta, pasandole el mensaje por un parametro
     private void alterMos(String misgg, boolean error) {
@@ -73,6 +75,9 @@ public class SecondaryController {
                 tipusReservaCreacion.setItems(model.getTipoReserva());
                 habitacionsEdicion.setItems(model.getHabitaciones());
                 tipusReservaEdicion.setItems(model.getTipoReserva());
+                model.recargarCodigoReserva(textDNI.getText());
+                reservaEdicio.setItems(model.getReservas());
+                reservaEliminacio.setItems(model.getReservas());
             } else {
                 alterMos("Verifique si ha introducido el DNI bien", true);
             }
@@ -101,7 +106,11 @@ public class SecondaryController {
     
     @FXML
     private void reservaEdicionSeleccionada(){
-        
+        if (reservaEdicio.getValue() != null) {
+            Reserva reservaAPoner = model.getReserva(Integer.parseInt(reservaEdicio.getValue().toString()));
+            dataIniciEdicion.setValue(reservaAPoner.getData_Inici().toLocalDate());
+            dataFinalEdicion.setValue(reservaAPoner.getData_Fi().toLocalDate());
+        }
     }
 
     @FXML

@@ -4,9 +4,6 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -15,32 +12,12 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.PrimaryController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.PrimaryController">
    <children>
-      <SplitPane layoutX="1.0" layoutY="3.0" orientation="VERTICAL" prefHeight="418.0" prefWidth="600.0">
+      <SplitPane layoutX="1.0" layoutY="3.0" orientation="VERTICAL" prefHeight="472.0" prefWidth="600.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="42.0" prefWidth="598.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="420.0" prefWidth="598.0">
                <children>
-                  <MenuBar layoutX="-2.0" layoutY="2.0" prefHeight="33.0" prefWidth="598.0">
-                    <menus>
-                      <Menu mnemonicParsing="false" text="Empleats i Clients">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
-                           </items></Menu>
-                      <Menu mnemonicParsing="false" onAction="#switchToReserves" text="Reserves">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToReserves" text="Entrar" />
-                           </items></Menu>
-                      <Menu mnemonicParsing="false" text="Factures">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
-                           </items></Menu>
-                        <Menu mnemonicParsing="false" text="Tasques">
-                           <items>
-                              <MenuItem mnemonicParsing="false" onAction="#switchToPersona" text="Entrar" />
-                           </items></Menu>
-                    </menus>
-                  </MenuBar>
                   <AnchorPane layoutX="-2.0" layoutY="60.0" minHeight="0.0" minWidth="0.0" prefHeight="206.0" prefWidth="598.0">
                      <children>
                         <TextField fx:id="textNom" layoutX="62.0" layoutY="14.0" />
@@ -62,14 +39,14 @@
                         <CheckBox fx:id="isEmpleado" layoutX="148.0" layoutY="171.0" mnemonicParsing="false" onAction="#changeCheckboxes" text="Empleat" />
                      </children>
                   </AnchorPane>
-                  <Text layoutX="5.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creacio de Empleats i Clients">
+                  <Text layoutX="5.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creacio de Empleats i Clients">
                      <font>
                         <Font size="20.0" />
                      </font>
                   </Text>
-                  <SplitPane layoutX="-4.0" layoutY="266.0" prefHeight="150.0" prefWidth="600.0">
+                  <SplitPane layoutX="-4.0" layoutY="266.0" prefHeight="199.0" prefWidth="600.0">
                      <items>
-                        <TabPane fx:id="ClientEmpleat" prefHeight="160.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">
+                        <TabPane fx:id="ClientEmpleat" prefHeight="141.0" prefWidth="598.0" tabClosingPolicy="UNAVAILABLE">
                            <tabs>
                               <Tab disable="true" text="Client">
                                  <content>
@@ -77,10 +54,10 @@
                                        <children>
                                           <DatePicker fx:id="dataRegistre" layoutX="140.0" layoutY="14.0" />
                                           <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Registre" />
-                                          <ComboBox fx:id="TipusClient" layoutX="140.0" layoutY="47.0" prefHeight="24.0" prefWidth="171.0" promptText="Seleccioni un tipus..." />
-                                          <Text layoutX="20.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Client" />
-                                          <TextField fx:id="textTargetaCredit" layoutX="214.0" layoutY="76.0" />
-                                          <Text layoutX="14.0" layoutY="93.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Targeta de Credit (Opcional)" />
+                                          <ComboBox fx:id="TipusClient" layoutX="140.0" layoutY="62.0" prefHeight="24.0" prefWidth="171.0" promptText="Seleccioni un tipus..." />
+                                          <Text layoutX="20.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Client" />
+                                          <TextField fx:id="textTargetaCredit" layoutX="214.0" layoutY="110.0" />
+                                          <Text layoutX="14.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Targeta de Credit (Opcional)" />
                                        </children>
                                     </AnchorPane>
                                  </content>
@@ -93,10 +70,10 @@
                                           <Text layoutX="24.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lloc Feina" />
                                           <TextField fx:id="textSalarioBruto" layoutX="384.0" layoutY="14.0" />
                                           <Text layoutX="299.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salari Brut" />
-                                          <Text layoutX="299.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estat Laboral" />
-                                          <ComboBox fx:id="estadoLaboral" layoutX="405.0" layoutY="54.0" prefWidth="150.0" promptText="Selecioni un tipus..." />
-                                          <DatePicker fx:id="dataContractacio" layoutX="150.0" layoutY="54.0" prefHeight="24.0" prefWidth="145.0" />
-                                          <Text layoutX="24.0" layoutY="71.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Contratacio" />
+                                          <Text layoutX="299.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estat Laboral" />
+                                          <ComboBox fx:id="estadoLaboral" layoutX="405.0" layoutY="81.0" prefWidth="150.0" promptText="Selecioni un tipus..." />
+                                          <DatePicker fx:id="dataContractacio" layoutX="150.0" layoutY="81.0" prefHeight="24.0" prefWidth="145.0" />
+                                          <Text layoutX="24.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Contratacio" />
                                        </children>
                                     </AnchorPane>
                                  </content>
@@ -109,7 +86,7 @@
             </AnchorPane>
         </items>
       </SplitPane>
-      <Button layoutX="14.0" layoutY="429.0" mnemonicParsing="false" onAction="#crearPersona" text="Crear" />
-      <Button layoutX="93.0" layoutY="429.0" mnemonicParsing="false" onAction="#restartCampos" text="Reiniciar" />
+      <Button layoutX="14.0" layoutY="482.0" mnemonicParsing="false" onAction="#crearPersona" text="Crear" />
+      <Button layoutX="93.0" layoutY="482.0" mnemonicParsing="false" onAction="#restartCampos" text="Reiniciar" />
    </children>
 </AnchorPane>
