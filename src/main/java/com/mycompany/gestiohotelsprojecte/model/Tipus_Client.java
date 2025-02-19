@@ -9,5 +9,6 @@ public enum Tipus_Client{
     Premium,
     VIP,
     Empresa,
-    Empleados
+    Empleados;
+    
 }
