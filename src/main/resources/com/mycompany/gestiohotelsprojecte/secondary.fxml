@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.SecondaryController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.SecondaryController">
    <children>
       <AnchorPane layoutX="1.0" minHeight="0.0" minWidth="0.0" prefHeight="522.0" prefWidth="598.0">
          <children>
@@ -42,7 +42,7 @@
                      <children>
                         <TabPane layoutX="-3.0" prefHeight="269.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
                            <tabs>
-                              <Tab text="Creacio">
+                              <Tab onSelectionChanged="#restartCamposCreacion" text="Creacio">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -60,7 +60,7 @@
                                     </AnchorPane>
                                  </content>
                               </Tab>
-                              <Tab text="Edicio">
+                              <Tab onSelectionChanged="#restartCamposEdicion" text="Edicio">
                                  <content>
                                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                        <children>
@@ -74,8 +74,8 @@
                                           <Text layoutX="337.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Habitacions" />
                                           <ComboBox fx:id="tipusReservaEdicion" layoutX="36.0" layoutY="171.0" prefWidth="150.0" />
                                           <Text layoutX="36.0" layoutY="160.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Reserva" />
-                                          <Button layoutX="36.0" layoutY="212.0" mnemonicParsing="false" text="Editar" />
-                                          <Button layoutX="137.0" layoutY="212.0" mnemonicParsing="false" text="Reiniciar" />
+                                          <Button layoutX="36.0" layoutY="212.0" mnemonicParsing="false" onAction="#editarReservaSeleccionada" text="Editar" />
+                                          <Button layoutX="137.0" layoutY="212.0" mnemonicParsing="false" onAction="#restartCamposEdicion" text="Reiniciar" />
                                        </children>
                                     </AnchorPane>
                                  </content>

@@ -57,6 +57,7 @@ public class MenuBarController {
         controlador2 = new SecondaryController();
         controlador.injecta(model);
         controlador2.injecta(model);
+        model.initModel();
     }
 
 }

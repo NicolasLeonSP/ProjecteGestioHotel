@@ -73,7 +73,7 @@ public class PrimaryController {
     private void crearPersona() {
         if (!textNom.getText().isEmpty() && !textCognom.getText().isEmpty() && !textAdreça.getText().isEmpty() && !textDNI.getText().isEmpty() && !textTelefon.getText().isEmpty() && !textEmail.getText().isEmpty() && (isCliente.isSelected() || isEmpleado.isSelected())) {
             try {
-                Date date = new java.sql.Date(Date.from(textData.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
+                Date date = model.LocalDateToSqlDate(textData.getValue());
                 // Check Persona
                 Persona personaASubir = new Persona(textNom.getText(), textCognom.getText(), textAdreça.getText(), textDNI.getText(), date, textTelefon.getText(), textEmail.getText());
                 String check = model.checkPersona(personaASubir);
@@ -84,7 +84,7 @@ public class PrimaryController {
                     String targetaCreditASubir = "";
                     if (isCliente.isSelected()) {
                         if (TipusClient.getValue() != null && dataRegistre.getValue() != null) {
-                            dateClient = new java.sql.Date(Date.from(dataRegistre.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
+                            dateClient = model.LocalDateToSqlDate(dataRegistre.getValue());
                             if (!textTargetaCredit.getText().isEmpty()) {
                                 targetaCreditASubir = textTargetaCredit.getText();
                             } else {
@@ -102,7 +102,7 @@ public class PrimaryController {
                     Date dateEmpleado = null;
                     if (isEmpleado.isSelected()) {
                         if (estadoLaboral.getValue() != null && dataContractacio.getValue() != null && textLugarTrabajo.getText().isEmpty() == false && textSalarioBruto.getText().isEmpty() == false) {
-                            dateEmpleado = new java.sql.Date(Date.from(dataContractacio.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
+                            dateEmpleado = model.LocalDateToSqlDate(dataContractacio.getValue());
                             String checkEmpleado = model.checkEmpleado(dateEmpleado, textSalarioBruto.getText());
                             if (!checkEmpleado.equals("")) {
                                 check += checkEmpleado;
@@ -168,7 +168,6 @@ public class PrimaryController {
 
     public void initialize() {
         ClientEmpleat.setVisible(false);
-        model.initModel();
         TipusClient.getItems().addAll(model.getTipoCliente());
         estadoLaboral.getItems().addAll(model.getEstatLaboral());
     }

@@ -17,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 public class SecondaryController {
 
     private Model model;
+    private Reserva ReservaEnEdicionOEliminacion;
     @FXML
     AnchorPane Reserva;
     @FXML
@@ -83,15 +84,15 @@ public class SecondaryController {
             }
         }
     }
+
     // Comprobar habitaciones durante la creacion, para ver si para esa fecha esta ocupada o no.
     @FXML
     private void crearReserva() {
         if (dataIniciCreacion.getValue() != null && dataFinalCreacion.getValue() != null && habitacionsCreacion.getValue() != null && tipusReservaCreacion.getValue() != null) {
             Date dataActual = new java.sql.Date((Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime()));
-            Date dataIniciTemp = new java.sql.Date(Date.from(dataIniciCreacion.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
-            Date dataFinalTemp = new java.sql.Date(Date.from(dataFinalCreacion.getValue().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
+            Date dataIniciTemp = model.LocalDateToSqlDate(dataIniciCreacion.getValue());
+            Date dataFinalTemp = model.LocalDateToSqlDate(dataFinalCreacion.getValue());
             int ID_Habitacio = model.getIDHabitacion(Integer.parseInt(habitacionsCreacion.getValue().toString()));
-            // Por terminar, los dos ID
             String errorReserva = model.altaReserva(new Reserva(dataActual, dataIniciTemp, dataFinalTemp, (Tipus_Reserva) tipusReservaCreacion.getValue(), model.getIVAClient(model.getTipusClienteReserva()), 0, model.getIDClienteReserva(), ID_Habitacio));
             if (errorReserva.equals("")) {
                 alterMos("Creacion de la reserva completada", false);
@@ -103,15 +104,46 @@ public class SecondaryController {
             alterMos("Verifique que todos los campos han sido rellenados", true);
         }
     }
-    
+
     @FXML
-    private void reservaEdicionSeleccionada(){
+    private void reservaEdicionSeleccionada() {
         if (reservaEdicio.getValue() != null) {
-            Reserva reservaAPoner = model.getReserva(Integer.parseInt(reservaEdicio.getValue().toString()));
-            dataIniciEdicion.setValue(reservaAPoner.getData_Inici().toLocalDate());
-            dataFinalEdicion.setValue(reservaAPoner.getData_Fi().toLocalDate());
+            ReservaEnEdicionOEliminacion = model.getReserva(Integer.parseInt(reservaEdicio.getValue().toString()));
+            dataIniciEdicion.setValue(ReservaEnEdicionOEliminacion.getData_Inici().toLocalDate());
+            dataFinalEdicion.setValue(ReservaEnEdicionOEliminacion.getData_Fi().toLocalDate());
+            tipusReservaEdicion.getSelectionModel().select(model.getIDFromObservableList(ReservaEnEdicionOEliminacion.getTipus_Reserva().toString(), model.getTipoReserva()));
+            habitacionsEdicion.getSelectionModel().select(model.getIDFromObservableList(String.valueOf(model.getNumeroHabitacion(ReservaEnEdicionOEliminacion.getID_Habitacio())), model.getHabitaciones()));
         }
     }
+
+    @FXML
+    private void editarReservaSeleccionada() {
+        Boolean AlgoHaCambiado = false;
+        if (!model.LocalDateToSqlDate(dataIniciEdicion.getValue()).equals(ReservaEnEdicionOEliminacion.getData_Inici())) {
+            AlgoHaCambiado = true;
+            System.out.println("a");
+        }
+        if (!model.LocalDateToSqlDate(dataFinalEdicion.getValue()).equals(ReservaEnEdicionOEliminacion.getData_Fi())) {
+            AlgoHaCambiado = true;
+            System.out.println("b");
+        }
+        if (!tipusReservaEdicion.getValue().toString().equals(ReservaEnEdicionOEliminacion.getTipus_Reserva().toString())) {
+            AlgoHaCambiado = true;
+            System.out.println("c");
+        }
+        if (Integer.parseInt(habitacionsEdicion.getValue().toString()) != (model.getNumeroHabitacion(ReservaEnEdicionOEliminacion.getID_Habitacio()))) {
+            AlgoHaCambiado = true;
+            System.out.println("d");
+        }
+        if (AlgoHaCambiado) {
+            System.out.println("Si");
+            // ReservaEnEdicionOEliminacion
+        } else{
+            System.out.println("No");
+        }
+    }
+
+    ;
 
     @FXML
     private void restartCamposCreacion() {
@@ -120,13 +152,14 @@ public class SecondaryController {
         habitacionsCreacion.setValue(null);
         tipusReservaCreacion.setValue(null);
     }
-    
+
     @FXML
     private void restartCamposEdicion() {
-        dataIniciCreacion.setValue(null);
-        dataFinalCreacion.setValue(null);
-        habitacionsCreacion.setValue(null);
-        tipusReservaCreacion.setValue(null);
+        reservaEdicio.setValue(null);
+        dataIniciEdicion.setValue(null);
+        dataFinalEdicion.setValue(null);
+        habitacionsEdicion.setValue(null);
+        tipusReservaEdicion.setValue(null);
     }
 
     @FXML

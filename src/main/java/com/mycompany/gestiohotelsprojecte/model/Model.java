@@ -159,6 +159,15 @@ public class Model {
         }
     }
 
+    public java.sql.Date LocalDateToSqlDate(LocalDate fecha) {
+        try {
+            Date date = new java.sql.Date(Date.from(fecha.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
+            return date;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public Tipus_Client getTipoCliente(String tipoCliente) {
         Tipus_Client cliente = null;
         for (Tipus_Client e : Tipus_Client.values()) {
@@ -185,7 +194,7 @@ public class Model {
                 return null;
         }
     }
-    
+
     public Tipus_IVA getIVAFromValue(int Iva) {
         switch (Iva) {
             case 0:
@@ -198,7 +207,7 @@ public class Model {
                 return null;
         }
     }
-    
+
     public Tipus_Reserva getReservaFromString(String tipo) {
         switch (tipo) {
             case "AD":
@@ -208,6 +217,17 @@ public class Model {
             default:
                 return null;
         }
+    }
+
+    public int getIDFromObservableList(String buscar, ObservableList ol) {
+        int ID_Conseguida = -1;
+        for (int i = 0; i < ol.size(); i++) {
+            if (ol.get(i).toString().equals(buscar)) {
+                ID_Conseguida = i;
+            }
+
+        }
+        return ID_Conseguida;
     }
 
     public String altaReserva(Reserva reserva) {
@@ -377,6 +397,7 @@ public class Model {
         }
         return ID_Habitacio;
     }
+
     // Solucionar error getReserva
     public Reserva getReserva(int ID_Reserva) {
         Reserva reserva = null;
@@ -387,7 +408,9 @@ public class Model {
             orden.setInt(1, ID_Reserva);
             ResultSet resultados = orden.executeQuery();
             while (resultados.next()) {
-                reserva = new Reserva(resultados.getDate(1),resultados.getDate(2), resultados.getDate(3), getReservaFromString(resultados.getString(4)), getIVAFromValue(resultados.getInt(5)), resultados.getDouble(6), resultados.getInt(7), resultados.getInt(8));
+
+                reserva = new Reserva(resultados.getDate(2), resultados.getDate(3), resultados.getDate(4), getReservaFromString(resultados.getString(5)), getIVAFromValue(resultados.getInt(6)), resultados.getDouble(7), resultados.getInt(8), resultados.getInt(9));
+                reserva.setID_Reserva(resultados.getInt(1));
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -414,6 +437,25 @@ public class Model {
         } catch (Exception e) {
             System.out.println(e);
         }
+    }
+
+    public int getNumeroHabitacion(int ID_Habitacion) {
+        int Num_Habitacion = -1;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT Numero_Habitacio FROM HABITACIO WHERE ID_Habitacio = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Habitacion);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                Num_Habitacion = resultados.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        return Num_Habitacion;
     }
 
     public void recargarHabitaciones() {
