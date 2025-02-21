@@ -16,7 +16,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 
-public class SecondaryController {
+public class ReservaController {
 
     private Model model;
     private Reserva ReservaEnEdicion;
@@ -115,7 +115,7 @@ public class SecondaryController {
     @FXML
     private void crearReserva() {
         if (dataIniciCreacion.getValue() != null && dataFinalCreacion.getValue() != null && habitacionsCreacion.getValue() != null && tipusReservaCreacion.getValue() != null) {
-            Date dataActual = new java.sql.Date((Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime()));
+            Date dataActual = model.LocalDateToSqlDate(LocalDate.now());
             Date dataIniciTemp = model.LocalDateToSqlDate(dataIniciCreacion.getValue());
             Date dataFinalTemp = model.LocalDateToSqlDate(dataFinalCreacion.getValue());
             int ID_Habitacio = model.getIDHabitacion(Integer.parseInt(habitacionsCreacion.getValue().toString()));
@@ -125,7 +125,14 @@ public class SecondaryController {
                 restartCamposCreacion();
                 recargarReservas();
             } else {
-                alterMos(errorReserva, true);
+                String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
+                if (campoError.equals("data_Inici")) {
+                    alterMos("Verifique que la fecha de inicio este bien puesta. Tiene que ser superior a la actual y menor a la fecha final", true);
+                } else if (campoError.equals("data_Fi")) {
+                    alterMos("Verifique que la fecha final este bien puesta. Debe de ser mayor a la fecha de inicio.", true);
+                } else {
+                    alterMos(campoError, true);
+                }
             }
         } else {
             alterMos("Verifique que todos los campos han sido rellenados", true);
@@ -169,7 +176,14 @@ public class SecondaryController {
                 restartCamposEdicion();
                 ReservaEnEdicion = null;
             } else {
-                alterMos(errorReserva, true);
+                String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
+                if (campoError.equals("data_Inici")) {
+                    alterMos("Verifique que la fecha de inicio este bien puesta. Tiene que ser superior a la actual y menor a la fecha final", true);
+                } else if (campoError.equals("data_Fi")) {
+                    alterMos("Verifique que la fecha final este bien puesta. Debe de ser mayor a la fecha de inicio.", true);
+                } else {
+                    alterMos(campoError, true);
+                }
             }
         } else {
             alterMos("Modifique algun campo de los presentes si quiere modificar la reserva.", true);

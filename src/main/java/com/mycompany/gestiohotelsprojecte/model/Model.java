@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
@@ -230,6 +231,12 @@ public class Model {
         return ID_Conseguida;
     }
 
+    public String retornarMensajeCorrectoReserva(String msgError) {
+        String[] msgErrorPartido = msgError.split("`");
+        String[] campoErrorPartido = msgErrorPartido[1].split("\\.");
+        return campoErrorPartido[1];
+    }
+    
     public String altaReserva(Reserva reserva) {
         String ReservaMensaje = "";
         Connection conectar = new Connexio().connecta();
@@ -247,12 +254,11 @@ public class Model {
             orden.executeUpdate();
             return ReservaMensaje;
         } catch (SQLException e) {
-            System.out.println(e.toString());
-            ReservaMensaje = e.toString();
+            ReservaMensaje = e.getMessage();
             return ReservaMensaje;
         } catch (Exception e) {
-            System.out.println(e.toString());
-            ReservaMensaje = e.toString();
+            System.out.println(e.getMessage());
+            ReservaMensaje = e.getMessage();
             return ReservaMensaje;
         }
     }
@@ -291,11 +297,11 @@ public class Model {
             orden.executeUpdate();
             return ReservaEliminada;
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             ReservaEliminada = false;
             return ReservaEliminada;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             ReservaEliminada = false;
             return ReservaEliminada;
         }
@@ -318,11 +324,11 @@ public class Model {
             orden.executeUpdate();
             return PersonaSubidaBaseDeDatos;
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             PersonaSubidaBaseDeDatos = false;
             return PersonaSubidaBaseDeDatos;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             PersonaSubidaBaseDeDatos = false;
             return PersonaSubidaBaseDeDatos;
         }
@@ -342,11 +348,11 @@ public class Model {
             orden.executeUpdate();
             return EmpleadoSubidoABaseDeDatos;
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             EmpleadoSubidoABaseDeDatos = false;
             return EmpleadoSubidoABaseDeDatos;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             EmpleadoSubidoABaseDeDatos = false;
             return EmpleadoSubidoABaseDeDatos;
         }
@@ -365,11 +371,11 @@ public class Model {
             orden.executeUpdate();
             return ClienteSubidoABaseDeDatos;
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             ClienteSubidoABaseDeDatos = false;
             return ClienteSubidoABaseDeDatos;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             ClienteSubidoABaseDeDatos = false;
             return ClienteSubidoABaseDeDatos;
         }
@@ -388,10 +394,10 @@ public class Model {
                 ID_Persona = resultados.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             return 0;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             return 0;
         }
         return ID_Persona;
@@ -414,10 +420,10 @@ public class Model {
                 setTipusClienteReserva(tipoCliente);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             return 0;
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
             return 0;
         }
         return ID_Persona;
@@ -435,9 +441,9 @@ public class Model {
                 ID_Habitacio = resultados.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         }
         return ID_Habitacio;
     }
@@ -457,9 +463,9 @@ public class Model {
                 reserva.setID_Reserva(resultados.getInt(1));
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         }
         return reserva;
     }
@@ -477,9 +483,9 @@ public class Model {
                 reservas.add(String.valueOf(resultados.getInt(1)));
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         }
     }
 
@@ -495,9 +501,9 @@ public class Model {
                 Num_Habitacion = resultados.getInt(1);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         }
         return Num_Habitacion;
     }
@@ -513,9 +519,9 @@ public class Model {
                 habitaciones.add(String.valueOf(resultados.getInt(1)));
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
         }
     }
 }

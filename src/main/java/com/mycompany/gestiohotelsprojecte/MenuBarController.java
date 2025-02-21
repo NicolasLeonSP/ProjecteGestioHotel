@@ -20,8 +20,9 @@ public class MenuBarController {
     AnchorPane Principal;
     @FXML
     AnchorPane Centre;
-    private static PrimaryController controlador;
-    private static SecondaryController controlador2;
+    private static ClientEmpleatController controlador;
+    private static ReservaController controlador2;
+    private static FacturaController controlador3;
     
     @FXML
     private void switchFxml(String nomFxml) throws IOException {
@@ -29,11 +30,14 @@ public class MenuBarController {
         //Crear el fxml a visualitar
         FXMLLoader loader = new FXMLLoader(getClass().getResource(nomFxml));
         loader.setControllerFactory(controllerType -> {
-            if (controllerType == PrimaryController.class) {
+            if (controllerType == ClientEmpleatController.class) {
                 return controlador;
             }
-            if (controllerType == SecondaryController.class) {
+            if (controllerType == ReservaController.class) {
                 return controlador2;
+            }
+            if (controllerType == FacturaController.class) {
+                return controlador3;
             }
             return null;
         });
@@ -44,19 +48,25 @@ public class MenuBarController {
     
     @FXML
     private void cambiarPersona() throws IOException {
-        switchFxml("primary.fxml");
+        switchFxml("ClientEmpleat.fxml");
     }
     @FXML
     private void cambiarReserva() throws IOException {
-        switchFxml("secondary.fxml");
+        switchFxml("Reserva.fxml");
+    }
+    @FXML
+    private void cambiarFactura() throws IOException {
+        switchFxml("Factura.fxml");
     }
     
     public void injecta(Model obj) {
         model = obj;
-        controlador = new PrimaryController();
-        controlador2 = new SecondaryController();
+        controlador = new ClientEmpleatController();
+        controlador2 = new ReservaController();
+        controlador3 = new FacturaController();
         controlador.injecta(model);
         controlador2.injecta(model);
+        controlador3.injecta(model);
         model.initModel();
     }
 

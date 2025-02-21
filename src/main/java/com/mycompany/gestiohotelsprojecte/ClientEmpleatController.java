@@ -17,7 +17,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
-public class PrimaryController {
+public class ClientEmpleatController {
 
     private Model model;
     @FXML
