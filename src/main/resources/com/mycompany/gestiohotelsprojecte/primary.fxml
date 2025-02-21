@@ -54,7 +54,7 @@
                                        <children>
                                           <DatePicker fx:id="dataRegistre" layoutX="140.0" layoutY="14.0" />
                                           <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Registre" />
-                                          <ComboBox fx:id="TipusClient" layoutX="140.0" layoutY="62.0" prefHeight="24.0" prefWidth="171.0" promptText="Seleccioni un tipus..." />
+                                          <ComboBox fx:id="TipusClient" layoutX="140.0" layoutY="62.0" prefHeight="24.0" prefWidth="171.0" />
                                           <Text layoutX="20.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tipus Client" />
                                           <TextField fx:id="textTargetaCredit" layoutX="214.0" layoutY="110.0" />
                                           <Text layoutX="14.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Targeta de Credit (Opcional)" />
@@ -71,7 +71,7 @@
                                           <TextField fx:id="textSalarioBruto" layoutX="384.0" layoutY="14.0" />
                                           <Text layoutX="299.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Salari Brut" />
                                           <Text layoutX="299.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estat Laboral" />
-                                          <ComboBox fx:id="estadoLaboral" layoutX="405.0" layoutY="81.0" prefWidth="150.0" promptText="Selecioni un tipus..." />
+                                          <ComboBox fx:id="estadoLaboral" layoutX="405.0" layoutY="81.0" prefWidth="150.0" />
                                           <DatePicker fx:id="dataContractacio" layoutX="150.0" layoutY="81.0" prefHeight="24.0" prefWidth="145.0" />
                                           <Text layoutX="24.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Contratacio" />
                                        </children>

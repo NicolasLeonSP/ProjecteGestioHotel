@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -17,7 +19,7 @@ import javafx.scene.layout.AnchorPane;
 public class SecondaryController {
 
     private Model model;
-    private Reserva ReservaEnEdicionOEliminacion;
+    private Reserva ReservaEnEdicion;
     @FXML
     AnchorPane Reserva;
     @FXML
@@ -55,6 +57,18 @@ public class SecondaryController {
         alerta.show();
     }
 
+    private boolean confirMos(String misgg) {
+        Alert alerta;
+        alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setContentText(misgg);
+        Optional<ButtonType> confir = alerta.showAndWait();
+        if (confir.isPresent() && confir.get().equals(ButtonType.OK)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     @FXML
     private void switchToPersona() throws IOException {
         App.setRoot("primary");
@@ -85,6 +99,18 @@ public class SecondaryController {
         }
     }
 
+    @FXML
+    private void recargarReservas() {
+        model.recargarHabitaciones();
+        habitacionsCreacion.setItems(model.getHabitaciones());
+        tipusReservaCreacion.setItems(model.getTipoReserva());
+        habitacionsEdicion.setItems(model.getHabitaciones());
+        tipusReservaEdicion.setItems(model.getTipoReserva());
+        model.recargarCodigoReserva(textDNI.getText());
+        reservaEdicio.setItems(model.getReservas());
+        reservaEliminacio.setItems(model.getReservas());
+    }
+
     // Comprobar habitaciones durante la creacion, para ver si para esa fecha esta ocupada o no.
     @FXML
     private void crearReserva() {
@@ -97,6 +123,7 @@ public class SecondaryController {
             if (errorReserva.equals("")) {
                 alterMos("Creacion de la reserva completada", false);
                 restartCamposCreacion();
+                recargarReservas();
             } else {
                 alterMos(errorReserva, true);
             }
@@ -108,65 +135,83 @@ public class SecondaryController {
     @FXML
     private void reservaEdicionSeleccionada() {
         if (reservaEdicio.getValue() != null) {
-            ReservaEnEdicionOEliminacion = model.getReserva(Integer.parseInt(reservaEdicio.getValue().toString()));
-            dataIniciEdicion.setValue(ReservaEnEdicionOEliminacion.getData_Inici().toLocalDate());
-            dataFinalEdicion.setValue(ReservaEnEdicionOEliminacion.getData_Fi().toLocalDate());
-            tipusReservaEdicion.getSelectionModel().select(model.getIDFromObservableList(ReservaEnEdicionOEliminacion.getTipus_Reserva().toString(), model.getTipoReserva()));
-            habitacionsEdicion.getSelectionModel().select(model.getIDFromObservableList(String.valueOf(model.getNumeroHabitacion(ReservaEnEdicionOEliminacion.getID_Habitacio())), model.getHabitaciones()));
+            ReservaEnEdicion = model.getReserva(Integer.parseInt(reservaEdicio.getValue().toString()));
+            dataIniciEdicion.setValue(ReservaEnEdicion.getData_Inici().toLocalDate());
+            dataFinalEdicion.setValue(ReservaEnEdicion.getData_Fi().toLocalDate());
+            tipusReservaEdicion.getSelectionModel().select(model.getIDFromObservableList(ReservaEnEdicion.getTipus_Reserva().toString(), model.getTipoReserva()));
+            habitacionsEdicion.getSelectionModel().select(model.getIDFromObservableList(String.valueOf(model.getNumeroHabitacion(ReservaEnEdicion.getID_Habitacio())), model.getHabitaciones()));
         }
     }
 
     @FXML
     private void editarReservaSeleccionada() {
         Boolean AlgoHaCambiado = false;
-        if (!model.LocalDateToSqlDate(dataIniciEdicion.getValue()).equals(ReservaEnEdicionOEliminacion.getData_Inici())) {
+        if (!model.LocalDateToSqlDate(dataIniciEdicion.getValue()).equals(ReservaEnEdicion.getData_Inici())) {
             AlgoHaCambiado = true;
-            System.out.println("a");
         }
-        if (!model.LocalDateToSqlDate(dataFinalEdicion.getValue()).equals(ReservaEnEdicionOEliminacion.getData_Fi())) {
+        if (!model.LocalDateToSqlDate(dataFinalEdicion.getValue()).equals(ReservaEnEdicion.getData_Fi())) {
             AlgoHaCambiado = true;
-            System.out.println("b");
         }
-        if (!tipusReservaEdicion.getValue().toString().equals(ReservaEnEdicionOEliminacion.getTipus_Reserva().toString())) {
+        if (!tipusReservaEdicion.getValue().toString().equals(ReservaEnEdicion.getTipus_Reserva().toString())) {
             AlgoHaCambiado = true;
-            System.out.println("c");
         }
-        if (Integer.parseInt(habitacionsEdicion.getValue().toString()) != (model.getNumeroHabitacion(ReservaEnEdicionOEliminacion.getID_Habitacio()))) {
+        if (Integer.parseInt(habitacionsEdicion.getValue().toString()) != (model.getNumeroHabitacion(ReservaEnEdicion.getID_Habitacio()))) {
             AlgoHaCambiado = true;
-            System.out.println("d");
         }
         if (AlgoHaCambiado) {
-            System.out.println("Si");
-            // ReservaEnEdicionOEliminacion
-        } else{
-            System.out.println("No");
+            ReservaEnEdicion.setData_Inici(model.LocalDateToSqlDate(dataIniciEdicion.getValue()));
+            ReservaEnEdicion.setData_Fi(model.LocalDateToSqlDate(dataFinalEdicion.getValue()));
+            ReservaEnEdicion.setTipus_Reserva((Tipus_Reserva) tipusReservaEdicion.getValue());
+            ReservaEnEdicion.setID_Habitacio(model.getIDHabitacion(Integer.parseInt(habitacionsEdicion.getValue().toString())));
+            String errorReserva = model.modificarReserva(ReservaEnEdicion);
+            if (errorReserva.equals("")) {
+                alterMos("Se ha modificado la reserva con exito", false);
+                restartCamposEdicion();
+                ReservaEnEdicion = null;
+            } else {
+                alterMos(errorReserva, true);
+            }
+        } else {
+            alterMos("Modifique algun campo de los presentes si quiere modificar la reserva.", true);
         }
     }
 
-    ;
+    @FXML
+    private void eliminarReservaSeleccionada() {
+        if (reservaEliminacio.getValue() != null) {
+            if (confirMos("¿Esta seguro de que quiere eliminar la reserva seleccionada?")) {
+                if (model.eliminarReserva(Integer.parseInt(reservaEliminacio.getValue().toString()))) {
+                    alterMos("Se ha eliminado la reserva con exito", false);
+                    recargarReservas();
+                } else {
+                    alterMos("Algo ha fallado a la hora de eliminar la reserva", true);
+                }
+            }
+        } else {
+            alterMos("Seleccione una reserva antes de darle a eliminar.", true);
+        }
+    }
 
     @FXML
     private void restartCamposCreacion() {
-        dataIniciCreacion.setValue(null);
-        dataFinalCreacion.setValue(null);
-        habitacionsCreacion.setValue(null);
-        tipusReservaCreacion.setValue(null);
+        dataIniciCreacion.getEditor().clear();
+        dataFinalCreacion.getEditor().clear();
+        habitacionsCreacion.valueProperty().set(null);
+        tipusReservaCreacion.valueProperty().set(null);
     }
 
     @FXML
     private void restartCamposEdicion() {
-        reservaEdicio.setValue(null);
+        reservaEdicio.valueProperty().set(null);
         dataIniciEdicion.setValue(null);
         dataFinalEdicion.setValue(null);
-        habitacionsEdicion.setValue(null);
-        tipusReservaEdicion.setValue(null);
+        habitacionsEdicion.valueProperty().set(null);
+        tipusReservaEdicion.valueProperty().set(null);
     }
 
     @FXML
-    private void restartForm() throws IOException {
-        // Al cambiar de pestaña, se reinician los campos introducidos
-        Reserva.disableProperty().set(true);
-        App.setRoot("secondary");
+    private void restarCamposEliminacion() {
+        reservaEliminacio.valueProperty().set(null);
     }
 
     public void injecta(Model obj) {

@@ -88,7 +88,7 @@ public class PrimaryController {
                             if (!textTargetaCredit.getText().isEmpty()) {
                                 targetaCreditASubir = textTargetaCredit.getText();
                             } else {
-                                targetaCreditASubir = null;
+                                targetaCreditASubir = "";
                             }
                             String checkCliente = model.checkCliente(dateClient, targetaCreditASubir);
                             if (!checkCliente.equals("")) {
@@ -159,11 +159,26 @@ public class PrimaryController {
         }
 
     }
-    
+
     @FXML
-    private void restartCampos() throws IOException {
-        // Al cambiar de pestaña, se reinician los campos introducidos
-        App.setRoot("primary");
+    private void restartCampos() {
+        textNom.clear();
+        textCognom.clear();
+        textAdreça.clear();
+        textDNI.clear();
+        textData.getEditor().clear();
+        textTelefon.clear();
+        textEmail.clear();
+        isCliente.selectedProperty().set(false);
+        isEmpleado.selectedProperty().set(false);
+        dataRegistre.getEditor().clear();
+        TipusClient.valueProperty().set(null);
+        textTargetaCredit.clear();
+        dataContractacio.getEditor().clear();
+        textLugarTrabajo.clear();
+        textSalarioBruto.clear();
+        estadoLaboral.valueProperty().set(null);
+        ClientEmpleat.setVisible(false);
     }
 
     public void initialize() {
@@ -187,6 +202,9 @@ public class PrimaryController {
             ClientEmpleat.getTabs().get(1).setDisable(false);
         } else {
             ClientEmpleat.getTabs().get(1).setDisable(true);
+        }
+        if (!isEmpleado.selectedProperty().get() && !isCliente.selectedProperty().get()) {
+            ClientEmpleat.setVisible(false);
         }
     }
 

@@ -111,7 +111,7 @@ public class Model {
         if (!checkDate(date)) {
             msgError += "- Verifique que la fecha de registro del cliente sea correcta, ya que supera la fecha actual.\n";
         }
-        if (credito != null) {
+        if (!credito.equals("")) {
             if (!checkTargetaCredito(credito)) {
                 msgError += "- Verifique que su tarjeta de credito este escrito en un formato correcto. Ej (1111 1111 1111 1111 o 111111111111111)\n";
             }
@@ -255,7 +255,51 @@ public class Model {
             ReservaMensaje = e.toString();
             return ReservaMensaje;
         }
-
+    }
+    
+    public String modificarReserva(Reserva reserva) {
+        String ReservaMensaje = "";
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE RESERVA SET data_Inici = ?, data_Fi = ?, tipus_Reserva = ?, ID_Habitacio = ?  WHERE ID_Reserva = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDate(1, reserva.getData_Inici());
+            orden.setDate(2,reserva.getData_Fi());
+            orden.setString(3, reserva.getTipus_Reserva().name());
+            orden.setInt(4, reserva.getID_Habitacio());
+            orden.setInt(5, reserva.getID_Reserva());
+            orden.executeUpdate();
+            return ReservaMensaje;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            ReservaMensaje = e.toString();
+            return ReservaMensaje;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            ReservaMensaje = e.toString();
+            return ReservaMensaje;
+        }
+    }
+    
+    public boolean eliminarReserva(int ID_Reserva) {
+        boolean ReservaEliminada = true;
+        Connection conectar = new Connexio().connecta();
+        String sql = "DELETE FROM RESERVA WHERE ID_Reserva = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Reserva);
+            orden.executeUpdate();
+            return ReservaEliminada;
+        } catch (SQLException e) {
+            System.out.println(e);
+            ReservaEliminada = false;
+            return ReservaEliminada;
+        } catch (Exception e) {
+            System.out.println(e);
+            ReservaEliminada = false;
+            return ReservaEliminada;
+        }
+    
     }
 
     public Boolean altaPersona(Persona persona) {
