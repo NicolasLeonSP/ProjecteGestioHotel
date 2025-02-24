@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,6 +95,20 @@ public class Model {
         }
         if (!persona.checkEmail()) {
             msgError += "- Verifique que el email esta escrito de forma correcta.\n";
+        } else {
+            ArrayList<String> check = getEmailDocIdeCheck();
+            boolean errorYaIntroducido = false;
+            for (String string : check) {
+                while (!errorYaIntroducido) {
+                    String[] temp = string.split(",");
+                    if (temp[0].equals(persona.getEmail())) {
+                        msgError += "- El correo que ha introducido ya existe en la base de datos, porfavor introduzca otro. \n";
+                        errorYaIntroducido = true;
+
+                    }
+                }
+
+            }
         }
         String errorDNI = persona.checkDNI();
         if (!errorDNI.equals("0")) {
@@ -102,6 +117,18 @@ public class Model {
             }
             if (errorDNI.charAt(0) == '2') {
                 msgError += "- Verifique que la letra del DNI sea correcta. La letra retornada por el generador es " + errorDNI.charAt(1) + " .\n";
+            }
+        } else {
+            ArrayList<String> check = getEmailDocIdeCheck();
+            boolean errorYaIntroducido = false;
+            for (String string : check) {
+                while (!errorYaIntroducido) {
+                    String[] temp = string.split(",");
+                    if (temp[1].equals(persona.getDocument_Identitat())) {
+                        msgError += "- El DNI que ha introducido ya existe en la base de datos, porfavor introduzca otro. \n";
+                        errorYaIntroducido = true;
+                    }
+                }
             }
         }
         return msgError;
@@ -236,7 +263,7 @@ public class Model {
         String[] campoErrorPartido = msgErrorPartido[1].split("\\.");
         return campoErrorPartido[1];
     }
-    
+
     public String altaReserva(Reserva reserva) {
         String ReservaMensaje = "";
         Connection conectar = new Connexio().connecta();
@@ -262,7 +289,7 @@ public class Model {
             return ReservaMensaje;
         }
     }
-    
+
     public String modificarReserva(Reserva reserva) {
         String ReservaMensaje = "";
         Connection conectar = new Connexio().connecta();
@@ -270,7 +297,7 @@ public class Model {
         try {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setDate(1, reserva.getData_Inici());
-            orden.setDate(2,reserva.getData_Fi());
+            orden.setDate(2, reserva.getData_Fi());
             orden.setString(3, reserva.getTipus_Reserva().name());
             orden.setInt(4, reserva.getID_Habitacio());
             orden.setInt(5, reserva.getID_Reserva());
@@ -286,7 +313,7 @@ public class Model {
             return ReservaMensaje;
         }
     }
-    
+
     public boolean eliminarReserva(int ID_Reserva) {
         boolean ReservaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -305,7 +332,7 @@ public class Model {
             ReservaEliminada = false;
             return ReservaEliminada;
         }
-    
+
     }
 
     public Boolean altaPersona(Persona persona) {
@@ -446,6 +473,29 @@ public class Model {
             System.out.println(e.toString());
         }
         return ID_Habitacio;
+    }
+
+    // Conseguir solo el ID de la persona
+    public ArrayList<String> getEmailDocIdeCheck() {
+        ArrayList<String> emailYDocIde = new ArrayList<>();
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT email, document_Identitat FROM PERSONA";
+        try {
+            Statement orden = conectar.createStatement();
+            ResultSet resultados = orden.executeQuery(sql);
+            while (resultados.next()) {
+                String temp = resultados.getString(1);
+                temp += "," + resultados.getString(2);
+                emailYDocIde.add(temp);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return null;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return null;
+        }
+        return emailYDocIde;
     }
 
     // Solucionar error getReserva
