@@ -88,7 +88,7 @@ public class ClientEmpleatController {
                             if (!textTargetaCredit.getText().isEmpty()) {
                                 targetaCreditASubir = textTargetaCredit.getText();
                             } else {
-                                targetaCreditASubir = "";
+                                targetaCreditASubir = null;
                             }
                             String checkCliente = model.checkCliente(dateClient, targetaCreditASubir);
                             if (!checkCliente.equals("")) {
@@ -112,7 +112,7 @@ public class ClientEmpleatController {
                         }
                     }
                     if (check.equals("")) {
-                        Boolean personaSubida = model.altaPersona(personaASubir);
+                        Boolean personaSubida = personaASubir.altaPersona();
                         if (personaSubida) {
                             String textSubido = "Se ha creado la persona con exito \n";
                             int IDPersona = model.getIdPersona(textDNI.getText());
@@ -120,7 +120,7 @@ public class ClientEmpleatController {
                                 Client clienteASubir;
                                 clienteASubir = new Client(textNom.getText(), textCognom.getText(), textAdreça.getText(), textDNI.getText(), date, textTelefon.getText(), textEmail.getText(), dateClient, (Tipus_Client) TipusClient.getValue(), targetaCreditASubir);
                                 clienteASubir.setID_Persona(IDPersona);
-                                Boolean clienteSubido = model.altaCliente(clienteASubir);
+                                Boolean clienteSubido = clienteASubir.altaCliente();
                                 if (personaSubida) {
                                     textSubido += "Se ha creado el cliente con exito \n";
                                 }
@@ -129,7 +129,7 @@ public class ClientEmpleatController {
                                 Empleat empleadoASubir;
                                 empleadoASubir = new Empleat(textNom.getText(), textCognom.getText(), textAdreça.getText(), textDNI.getText(), date, textTelefon.getText(), textEmail.getText(), textLugarTrabajo.getText(), dateEmpleado, Integer.parseInt(textSalarioBruto.getText()), (Estat_Laboral) estadoLaboral.getValue());
                                 empleadoASubir.setID_Persona(IDPersona);
-                                Boolean empleadoSubido = model.altaEmpleado(empleadoASubir);
+                                Boolean empleadoSubido = empleadoASubir.altaEmpleado();
                                 if (empleadoSubido) {
                                     textSubido += "Se ha creado el empleado con exito \n";
                                 }

@@ -4,7 +4,10 @@
  */
 package com.mycompany.gestiohotelsprojecte.model;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 public class Empleat extends Persona {
 
@@ -52,5 +55,28 @@ public class Empleat extends Persona {
     public void setEstat_Laboral(Estat_Laboral estat_Laboral) {
         this.estat_Laboral = estat_Laboral;
     }
-
+    
+    public Boolean altaEmpleado() {
+        boolean EmpleadoSubidoABaseDeDatos = true;
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO EMPLEAT VALUES (?,?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, getID_Persona());
+            orden.setString(2, getLloc_Feina());
+            orden.setDate(3, getData_Contractacio());
+            orden.setInt(4, getSalari_Brut());
+            orden.setString(5, getEstat_Laboral().name());
+            orden.executeUpdate();
+            return EmpleadoSubidoABaseDeDatos;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            EmpleadoSubidoABaseDeDatos = false;
+            return EmpleadoSubidoABaseDeDatos;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            EmpleadoSubidoABaseDeDatos = false;
+            return EmpleadoSubidoABaseDeDatos;
+        }
+    }
 }

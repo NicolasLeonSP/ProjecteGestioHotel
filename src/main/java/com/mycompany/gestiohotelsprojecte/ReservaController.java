@@ -119,7 +119,8 @@ public class ReservaController {
             Date dataIniciTemp = model.LocalDateToSqlDate(dataIniciCreacion.getValue());
             Date dataFinalTemp = model.LocalDateToSqlDate(dataFinalCreacion.getValue());
             int ID_Habitacio = model.getIDHabitacion(Integer.parseInt(habitacionsCreacion.getValue().toString()));
-            String errorReserva = model.altaReserva(new Reserva(dataActual, dataIniciTemp, dataFinalTemp, (Tipus_Reserva) tipusReservaCreacion.getValue(), model.getIVAClient(model.getTipusClienteReserva()), 0, model.getIDClienteReserva(), ID_Habitacio));
+            Reserva reserva = new Reserva(dataActual, dataIniciTemp, dataFinalTemp, (Tipus_Reserva) tipusReservaCreacion.getValue(), model.getIVAClient(model.getTipusClienteReserva()), 0, model.getIDClienteReserva(), ID_Habitacio);
+            String errorReserva = reserva.altaReserva();
             if (errorReserva.equals("")) {
                 alterMos("Creacion de la reserva completada", false);
                 restartCamposCreacion();
@@ -170,7 +171,7 @@ public class ReservaController {
             ReservaEnEdicion.setData_Fi(model.LocalDateToSqlDate(dataFinalEdicion.getValue()));
             ReservaEnEdicion.setTipus_Reserva((Tipus_Reserva) tipusReservaEdicion.getValue());
             ReservaEnEdicion.setID_Habitacio(model.getIDHabitacion(Integer.parseInt(habitacionsEdicion.getValue().toString())));
-            String errorReserva = model.modificarReserva(ReservaEnEdicion);
+            String errorReserva = ReservaEnEdicion.modificarReserva();
             if (errorReserva.equals("")) {
                 alterMos("Se ha modificado la reserva con exito", false);
                 restartCamposEdicion();

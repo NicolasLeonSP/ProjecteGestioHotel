@@ -1,6 +1,9 @@
 package com.mycompany.gestiohotelsprojecte.model;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
@@ -36,7 +39,7 @@ public class Reserva {
     public void setID_Client(int ID_Client) {
         this.ID_Client = ID_Client;
     }
-    
+
     public int getID_Habitacio() {
         return ID_Habitacio;
     }
@@ -101,4 +104,53 @@ public class Reserva {
         this.preu_Total_Reserva = preu_Total_Reserva;
     }
 
+    public String altaReserva() {
+        String ReservaMensaje = "";
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO RESERVA (data_Reserva, data_Inici, data_Fi, tipus_Reserva, tipus_IVA, preu_Total_Reserva, ID_Client, ID_Habitacio) VALUES (?,?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDate(1, getData_Reserva());
+            orden.setDate(2, getData_Inici());
+            orden.setDate(3, getData_Fi());
+            orden.setString(4, getTipus_Reserva().name());
+            orden.setInt(5, getTipus_IVA().getPorIVA());
+            orden.setDouble(6, getPreu_Total_Reserva());
+            orden.setInt(7, getID_Client());
+            orden.setInt(8, getID_Habitacio());
+            orden.executeUpdate();
+            return ReservaMensaje;
+        } catch (SQLException e) {
+            ReservaMensaje = e.getMessage();
+            return ReservaMensaje;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            ReservaMensaje = e.getMessage();
+            return ReservaMensaje;
+        }
+    }
+
+    public String modificarReserva() {
+        String ReservaMensaje = "";
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE RESERVA SET data_Inici = ?, data_Fi = ?, tipus_Reserva = ?, ID_Habitacio = ?  WHERE ID_Reserva = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDate(1, getData_Inici());
+            orden.setDate(2, getData_Fi());
+            orden.setString(3, getTipus_Reserva().name());
+            orden.setInt(4, getID_Habitacio());
+            orden.setInt(5, getID_Reserva());
+            orden.executeUpdate();
+            return ReservaMensaje;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            ReservaMensaje = e.toString();
+            return ReservaMensaje;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            ReservaMensaje = e.toString();
+            return ReservaMensaje;
+        }
+    }
 }

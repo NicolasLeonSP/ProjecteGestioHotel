@@ -14,7 +14,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
@@ -30,6 +29,7 @@ public class Model {
     ObservableList estatLaboral = FXCollections.observableArrayList();
     ObservableList tipoReserva = FXCollections.observableArrayList();
     ObservableList habitaciones = FXCollections.observableArrayList();
+    ObservableList metodePagament = FXCollections.observableArrayList();
     ObservableList reservas = FXCollections.observableArrayList();
     private int IDClienteReserva;
     private Tipus_Client TipusClienteReserva;
@@ -47,6 +47,9 @@ public class Model {
         for (Tipus_Reserva value : Tipus_Reserva.values()) {
             tipoReserva.add(value);
         }
+        for (Metode_Pagament value : Metode_Pagament.values()) {
+            metodePagament.add(value);
+        }
     }
 
     public Tipus_Client getTipusClienteReserva() {
@@ -55,6 +58,10 @@ public class Model {
 
     public int getIDClienteReserva() {
         return IDClienteReserva;
+    }
+
+    public ObservableList getMetodePagament() {
+        return metodePagament;
     }
 
     public ObservableList getReservas() {
@@ -99,7 +106,7 @@ public class Model {
             ArrayList<String> check = getEmailDocIdeCheck();
             boolean errorYaIntroducido = false;
             for (String string : check) {
-                while (!errorYaIntroducido) {
+                if (!errorYaIntroducido) {
                     String[] temp = string.split(",");
                     if (temp[0].equals(persona.getEmail())) {
                         msgError += "- El correo que ha introducido ya existe en la base de datos, porfavor introduzca otro. \n";
@@ -122,7 +129,7 @@ public class Model {
             ArrayList<String> check = getEmailDocIdeCheck();
             boolean errorYaIntroducido = false;
             for (String string : check) {
-                while (!errorYaIntroducido) {
+                if (!errorYaIntroducido) {
                     String[] temp = string.split(",");
                     if (temp[1].equals(persona.getDocument_Identitat())) {
                         msgError += "- El DNI que ha introducido ya existe en la base de datos, porfavor introduzca otro. \n";
@@ -139,7 +146,7 @@ public class Model {
         if (!checkDate(date)) {
             msgError += "- Verifique que la fecha de registro del cliente sea correcta, ya que supera la fecha actual.\n";
         }
-        if (!credito.equals("")) {
+        if (credito != null) {
             if (!checkTargetaCredito(credito)) {
                 msgError += "- Verifique que su tarjeta de credito este escrito en un formato correcto. Ej (1111 1111 1111 1111 o 111111111111111)\n";
             }
@@ -246,6 +253,21 @@ public class Model {
                 return null;
         }
     }
+    
+     public Metode_Pagament getMetodePagamentFromString(String tipo) {
+        switch (tipo) {
+            case "Targeta":
+                return Metode_Pagament.Targeta;
+            case "Efectiu":
+                return Metode_Pagament.Efectiu;
+            case "Transferencia_Bancaria":
+                return Metode_Pagament.Transferencia_Bancaria;
+            case "Transferencia_Paypal":
+                return Metode_Pagament.Transferencia_Paypal;
+            default:
+                return null;
+        }
+    }
 
     public int getIDFromObservableList(String buscar, ObservableList ol) {
         int ID_Conseguida = -1;
@@ -262,56 +284,6 @@ public class Model {
         String[] msgErrorPartido = msgError.split("`");
         String[] campoErrorPartido = msgErrorPartido[1].split("\\.");
         return campoErrorPartido[1];
-    }
-
-    public String altaReserva(Reserva reserva) {
-        String ReservaMensaje = "";
-        Connection conectar = new Connexio().connecta();
-        String sql = "INSERT INTO RESERVA (data_Reserva, data_Inici, data_Fi, tipus_Reserva, tipus_IVA, preu_Total_Reserva, ID_Client, ID_Habitacio) VALUES (?,?,?,?,?,?,?,?)";
-        try {
-            PreparedStatement orden = conectar.prepareStatement(sql);
-            orden.setDate(1, reserva.getData_Reserva());
-            orden.setDate(2, reserva.getData_Inici());
-            orden.setDate(3, reserva.getData_Fi());
-            orden.setString(4, reserva.getTipus_Reserva().name());
-            orden.setInt(5, reserva.getTipus_IVA().getPorIVA());
-            orden.setDouble(6, reserva.getPreu_Total_Reserva());
-            orden.setInt(7, reserva.getID_Client());
-            orden.setInt(8, reserva.getID_Habitacio());
-            orden.executeUpdate();
-            return ReservaMensaje;
-        } catch (SQLException e) {
-            ReservaMensaje = e.getMessage();
-            return ReservaMensaje;
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            ReservaMensaje = e.getMessage();
-            return ReservaMensaje;
-        }
-    }
-
-    public String modificarReserva(Reserva reserva) {
-        String ReservaMensaje = "";
-        Connection conectar = new Connexio().connecta();
-        String sql = "UPDATE RESERVA SET data_Inici = ?, data_Fi = ?, tipus_Reserva = ?, ID_Habitacio = ?  WHERE ID_Reserva = ?";
-        try {
-            PreparedStatement orden = conectar.prepareStatement(sql);
-            orden.setDate(1, reserva.getData_Inici());
-            orden.setDate(2, reserva.getData_Fi());
-            orden.setString(3, reserva.getTipus_Reserva().name());
-            orden.setInt(4, reserva.getID_Habitacio());
-            orden.setInt(5, reserva.getID_Reserva());
-            orden.executeUpdate();
-            return ReservaMensaje;
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-            ReservaMensaje = e.toString();
-            return ReservaMensaje;
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            ReservaMensaje = e.toString();
-            return ReservaMensaje;
-        }
     }
 
     public boolean eliminarReserva(int ID_Reserva) {
@@ -332,82 +304,28 @@ public class Model {
             ReservaEliminada = false;
             return ReservaEliminada;
         }
-
     }
-
-    public Boolean altaPersona(Persona persona) {
-        boolean PersonaSubidaBaseDeDatos = true;
+    
+    public boolean eliminarFactura(int ID_Factura) {
+        boolean facturaEliminada = true;
         Connection conectar = new Connexio().connecta();
-        String sql = "INSERT INTO PERSONA (Nom, Cognom, Adreça, Document_Identitat, Data_Naixement, Telefon, Email) VALUES (?,?,?,?,?,?,?)";
+        String sql = "DELETE FROM FACTURA WHERE ID_Factura = ?";
         try {
             PreparedStatement orden = conectar.prepareStatement(sql);
-            orden.setString(1, persona.getNom());
-            orden.setString(2, persona.getCognom());
-            orden.setString(3, persona.getAdreça());
-            orden.setString(4, persona.getDocument_Identitat());
-            orden.setDate(5, persona.getData_Naixement());
-            orden.setString(6, persona.getTelefon());
-            orden.setString(7, persona.getEmail());
+            orden.setInt(1, ID_Factura);
             orden.executeUpdate();
-            return PersonaSubidaBaseDeDatos;
+            return facturaEliminada;
         } catch (SQLException e) {
             System.out.println(e.toString());
-            PersonaSubidaBaseDeDatos = false;
-            return PersonaSubidaBaseDeDatos;
+            facturaEliminada = false;
+            return facturaEliminada;
         } catch (Exception e) {
             System.out.println(e.toString());
-            PersonaSubidaBaseDeDatos = false;
-            return PersonaSubidaBaseDeDatos;
+            facturaEliminada = false;
+            return facturaEliminada;
         }
     }
-
-    public Boolean altaEmpleado(Empleat empleado) {
-        boolean EmpleadoSubidoABaseDeDatos = true;
-        Connection conectar = new Connexio().connecta();
-        String sql = "INSERT INTO EMPLEAT VALUES (?,?,?,?,?)";
-        try {
-            PreparedStatement orden = conectar.prepareStatement(sql);
-            orden.setInt(1, empleado.getID_Persona());
-            orden.setString(2, empleado.getLloc_Feina());
-            orden.setDate(3, empleado.getData_Contractacio());
-            orden.setInt(4, empleado.getSalari_Brut());
-            orden.setString(5, empleado.getEstat_Laboral().name());
-            orden.executeUpdate();
-            return EmpleadoSubidoABaseDeDatos;
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-            EmpleadoSubidoABaseDeDatos = false;
-            return EmpleadoSubidoABaseDeDatos;
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            EmpleadoSubidoABaseDeDatos = false;
-            return EmpleadoSubidoABaseDeDatos;
-        }
-    }
-
-    public Boolean altaCliente(Client cliente) {
-        boolean ClienteSubidoABaseDeDatos = true;
-        Connection conectar = new Connexio().connecta();
-        String sql = "INSERT INTO CLIENT VALUES (?,?,?,?)";
-        try {
-            PreparedStatement orden = conectar.prepareStatement(sql);
-            orden.setInt(1, cliente.getID_Persona());
-            orden.setDate(2, cliente.getData_Registre());
-            orden.setString(3, cliente.getTipus_Client().name());
-            orden.setString(4, cliente.getTargeta_Credit().replace(" ", ""));
-            orden.executeUpdate();
-            return ClienteSubidoABaseDeDatos;
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-            ClienteSubidoABaseDeDatos = false;
-            return ClienteSubidoABaseDeDatos;
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            ClienteSubidoABaseDeDatos = false;
-            return ClienteSubidoABaseDeDatos;
-        }
-    }
-
+    
     // Conseguir solo el ID de la persona
     public int getIdPersona(String document_Identitat) {
         int ID_Persona = 0;
@@ -558,6 +476,26 @@ public class Model {
         return Num_Habitacion;
     }
 
+    public Factura getFactura(int ID_Reserva){
+        Factura factura = null;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT * FROM FACTURA WHERE ID_Reserva = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Reserva);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                factura = new Factura(resultados.getDate(2), getMetodePagamentFromString(resultados.getString(3)), resultados.getDouble(4), resultados.getDouble(5), resultados.getDouble(6), resultados.getInt(7));
+                factura.setID_Factura(resultados.getInt(1));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return factura;
+    
+    }
     public void recargarHabitaciones() {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT Numero_Habitacio FROM HABITACIO";

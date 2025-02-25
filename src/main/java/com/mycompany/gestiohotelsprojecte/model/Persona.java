@@ -1,6 +1,9 @@
 package com.mycompany.gestiohotelsprojecte.model;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -134,6 +137,32 @@ public class Persona {
             } else {
                 return "2" + letra;
             }
+        }
+    }
+    
+    public Boolean altaPersona() {
+        boolean PersonaSubidaBaseDeDatos = true;
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO PERSONA (Nom, Cognom, Adreça, Document_Identitat, Data_Naixement, Telefon, Email) VALUES (?,?,?,?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, getNom());
+            orden.setString(2, getCognom());
+            orden.setString(3, getAdreça());
+            orden.setString(4, getDocument_Identitat());
+            orden.setDate(5, getData_Naixement());
+            orden.setString(6, getTelefon());
+            orden.setString(7, getEmail());
+            orden.executeUpdate();
+            return PersonaSubidaBaseDeDatos;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            PersonaSubidaBaseDeDatos = false;
+            return PersonaSubidaBaseDeDatos;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            PersonaSubidaBaseDeDatos = false;
+            return PersonaSubidaBaseDeDatos;
         }
     }
 }

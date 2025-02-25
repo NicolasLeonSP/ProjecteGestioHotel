@@ -10,8 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="514.0" prefWidth="593.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.mycompany.gestiohotelsprojecte.FacturaController">
+<AnchorPane id="AnchorPane" prefHeight="514.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.FacturaController">
    <children>
       <Text layoutX="7.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestio de factures">
          <font>
@@ -24,7 +23,7 @@
                <children>
                   <AnchorPane layoutY="36.0" minHeight="0.0" minWidth="0.0" prefHeight="98.0" prefWidth="598.0">
                      <children>
-                        <ComboBox fx:id="reservaAFacturar" disable="true" layoutX="322.0" layoutY="14.0" prefHeight="24.0" prefWidth="202.0" />
+                        <ComboBox fx:id="reservaAFacturar" disable="true" layoutX="322.0" layoutY="14.0" onAction="#reservaSeleccionada" prefHeight="24.0" prefWidth="202.0" />
                         <TextField fx:id="clienteFacturar" layoutX="83.0" layoutY="14.0" />
                         <Text layoutX="17.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
                         <Button layoutX="16.0" layoutY="60.0" mnemonicParsing="false" onAction="#buscarPersona" text="Buscar" />
@@ -42,32 +41,32 @@
                   </Text>
                </children>
             </AnchorPane>
-            <AnchorPane fx:id="Factura" disable="true" minHeight="0.0" minWidth="0.0" prefHeight="297.0" prefWidth="598.0">
+            <AnchorPane fx:id="FacturaAnchor" minHeight="0.0" minWidth="0.0" prefHeight="297.0" prefWidth="598.0">
                <children>
-                  <TabPane layoutX="3.0" prefHeight="297.0" prefWidth="593.0" tabClosingPolicy="UNAVAILABLE">
+                  <TabPane fx:id="FacturaTabPane" layoutX="3.0" prefHeight="297.0" prefWidth="593.0" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
-                        <Tab text="Generar">
+                        <Tab fx:id="generar" disable="true" text="Generar">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <ComboBox fx:id="metodePagamentSeleccio" layoutX="206.0" layoutY="89.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="metodePagamentGenerar" layoutX="206.0" layoutY="89.0" prefWidth="150.0" />
                                     <Text layoutX="206.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Metode de pagament" />
                                     <Button layoutX="206.0" layoutY="132.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="151.0" text="Generar" />
                                  </children>
                               </AnchorPane>
                            </content>
                         </Tab>
-                        <Tab fx:id="verFactura" text="Ver factura">
+                        <Tab fx:id="verFactura" disable="true" text="Ver factura">
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
                                     <Button layoutX="315.0" layoutY="202.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="146.0" style="-fx-background-color: red;" text="Eliminar" textFill="WHITE" />
-                                    <ComboBox fx:id="metodePagamentSeleccio1" layoutX="215.0" layoutY="70.0" prefWidth="150.0" />
+                                    <ComboBox fx:id="metodePagamentVerFactura" layoutX="215.0" layoutY="70.0" prefWidth="150.0" />
                                     <Text layoutX="220.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Metode de pagament" />
                                     <Button layoutX="133.0" layoutY="202.0" mnemonicParsing="false" prefHeight="24.0" prefWidth="151.0" text="Editar" />
-                                    <TextField disable="true" layoutX="42.0" layoutY="131.0" prefHeight="24.0" prefWidth="113.0" />
-                                    <TextField disable="true" layoutX="230.0" layoutY="131.0" prefHeight="24.0" prefWidth="120.0" />
-                                    <TextField disable="true" layoutX="407.0" layoutY="131.0" prefHeight="24.0" prefWidth="120.0" />
+                                    <TextField fx:id="baseImposable" disable="true" layoutX="42.0" layoutY="131.0" prefHeight="24.0" prefWidth="113.0" />
+                                    <TextField fx:id="IVA" disable="true" layoutX="230.0" layoutY="131.0" prefHeight="24.0" prefWidth="120.0" />
+                                    <TextField fx:id="preuTotal" disable="true" layoutX="407.0" layoutY="131.0" prefHeight="24.0" prefWidth="120.0" />
                                     <Text layoutX="42.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Base imposable" />
                                     <Text layoutX="230.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IVA" />
                                     <Text layoutX="407.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preu total" />
