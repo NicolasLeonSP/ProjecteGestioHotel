@@ -24,6 +24,7 @@ public class MenuBarController {
     private static FacturaController controlador3;
     private static CrearTascaController controlador4;
     private static ListarTasquesController controlador5;
+    private static ModificarEstatTascaController controlador6;
 
     @FXML
     private void switchFxml(String nomFxml) throws IOException {
@@ -45,6 +46,9 @@ public class MenuBarController {
             }
             if (controllerType == ListarTasquesController.class) {
                 return controlador5;
+            }
+            if (controllerType == ModificarEstatTascaController.class) {
+                return controlador6;
             }
             return null;
         });
@@ -74,8 +78,13 @@ public class MenuBarController {
     }
     
     @FXML
-    private void cambiarListarTasques() throws IOException {
+    public void cambiarListarTasques() throws IOException {
         switchFxml("ListarTasques.fxml");
+    }
+    
+    @FXML
+    public void cambiarModificarEstatTasca() throws IOException {
+        switchFxml("ModificarEstatTasca.fxml");
     }
 
     @FXML
@@ -94,11 +103,13 @@ public class MenuBarController {
         controlador3 = new FacturaController();
         controlador4 = new CrearTascaController();
         controlador5 = new ListarTasquesController();
+        controlador6 = new ModificarEstatTascaController();
         controlador.injecta(model);
         controlador2.injecta(model);
         controlador3.injecta(model);
         controlador4.injecta(model);
-        controlador5.injecta(model);
+        controlador5.injecta(model, this);
+        controlador6.injecta(model, this);
         model.initModel();
     }
 

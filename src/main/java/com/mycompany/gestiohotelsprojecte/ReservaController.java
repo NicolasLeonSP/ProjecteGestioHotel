@@ -82,7 +82,7 @@ public class ReservaController {
     private void buscarPersona() {
         if (!textDNI.getText().isEmpty()) {
             if (model.getClientReserva(textDNI.getText()) != -1) {
-                alterMos("Se ha encontrado el cliente con exito.", false);
+                alterMos("El client s'ha trobat amb èxit.", false);
                 Reserva.disableProperty().set(false);
                 model.recargarHabitaciones();
                 habitacionsCreacion.setItems(model.getHabitaciones());
@@ -93,7 +93,7 @@ public class ReservaController {
                 reservaEdicio.setItems(model.getReservas());
                 reservaEliminacio.setItems(model.getReservas());
             } else {
-                alterMos("Verifique si ha introducido el DNI bien", true);
+                alterMos("Verifiqueu si heu introduït el DNI bé.", true);
             }
         }
     }
@@ -121,21 +121,21 @@ public class ReservaController {
             Reserva reserva = new Reserva(dataActual, dataIniciTemp, dataFinalTemp, (Tipus_Reserva) tipusReservaCreacion.getValue(), model.getIVAClient(model.getTipusClienteReserva()), 0, model.getIDClienteReserva(), ID_Habitacio);
             String errorReserva = reserva.altaReserva();
             if (errorReserva.equals("")) {
-                alterMos("Creacion de la reserva completada", false);
+                alterMos("Creació de la reserva completada.", false);
                 restartCamposCreacion();
                 recargarReservas();
             } else {
                 String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
                 if (campoError.equals("data_Inici")) {
-                    alterMos("Verifique que la fecha de inicio este bien puesta. Tiene que ser superior a la actual y menor a la fecha final", true);
+                    alterMos("Verifiqueu que la data d'inici estigui ben posada. Ha de ser superior a l'actual i menor a la data final.", true);
                 } else if (campoError.equals("data_Fi")) {
-                    alterMos("Verifique que la fecha final este bien puesta. Debe de ser mayor a la fecha de inicio.", true);
+                    alterMos("Verifiqueu que la data final estigui ben posada. Deu ser més gran a la data d'inici.", true);
                 } else {
                     alterMos(campoError, true);
                 }
             }
         } else {
-            alterMos("Verifique que todos los campos han sido rellenados", true);
+            alterMos("Verifiqueu que tots els camps han estat emplenats", true);
         }
     }
 
@@ -172,37 +172,37 @@ public class ReservaController {
             ReservaEnEdicion.setID_Habitacio(model.getIDHabitacion(Integer.parseInt(habitacionsEdicion.getValue().toString())));
             String errorReserva = ReservaEnEdicion.modificarReserva();
             if (errorReserva.equals("")) {
-                alterMos("Se ha modificado la reserva con exito", false);
+                alterMos("S'ha modificat la reserva amb èxit", false);
                 restartCamposEdicion();
                 ReservaEnEdicion = null;
             } else {
                 String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
                 if (campoError.equals("data_Inici")) {
-                    alterMos("Verifique que la fecha de inicio este bien puesta. Tiene que ser superior a la actual y menor a la fecha final", true);
+                    alterMos("Verifiqueu que la data d'inici estigui ben posada. Ha de ser superior a l'actual i menor a la data final", true);
                 } else if (campoError.equals("data_Fi")) {
-                    alterMos("Verifique que la fecha final este bien puesta. Debe de ser mayor a la fecha de inicio.", true);
+                    alterMos("Verifiqueu que la data final estigui ben posada. Deu ser més gran a la data d'inici.", true);
                 } else {
                     alterMos(campoError, true);
                 }
             }
         } else {
-            alterMos("Modifique algun campo de los presentes si quiere modificar la reserva.", true);
+            alterMos("Modifiqueu algun camp dels presents si voleu modificar la reserva.", true);
         }
     }
 
     @FXML
     private void eliminarReservaSeleccionada() {
         if (reservaEliminacio.getValue() != null) {
-            if (confirMos("¿Esta seguro de que quiere eliminar la reserva seleccionada?")) {
+            if (confirMos("Esteu segur que voleu eliminar la reserva seleccionada?")) {
                 if (model.eliminarReserva(Integer.parseInt(reservaEliminacio.getValue().toString()))) {
-                    alterMos("Se ha eliminado la reserva con exito", false);
+                    alterMos("S'ha eliminat la reserva amb èxit.", false);
                     recargarReservas();
                 } else {
-                    alterMos("Algo ha fallado a la hora de eliminar la reserva", true);
+                    alterMos("Alguna cosa ha fallat a l'hora d'eliminar la reserva.", true);
                 }
             }
         } else {
-            alterMos("Seleccione una reserva antes de darle a eliminar.", true);
+            alterMos("Seleccioneu una reserva abans de suprimir-la.", true);
         }
     }
 

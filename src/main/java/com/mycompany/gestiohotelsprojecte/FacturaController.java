@@ -75,13 +75,13 @@ public class FacturaController {
     private void buscarPersona() {
         if (!clienteFacturar.getText().isEmpty()) {
             if (model.getClientReserva(clienteFacturar.getText()) != 0) {
-                alterMos("Se ha encontrado el cliente con exito.", false);
+                alterMos("El client s'ha trobat amb èxit.", false);
                 reservaAFacturar.disableProperty().set(false);
                 model.recargarCodigoReserva(clienteFacturar.getText());
                 reservaAFacturar.setItems(model.getReservas());
                 resetFactura();
             } else {
-                alterMos("Verifique si ha introducido el DNI bien", true);
+                alterMos("Verifiqueu si heu introduït el DNI bé.", true);
             }
         } else {
             reservaAFacturar.disableProperty().set(true);
@@ -115,14 +115,14 @@ public class FacturaController {
 
     @FXML
     private void eliminarFactura() {
-        if (confirMos("¿Esta seguro de que quiere eliminar la reserva seleccionada?")) {
+        if (confirMos("Esteu segur que voleu eliminar la reserva seleccionada?")) {
             if (model.eliminarFactura(FacturaReserva.getID_Factura())) {
-                alterMos("Se ha eliminado la reserva con exito", false);
+                alterMos("S'ha eliminat la reserva amb èxit", false);
                 model.actualizarReserva(Integer.parseInt(reservaAFacturar.getValue().toString()), 0);
                 resetFactura();
                 reservaSeleccionada();
             } else {
-                alterMos("Algo ha fallado a la hora de eliminar la reserva", true);
+                alterMos("Alguna cosa ha fallat a l'hora d'eliminar la reserva", true);
             }
         }
     }
@@ -139,12 +139,12 @@ public class FacturaController {
                         resetFactura();
                         model.actualizarReserva(Integer.parseInt(reservaAFacturar.getValue().toString()), calculosFactura[2]);
                         reservaSeleccionada();
-                        alterMos("Se ha creado la factura con exito.", false);
+                        alterMos("S'ha creat la factura amb èxit.", false);
                     } else {
-                        alterMos("Algo ha fallado en la creacion de la factura.", false);
+                        alterMos("Alguna cosa ha fallat en la creació de la factura.", false);
                     }
                 } else {
-                    alterMos("Ese cliente no tiene una tarjeta asociada, elija otro metodo de pago", false);
+                    alterMos("Aquest client no té una targeta associada, esculli un altre mètode de pagament.", true);
                 }
             } else {
                 double[] calculosFactura = model.calcularFactura(ID_Reserva);
@@ -153,9 +153,9 @@ public class FacturaController {
                     resetFactura();
                     model.actualizarReserva(Integer.parseInt(reservaAFacturar.getValue().toString()), calculosFactura[2]);
                     reservaSeleccionada();
-                    alterMos("Se ha creado la factura con exito.", false);
+                    alterMos("S'ha creat la factura amb èxit.", false);
                 } else {
-                    alterMos("Algo ha fallado en la creacion de la factura.", false);
+                    alterMos("Alguna cosa ha fallat en la creació de la factura.", false);
                 }
 
             }
@@ -170,21 +170,21 @@ public class FacturaController {
                 if (FacturaReserva.checkClienteTarjetaCredito()) {
                     FacturaReserva.setMetode_Pagament(Metode_Pagament.Targeta);
                     if (FacturaReserva.editarFactura()) {
-                        alterMos("Modificacion hecha con exito", false);
+                        alterMos("Modificació feta amb èxit.", false);
 
                     } else {
-                        alterMos("Algo ha fallado en la modificacion de la factura", true);
+                        alterMos("Alguna cosa ha fallat en la modificació de la factura.", true);
                     }
                 } else {
-                    alterMos("Ese cliente no tiene tarjeta, cambielo a otro metodo de pago de los disponibles", true);
+                    alterMos("Aquest client no té targeta, canvieu-lo a un altre mètode de pagament dels disponibles.", true);
                 }
             } else {
                 FacturaReserva.setMetode_Pagament(model.getMetodePagamentFromString(metodePagamentVerFactura.getValue().toString()));
                 if (FacturaReserva.editarFactura()) {
-                    alterMos("Modificacion hecha con exito", false);
+                    alterMos("Modificació feta amb èxit.", false);
 
                 } else {
-                    alterMos("Algo ha fallado en la modificacion de la factura", true);
+                    alterMos("Alguna cosa ha fallat en la modificació de la factura.", true);
                 }
             }
         }

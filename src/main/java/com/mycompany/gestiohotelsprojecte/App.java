@@ -12,7 +12,7 @@ import java.io.IOException;
  * JavaFX App
  */
 public class App extends Application {
-
+    
     private static Scene scene;
     private Model model;
     private static MenuBarController controladormenu;

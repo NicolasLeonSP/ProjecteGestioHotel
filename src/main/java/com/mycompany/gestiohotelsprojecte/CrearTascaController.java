@@ -95,15 +95,16 @@ public class CrearTascaController {
                     if (!model.checkDateIsBefore(date)) {
                         Tasca tasca = new Tasca(descripcioCreacio.getText(), model.LocalDateToSqlDate(LocalDate.now()), date, Estat.No_Iniciada);
                         if (tasca.altaTasca()) {
-                            alterMos("Se ha creado la tarea satisfactoriamente", false);
+                            alterMos("La tasca s'ha creat satisfactòriament.", false);
+                            restartCreacioTasca();
                         } else {
-                            alterMos("Algo ha fallado a la hora de subir la tarea", true);
+                            alterMos("Alguna cosa ha fallat a l'hora de pujar la tasca.", true);
                         }
                     } else {
-                        alterMos("La fecha que se introduce debe ser superior a la actual.", true);
+                        alterMos("La data que introduïu ha de ser superior a l'actual.", true);
                     }
                 } else {
-                    alterMos("Rellene todos los campos antes de aceptar", true);
+                    alterMos("Ompliu tots els camps abans d'acceptar.", true);
                 }
                 break;
             case 1:
@@ -117,22 +118,22 @@ public class CrearTascaController {
                                 int ID_Tasca = model.getIDTasca(tasca.getData_Creacio());
                                 Realitza realitza = new Realitza(ID_Tasca, ID_Empleat, Estat.No_Iniciada, model.LocalDateToSqlDate(LocalDate.now()));
                                 if (realitza.altaRealitza()) {
-                                    alterMos("Se ha creado la tarea y asignado al empleado satisfactoriamente", false);
+                                    alterMos("S'ha creat la tasca i s'ha assignat a l'empleat satisfactòriament.", false);
+                                    restartCreacioTascaEmpleat();
                                 } else {
-                                    alterMos("Algo ha fallado a la hora de asignar el empleado con la tarea", true);
+                                    alterMos("Alguna cosa ha fallat a l'hora d'assignar l'empleat amb la tasca.", true);
                                 }
                             } else {
-                                alterMos("Algo ha fallado a la hora de subir la tarea", true);
+                                alterMos("Alguna cosa ha fallat a l'hora de pujar la tasca.", true);
                             }
                         } else {
-                            alterMos("La fecha que se introduce debe ser superior a la actual.", true);
+                            alterMos("La data que s'introdueix ha de ser superior a l'actual.", true);
                         }
                     } else {
-                        alterMos("Verifique que ha escrito el DNI de forma correcta", true);
+                        alterMos("Verifiqueu que heu escrit el DNI correctament.", true);
                     }
-
                 } else {
-                    alterMos("Rellene todos los campos antes de aceptar", true);
+                    alterMos("Ompliu tots els camps abans d'acceptar.", true);
                 }
                 break;
             case 2:
@@ -143,18 +144,19 @@ public class CrearTascaController {
                         if (!model.checkIfRealitzaAlrExists(ID_Tasca, ID_Empleat)) {
                             Realitza realitza = new Realitza(ID_Tasca, ID_Empleat, Estat.No_Iniciada, model.LocalDateToSqlDate(LocalDate.now()));
                             if (realitza.altaRealitza()) {
-                                alterMos("Se ha asignado la tarea al empleado satisfactoriamente", false);
+                                alterMos("S'ha assignat la tasca a l'empleat satisfactòriament.", false);
+                                restartAsignarTasca();
                             } else {
-                                alterMos("Algo ha fallado a la hora de asignar el empleado con la tarea", true);
+                                alterMos("Alguna cosa ha fallat a l'hora d'assignar l'empleat amb la tasca.", true);
                             }
                         } else {
-                            alterMos("Ese empleado ya ha sido asignado en esa tarea", true);
+                            alterMos("Aquest empleat ja ha estat assignat en aquesta tasca.", true);
                         }
                     } else {
-                        alterMos("Verifique que ha escrito el DNI de forma correcta", true);
+                        alterMos("Verifiqueu que heu escrit el DNI correctament.", true);
                     }
                 } else {
-                    alterMos("Rellene todos los campos antes de aceptar", true);
+                    alterMos("Ompliu tots els camps abans d'acceptar.", true);
                 }
                 break;
             default:

@@ -6,9 +6,7 @@ import com.mycompany.gestiohotelsprojecte.model.Estat_Laboral;
 import com.mycompany.gestiohotelsprojecte.model.Model;
 import com.mycompany.gestiohotelsprojecte.model.Persona;
 import com.mycompany.gestiohotelsprojecte.model.Tipus_Client;
-import java.io.IOException;
 import java.sql.Date;
-import java.time.ZoneId;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
@@ -70,6 +68,7 @@ public class ClientEmpleatController {
     }
 
     @FXML
+    // Funcion para crear una persona, cliente y empleado.
     private void crearPersona() {
         if (!textNom.getText().isEmpty() && !textCognom.getText().isEmpty() && !textAdreça.getText().isEmpty() && !textDNI.getText().isEmpty() && !textTelefon.getText().isEmpty() && !textEmail.getText().isEmpty() && (isCliente.isSelected() || isEmpleado.isSelected())) {
             try {
@@ -95,7 +94,7 @@ public class ClientEmpleatController {
                                 check += checkCliente;
                             }
                         } else {
-                            check += "- Rellene todos los campos de cliente antes de continuar.\n";
+                            check += "- Ompliu tots els camps de client abans de continuar.\n";
                         }
                     }
                     // Check Empleado
@@ -108,13 +107,13 @@ public class ClientEmpleatController {
                                 check += checkEmpleado;
                             }
                         } else {
-                            check += "- Rellene todos los campos de empleado antes de continuar.\n";
+                            check += "- Ompliu tots els camps d'empleat abans de continuar.\n";
                         }
                     }
                     if (check.equals("")) {
                         Boolean personaSubida = personaASubir.altaPersona();
                         if (personaSubida) {
-                            String textSubido = "Se ha creado la persona con exito \n";
+                            String textSubido = "S'ha creat la persona amb èxit. \n";
                             int IDPersona = model.getIdPersona(textDNI.getText());
                             if (isCliente.isSelected()) {
                                 Client clienteASubir;
@@ -122,7 +121,7 @@ public class ClientEmpleatController {
                                 clienteASubir.setID_Persona(IDPersona);
                                 Boolean clienteSubido = clienteASubir.altaCliente();
                                 if (personaSubida) {
-                                    textSubido += "Se ha creado el cliente con exito \n";
+                                    textSubido += "El client s'ha creat amb èxit. \n";
                                 }
                             }
                             if (isEmpleado.isSelected()) {
@@ -131,13 +130,13 @@ public class ClientEmpleatController {
                                 empleadoASubir.setID_Persona(IDPersona);
                                 Boolean empleadoSubido = empleadoASubir.altaEmpleado();
                                 if (empleadoSubido) {
-                                    textSubido += "Se ha creado el empleado con exito \n";
+                                    textSubido += "L'empleat s'ha creat amb èxit. \n";
                                 }
                             }
                             alterMos(textSubido, false);
                             restartCampos();
                         } else {
-                            alterMos("Error. El documento de identitad dado esta en uso, o algo ha fallado en el proceso de subida.", true);
+                            alterMos("Error. El document d'identitat que s'ha donat en ús, o alguna cosa ha fallat en el procés de pujada.", true);
                         }
 
                     } else {
@@ -148,14 +147,14 @@ public class ClientEmpleatController {
                 }
             } catch (NullPointerException e) {
                 System.out.println(e);
-                alterMos("Error fatal, contacte con el administrador de la aplicacion.", true);
+                alterMos("Error fatal, contacteu amb l'administrador de l'aplicació.", true);
             } catch (Exception e) {
                 System.out.println(e);
-                alterMos("Verifique que todas las fechas necesarias han sido seleccionadas antes de continuar.", true);
+                alterMos("Verifiqueu que totes les dates necessàries han estat seleccionades abans de continuar.", true);
             }
 
         } else {
-            alterMos("Rellene todos los campos antes de seguir.", true);
+            alterMos("Ompliu tots els camps abans de seguir.", true);
         }
 
     }

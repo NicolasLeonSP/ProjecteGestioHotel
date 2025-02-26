@@ -32,9 +32,11 @@ public class Model {
     ObservableList habitaciones = FXCollections.observableArrayList();
     ObservableList metodePagament = FXCollections.observableArrayList();
     ObservableList reservas = FXCollections.observableArrayList();
+    ObservableList estados = FXCollections.observableArrayList();
     ObservableList tareas = FXCollections.observableArrayList();
     ObservableList tareasAvanzadas = FXCollections.observableArrayList();
     ObservableList empleadosTarea = FXCollections.observableArrayList();
+    private String IDTascaORealitzaSeleccionada;
     private int IDClienteReserva;
     private Tipus_Client TipusClienteReserva;
 
@@ -54,6 +56,17 @@ public class Model {
         for (Metode_Pagament value : Metode_Pagament.values()) {
             metodePagament.add(value);
         }
+        for (Estat value : Estat.values()) {
+            estados.add(value);
+        }
+    }
+
+    public String getIDTascaORealitzaSeleccionada() {
+        return IDTascaORealitzaSeleccionada;
+    }
+
+    public void setIDTascaORealitzaSeleccionada(String IDTascaORealitzaSeleccionada) {
+        this.IDTascaORealitzaSeleccionada = IDTascaORealitzaSeleccionada;
     }
 
     public ObservableList getTareas() {
@@ -64,10 +77,14 @@ public class Model {
         return tareasAvanzadas;
     }
 
+    public ObservableList getEstados() {
+        return estados;
+    }
+
     public ObservableList getEmpleadosTarea() {
         return empleadosTarea;
     }
-    
+
     public Tipus_Client getTipusClienteReserva() {
         return TipusClienteReserva;
     }
@@ -111,13 +128,13 @@ public class Model {
     public String checkPersona(Persona persona) {
         String msgError = "";
         if (!checkDateIsBefore(persona.getData_Naixement())) {
-            msgError += "- Verifique que la fecha de nacimiento sea correcta, ya que supera la fecha actual.\n";
+            msgError += "- Verifiqueu que la data de naixement sigui correcta, ja que supera la data actual.\n";
         }
         if (!persona.checkTelefono()) {
-            msgError += "- Verifique que el telefono este escrito de forma correcta.\n";
+            msgError += "- Verifiqueu que el telèfon estigui escrit correctament.\n";
         }
         if (!persona.checkEmail()) {
-            msgError += "- Verifique que el email esta escrito de forma correcta.\n";
+            msgError += "- Verifiqueu que el correu electrònic està escrit de forma correcta.\n";
         } else {
             ArrayList<String> check = getEmailDocIdeCheck();
             boolean errorYaIntroducido = false;
@@ -125,7 +142,7 @@ public class Model {
                 if (!errorYaIntroducido) {
                     String[] temp = string.split(",");
                     if (temp[0].equals(persona.getEmail())) {
-                        msgError += "- El correo que ha introducido ya existe en la base de datos, porfavor introduzca otro. \n";
+                        msgError += "- El correu que heu introduït ja existeix a la base de dades, si us plau introduïu un altre.\n";
                         errorYaIntroducido = true;
 
                     }
@@ -136,10 +153,10 @@ public class Model {
         String errorDNI = persona.checkDNI();
         if (!errorDNI.equals("0")) {
             if (errorDNI.equals("1")) {
-                msgError += "- Verifique que el DNI contiene 9 caracteres, siendo 8 numeros y una letra.\n";
+                msgError += "- Verifiqueu que el DNI conté 9 caràcters, sent 8 números i una lletra.\n";
             }
             if (errorDNI.charAt(0) == '2') {
-                msgError += "- Verifique que la letra del DNI sea correcta. La letra retornada por el generador es " + errorDNI.charAt(1) + " .\n";
+                msgError += "- Verifiqueu que la lletra del DNI sigui correcta. La lletra retornada pel generador és " + errorDNI.charAt(1) + " .\n";
             }
         } else {
             ArrayList<String> check = getEmailDocIdeCheck();
@@ -148,7 +165,7 @@ public class Model {
                 if (!errorYaIntroducido) {
                     String[] temp = string.split(",");
                     if (temp[1].equals(persona.getDocument_Identitat())) {
-                        msgError += "- El DNI que ha introducido ya existe en la base de datos, porfavor introduzca otro. \n";
+                        msgError += "- El DNI que ha introduït ja existeix a la base de dades, si us plau introduïu-ne un altre. \n";
                         errorYaIntroducido = true;
                     }
                 }
@@ -160,11 +177,11 @@ public class Model {
     public String checkCliente(Date date, String credito) {
         String msgError = "";
         if (!checkDateIsBefore(date)) {
-            msgError += "- Verifique que la fecha de registro del cliente sea correcta, ya que supera la fecha actual.\n";
+            msgError += "- Verifiqueu que la data de registre del client sigui correcta, ja que supera la data actual.\n";
         }
         if (credito != null) {
             if (!checkTargetaCredito(credito)) {
-                msgError += "- Verifique que su tarjeta de credito este escrito en un formato correcto. Ej (1111 1111 1111 1111 o 111111111111111)\n";
+                msgError += "- Verifiqueu que la targeta de crèdit estigui escrit en un format correcte. Ex (1111 1111 1111 1111 o 111111111111111)\n";
             }
         }
         return msgError;
@@ -173,10 +190,10 @@ public class Model {
     public String checkEmpleado(Date date, String salario) {
         String msgError = "";
         if (!checkDateIsBefore(date)) {
-            msgError += "- Verifique que la fecha de contratacion del empleado sea correcta, ya que supera la fecha actual.\n";
+            msgError += "- Verifiqueu que la data de contractació de l'empleat sigui correcta, ja que supera la data actual.\n";
         }
         if (!checkStringToInt(salario)) {
-            msgError += "- Verifique que su salario sean solo numeros.";
+            msgError += "- Verifiqueu que el vostre salari siguin només números.";
         }
         return msgError;
     }
@@ -626,7 +643,7 @@ public class Model {
     public int getIDTasca(Date data) {
         int ID_Tasca = -1;
         Connection conectar = new Connexio().connecta();
-        String sql = "SELECT ID_Tasca FROM TASCA WHERE data_Creacio = ? AND ID_Tasca = (SELECT MAX(ID_Tasca) FROM TASCA WHERE data_Creacio = ?) AND estat = Completada";
+        String sql = "SELECT ID_Tasca FROM TASCA WHERE data_Creacio = ? AND ID_Tasca = (SELECT MAX(ID_Tasca) FROM TASCA WHERE data_Creacio = ?)";
         try {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setDate(1, data);
@@ -641,6 +658,99 @@ public class Model {
             System.out.println(e.toString());
         }
         return ID_Tasca;
+    }
+
+    public String getEstatTasca(int ID_Tasca) {
+        String estado = null;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT estat FROM TASCA WHERE ID_Tasca = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Tasca);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                estado = resultados.getString(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return estado;
+    }
+    
+    public String getEstatRealitza(int ID_Tasca, int ID_Empleat) {
+        String estadoRealitza = null;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT estat_Per_Empleat FROM REALITZA WHERE ID_Tasca = ? AND ID_Empleat = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Tasca);
+            orden.setInt(2, ID_Empleat);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                estadoRealitza = resultados.getString(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return estadoRealitza;
+    }
+    
+    public Boolean changeEstatTasca(int ID_Tasca, String Estat) {
+        Boolean estadoCambiado = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE TASCA SET estat = ? WHERE ID_Tasca = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, Estat);
+            orden.setInt(2, ID_Tasca);
+            orden.executeUpdate();
+            estadoCambiado = true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return estadoCambiado;
+    }
+    
+    public Boolean changeEstatRealitza(int ID_Tasca, int ID_Empleat , String Estat) {
+        Boolean estadoCambiado = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE REALITZA SET estat_Per_Empleat = ? WHERE ID_Tasca = ? AND ID_Empleat = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, Estat);
+            orden.setInt(2, ID_Tasca);
+            orden.setInt(3, ID_Empleat);
+            orden.executeUpdate();
+            estadoCambiado = true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return estadoCambiado;
+    }
+    
+    public Boolean changeFinalizadoRealizado(int ID_Tasca) {
+        Boolean estadosCambiados = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE REALITZA SET estat_Per_Empleat = 'Completada' WHERE ID_Tasca = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Tasca);
+            orden.executeUpdate();
+            estadosCambiados = true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return estadosCambiados;
     }
 
     public Factura getFactura(int ID_Reserva) {
@@ -663,7 +773,7 @@ public class Model {
         return factura;
 
     }
-    
+
     public void getEmpleadosTasca(int ID_Tasca) {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT nom, cognom, document_Identitat, data_Assignacio FROM EMPLEAT e INNER JOIN PERSONA p ON e.ID_Empleat = p.ID_Persona INNER JOIN REALITZA r ON e.ID_Empleat = r.ID_Empleat WHERE r.ID_Tasca = ?";
@@ -680,7 +790,6 @@ public class Model {
         } catch (Exception e) {
             System.out.println(e.toString());
         }
-
     }
 
     public void recargarHabitaciones() {
@@ -716,9 +825,10 @@ public class Model {
             System.out.println(e.toString());
         }
     }
+
     public void recargarTareasAvanzadas() {
         Connection conectar = new Connexio().connecta();
-        String sql = "SELECT ID_Tasca, estat FROM TASCA";
+        String sql = "SELECT ID_Tasca, estat FROM TASCA WHERE estat != 'Completada'";
         try {
             Statement orden = conectar.createStatement();
             ResultSet resultados = orden.executeQuery(sql);
