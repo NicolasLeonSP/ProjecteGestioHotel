@@ -32,6 +32,9 @@ public class Model {
     ObservableList habitaciones = FXCollections.observableArrayList();
     ObservableList metodePagament = FXCollections.observableArrayList();
     ObservableList reservas = FXCollections.observableArrayList();
+    ObservableList tareas = FXCollections.observableArrayList();
+    ObservableList tareasAvanzadas = FXCollections.observableArrayList();
+    ObservableList empleadosTarea = FXCollections.observableArrayList();
     private int IDClienteReserva;
     private Tipus_Client TipusClienteReserva;
 
@@ -53,6 +56,18 @@ public class Model {
         }
     }
 
+    public ObservableList getTareas() {
+        return tareas;
+    }
+
+    public ObservableList getTareasAvanzadas() {
+        return tareasAvanzadas;
+    }
+
+    public ObservableList getEmpleadosTarea() {
+        return empleadosTarea;
+    }
+    
     public Tipus_Client getTipusClienteReserva() {
         return TipusClienteReserva;
     }
@@ -95,7 +110,7 @@ public class Model {
 
     public String checkPersona(Persona persona) {
         String msgError = "";
-        if (!checkDate(persona.getData_Naixement())) {
+        if (!checkDateIsBefore(persona.getData_Naixement())) {
             msgError += "- Verifique que la fecha de nacimiento sea correcta, ya que supera la fecha actual.\n";
         }
         if (!persona.checkTelefono()) {
@@ -144,7 +159,7 @@ public class Model {
 
     public String checkCliente(Date date, String credito) {
         String msgError = "";
-        if (!checkDate(date)) {
+        if (!checkDateIsBefore(date)) {
             msgError += "- Verifique que la fecha de registro del cliente sea correcta, ya que supera la fecha actual.\n";
         }
         if (credito != null) {
@@ -157,7 +172,7 @@ public class Model {
 
     public String checkEmpleado(Date date, String salario) {
         String msgError = "";
-        if (!checkDate(date)) {
+        if (!checkDateIsBefore(date)) {
             msgError += "- Verifique que la fecha de contratacion del empleado sea correcta, ya que supera la fecha actual.\n";
         }
         if (!checkStringToInt(salario)) {
@@ -176,7 +191,7 @@ public class Model {
         }
     }
 
-    public boolean checkDate(Date date) {
+    public boolean checkDateIsBefore(Date date) {
         if (date.after(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))) {
             return false;
         } else {
@@ -421,7 +436,7 @@ public class Model {
 
     // Conseguir toda la persona
     public int getClientReserva(String document_Identitat) {
-        int ID_Persona = 0;
+        int ID_Client = -1;
         Tipus_Client tipoCliente = null;
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT ID_Client, Tipus_Client FROM CLIENT WHERE ID_Client = (SELECT ID_Persona FROM PERSONA WHERE Document_Identitat = ?)";
@@ -430,19 +445,40 @@ public class Model {
             orden.setString(1, document_Identitat);
             ResultSet resultados = orden.executeQuery();
             while (resultados.next()) {
-                ID_Persona = resultados.getInt(1);
-                setIDClienteReserva(ID_Persona);
+                ID_Client = resultados.getInt(1);
+                setIDClienteReserva(ID_Client);
                 tipoCliente = getTipoCliente(resultados.getString(2));
                 setTipusClienteReserva(tipoCliente);
             }
         } catch (SQLException e) {
             System.out.println(e.toString());
-            return 0;
+            return ID_Client;
         } catch (Exception e) {
             System.out.println(e.toString());
-            return 0;
+            return ID_Client;
         }
-        return ID_Persona;
+        return ID_Client;
+    }
+
+    public int getEmpleatTasca(String document_Identitat) {
+        int ID_Empleat = -1;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT ID_Empleat FROM EMPLEAT WHERE ID_Empleat = (SELECT ID_Persona FROM PERSONA WHERE Document_Identitat = ?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, document_Identitat);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                ID_Empleat = resultados.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return ID_Empleat;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return ID_Empleat;
+        }
+        return ID_Empleat;
     }
 
     public int getIDHabitacion(int numeroHabitacio) {
@@ -507,6 +543,27 @@ public class Model {
         return emailYDocIde;
     }
 
+    // Conseguir solo el ID de la persona
+    public Boolean checkIfRealitzaAlrExists(int ID_Tasca, int ID_Empleat) {
+        Boolean exists = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT ID_Tasca FROM REALITZA WHERE ID_Tasca = ? AND ID_Empleat = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Tasca);
+            orden.setInt(2, ID_Empleat);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                exists = true;
+            }
+        } catch (SQLException e) {
+            // Al ser esperado que de error la mayoria de veces, quitamos esto.
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return exists;
+    }
+
     // Solucionar error getReserva
     public Reserva getReserva(int ID_Reserva) {
         Reserva reserva = null;
@@ -566,6 +623,26 @@ public class Model {
         return Num_Habitacion;
     }
 
+    public int getIDTasca(Date data) {
+        int ID_Tasca = -1;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT ID_Tasca FROM TASCA WHERE data_Creacio = ? AND ID_Tasca = (SELECT MAX(ID_Tasca) FROM TASCA WHERE data_Creacio = ?) AND estat = Completada";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDate(1, data);
+            orden.setDate(2, data);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                ID_Tasca = resultados.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return ID_Tasca;
+    }
+
     public Factura getFactura(int ID_Reserva) {
         Factura factura = null;
         Connection conectar = new Connexio().connecta();
@@ -586,6 +663,25 @@ public class Model {
         return factura;
 
     }
+    
+    public void getEmpleadosTasca(int ID_Tasca) {
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT nom, cognom, document_Identitat, data_Assignacio FROM EMPLEAT e INNER JOIN PERSONA p ON e.ID_Empleat = p.ID_Persona INNER JOIN REALITZA r ON e.ID_Empleat = r.ID_Empleat WHERE r.ID_Tasca = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Tasca);
+            ResultSet resultados = orden.executeQuery();
+            empleadosTarea.clear();
+            while (resultados.next()) {
+                empleadosTarea.add(resultados.getString(1) + " " + resultados.getString(2) + " | " + resultados.getString(3) + " | " + resultados.getString(4));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+    }
 
     public void recargarHabitaciones() {
         Connection conectar = new Connexio().connecta();
@@ -596,6 +692,39 @@ public class Model {
             habitaciones.clear();
             while (resultados.next()) {
                 habitaciones.add(String.valueOf(resultados.getInt(1)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void recargarTareas() {
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT ID_Tasca FROM TASCA";
+        try {
+            Statement orden = conectar.createStatement();
+            ResultSet resultados = orden.executeQuery(sql);
+            tareas.clear();
+            while (resultados.next()) {
+                tareas.add(String.valueOf(resultados.getInt(1)));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    public void recargarTareasAvanzadas() {
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT ID_Tasca, estat FROM TASCA";
+        try {
+            Statement orden = conectar.createStatement();
+            ResultSet resultados = orden.executeQuery(sql);
+            tareasAvanzadas.clear();
+            while (resultados.next()) {
+                tareasAvanzadas.add(String.valueOf(resultados.getInt(1)) + " | " + resultados.getString(2));
             }
         } catch (SQLException e) {
             System.out.println(e.toString());

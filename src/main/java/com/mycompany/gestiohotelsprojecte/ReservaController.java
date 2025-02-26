@@ -81,7 +81,7 @@ public class ReservaController {
     @FXML
     private void buscarPersona() {
         if (!textDNI.getText().isEmpty()) {
-            if (model.getClientReserva(textDNI.getText()) != 0) {
+            if (model.getClientReserva(textDNI.getText()) != -1) {
                 alterMos("Se ha encontrado el cliente con exito.", false);
                 Reserva.disableProperty().set(false);
                 model.recargarHabitaciones();

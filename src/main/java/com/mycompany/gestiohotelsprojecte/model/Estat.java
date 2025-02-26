@@ -8,7 +8,7 @@ package com.mycompany.gestiohotelsprojecte.model;
  *
  * @author Nicolas Leon Sapoznik Pancani
  */
-enum Estat {
+public enum Estat {
         No_Iniciada,
         En_Progres,
         Completada

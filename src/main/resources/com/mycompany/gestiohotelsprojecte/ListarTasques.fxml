@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane id="AnchorPane" prefHeight="468.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.mycompany.gestiohotelsprojecte.ListarTasquesController">
+   <children>
+      <Text layoutX="24.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Llistar Tasques">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <ListView fx:id="tasques" layoutX="24.0" layoutY="79.0" onMouseReleased="#tascaSelecionada" prefHeight="304.0" prefWidth="257.0" />
+      <ListView fx:id="empleatsAsignats" layoutX="322.0" layoutY="79.0" prefHeight="304.0" prefWidth="257.0" />
+      <Text layoutX="24.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasques" />
+      <Text layoutX="322.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Empleats asignats" />
+      <Button layoutX="24.0" layoutY="394.0" mnemonicParsing="false" text="Editar" />
+      <Button layoutX="322.0" layoutY="394.0" mnemonicParsing="false" text="Editar" />
+   </children>
+</AnchorPane>

@@ -1,12 +1,16 @@
 package com.mycompany.gestiohotelsprojecte.model;
 
+import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  *
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Tasca {
+
     private int ID_Tasca;
     private String descripcio;
     private Date data_Creacio;
@@ -59,7 +63,27 @@ public class Tasca {
     public void setEstat(Estat estat) {
         this.estat = estat;
     }
-    
-    
-    
+
+    public boolean altaTasca() {
+        Boolean TascaSubida = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO TASCA (descripció, data_Creacio, data_Ejecucio, estat) VALUES (?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, getDescripcio());
+            orden.setDate(2, getData_Creacio());
+            orden.setDate(3, getData_Ejecuccio());
+            orden.setString(4, getEstat().name());
+            orden.executeUpdate();
+            TascaSubida = true;
+            return TascaSubida;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return TascaSubida;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return TascaSubida;
+        }
+    }
+
 }
