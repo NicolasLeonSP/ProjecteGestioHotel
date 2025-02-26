@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -253,8 +254,8 @@ public class Model {
                 return null;
         }
     }
-    
-     public Metode_Pagament getMetodePagamentFromString(String tipo) {
+
+    public Metode_Pagament getMetodePagamentFromString(String tipo) {
         switch (tipo) {
             case "Targeta":
                 return Metode_Pagament.Targeta;
@@ -264,6 +265,32 @@ public class Model {
                 return Metode_Pagament.Transferencia_Bancaria;
             case "Transferencia_Paypal":
                 return Metode_Pagament.Transferencia_Paypal;
+            default:
+                return null;
+        }
+    }
+
+    public Tipus_Habitacio getTipusHabitacioFromString(String tipo) {
+        switch (tipo) {
+            case "Doble":
+                return Tipus_Habitacio.Doble;
+            case "Familiar":
+                return Tipus_Habitacio.Familiar;
+            case "Individual":
+                return Tipus_Habitacio.Individual;
+            default:
+                return null;
+        }
+    }
+
+    public Estat_Habitacio getEstatHabitacioFromString(String tipo) {
+        switch (tipo) {
+            case "Disponible":
+                return Estat_Habitacio.Disponible;
+            case "En_Neteja":
+                return Estat_Habitacio.En_Neteja;
+            case "Ocupada":
+                return Estat_Habitacio.Ocupada;
             default:
                 return null;
         }
@@ -286,6 +313,30 @@ public class Model {
         return campoErrorPartido[1];
     }
 
+    public double[] calcularFactura(int ID_Reserva) {
+        Reserva reserva = getReserva(ID_Reserva);
+        Habitacio habitacion = getHabitacion(reserva.getID_Habitacio());
+        Duration duration = Duration.between(reserva.getData_Inici().toLocalDate().atStartOfDay(), reserva.getData_Fi().toLocalDate().atStartOfDay());
+        long diasDiferencia = duration.toDays();
+        Double PreuTotalNoIva = null;
+        Double IVA = null;
+        Double PreuTotal = null;
+        double[] calculosFactura = new double[3];
+        if (reserva.getTipus_Reserva() == Tipus_Reserva.AD) {
+            PreuTotalNoIva = habitacion.getPreu_Nit_AD() * diasDiferencia;
+            IVA = PreuTotalNoIva * reserva.getTipus_IVA().getPorIVA() / 100;
+            PreuTotal = PreuTotalNoIva + IVA;
+        } else if (reserva.getTipus_Reserva() == Tipus_Reserva.MP) {
+            PreuTotalNoIva = habitacion.getPreu_Nit_MP() * diasDiferencia;
+            IVA = PreuTotalNoIva * reserva.getTipus_IVA().getPorIVA() / 100;
+            PreuTotal = PreuTotalNoIva + IVA;
+        }
+        calculosFactura[0] = PreuTotalNoIva;
+        calculosFactura[1] = IVA;
+        calculosFactura[2] = PreuTotal;
+        return calculosFactura;
+    }
+
     public boolean eliminarReserva(int ID_Reserva) {
         boolean ReservaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -305,7 +356,7 @@ public class Model {
             return ReservaEliminada;
         }
     }
-    
+
     public boolean eliminarFactura(int ID_Factura) {
         boolean facturaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -325,7 +376,27 @@ public class Model {
             return facturaEliminada;
         }
     }
-    
+
+    public boolean actualizarReserva(int ID_Reserva, double preu_Total) {
+        boolean reservaActualizada = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE RESERVA SET preu_Total_Reserva = ? WHERE ID_Reserva = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDouble(1, preu_Total);
+            orden.setInt(2, ID_Reserva);
+            orden.executeUpdate();
+            reservaActualizada = true;
+            return reservaActualizada;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return reservaActualizada;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return reservaActualizada;
+        }
+    }
+
     // Conseguir solo el ID de la persona
     public int getIdPersona(String document_Identitat) {
         int ID_Persona = 0;
@@ -393,6 +464,26 @@ public class Model {
         return ID_Habitacio;
     }
 
+    public Habitacio getHabitacion(int ID_Habitacio) {
+        Habitacio habitacio = null;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT * FROM HABITACIO WHERE ID_Habitacio = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Habitacio);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                habitacio = new Habitacio(resultados.getInt(2), getTipusHabitacioFromString(resultados.getString(3)), resultados.getInt(4), resultados.getDouble(5), resultados.getDouble(6), getEstatHabitacioFromString(resultados.getString(7)), resultados.getString(8));
+                habitacio.setID_Habitacio(resultados.getInt(1));
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return habitacio;
+    }
+
     // Conseguir solo el ID de la persona
     public ArrayList<String> getEmailDocIdeCheck() {
         ArrayList<String> emailYDocIde = new ArrayList<>();
@@ -426,7 +517,6 @@ public class Model {
             orden.setInt(1, ID_Reserva);
             ResultSet resultados = orden.executeQuery();
             while (resultados.next()) {
-
                 reserva = new Reserva(resultados.getDate(2), resultados.getDate(3), resultados.getDate(4), getReservaFromString(resultados.getString(5)), getIVAFromValue(resultados.getInt(6)), resultados.getDouble(7), resultados.getInt(8), resultados.getInt(9));
                 reserva.setID_Reserva(resultados.getInt(1));
             }
@@ -476,7 +566,7 @@ public class Model {
         return Num_Habitacion;
     }
 
-    public Factura getFactura(int ID_Reserva){
+    public Factura getFactura(int ID_Reserva) {
         Factura factura = null;
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT * FROM FACTURA WHERE ID_Reserva = ?";
@@ -494,8 +584,9 @@ public class Model {
             System.out.println(e.toString());
         }
         return factura;
-    
+
     }
+
     public void recargarHabitaciones() {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT Numero_Habitacio FROM HABITACIO";

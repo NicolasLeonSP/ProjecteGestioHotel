@@ -105,28 +105,70 @@ public class Factura {
         }
     }
 
-    public int checkClienteTarjetaCredito() {
-        int TarjetaCredito = -1;
+    public boolean checkClienteTarjetaCredito() {
+        boolean TargetaCreditoExiste = false;
         Connection conectar = new Connexio().connecta();
-        String sql = "SELECT targeta_Credit FROM factura f INNER JOIN reserva r ON f.ID_Reserva = r.ID_Reserva INNER JOIN client c ON c.ID_Client = r.ID_Client WHERE ID_Factura = ?";
+        String sql = "SELECT targeta_Credit FROM RESERVA r INNER JOIN CLIENT c ON c.ID_Client = r.ID_Client WHERE ID_Reserva = ?";
         try {
             PreparedStatement orden = conectar.prepareStatement(sql);
-            orden.setInt(1, getID_Factura());
-            orden.executeUpdate();
-            ResultSet resultados = orden.executeQuery(sql);
+            orden.setInt(1, getID_Reserva());
+            ResultSet resultados = orden.executeQuery();
             while (resultados.next()) {
-                resultados.getInt(1);
-                if (!resultados.wasNull()) {
-                    TarjetaCredito = resultados.getInt(1);
+                if (resultados.getLong(1) != 0) {
+                    TargetaCreditoExiste = true;
                 }
             }
-            return TarjetaCredito;
+            return TargetaCreditoExiste;
         } catch (SQLException e) {
             System.out.println(e.toString());
-            return TarjetaCredito;
+            return TargetaCreditoExiste;
         } catch (Exception e) {
             System.out.println(e.toString());
-            return TarjetaCredito;
+            return TargetaCreditoExiste;
+        }
+    }
+    public boolean altaFactura() {
+        boolean facturaSubida = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "INSERT INTO FACTURA (data_Emisio, metode_Pagament, base_Imposable, iva, total, ID_Reserva) VALUES (?,?,?,?,?,?)";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDate(1, getData_Emissio());
+            orden.setString(2, getMetode_Pagament().toString());
+            orden.setDouble(3, getBase_Imposable());
+            orden.setDouble(4, getIva());
+            orden.setDouble(5, getTotal());
+            orden.setInt(6, getID_Reserva());
+            orden.executeUpdate();
+            facturaSubida = true;
+            return facturaSubida;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return facturaSubida;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return facturaSubida;
+        }
+    }
+    
+
+    public boolean modificarFactura() {
+        boolean modificadoFactura = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE FACTURA SET metode_Pagament = ? WHERE ID_Factura = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, getMetode_Pagament().toString());
+            orden.setInt(2, getID_Factura());
+            orden.executeUpdate();
+            modificadoFactura = true;
+            return modificadoFactura;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return modificadoFactura;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return modificadoFactura;
         }
     }
 

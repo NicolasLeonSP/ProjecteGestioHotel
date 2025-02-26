@@ -6,7 +6,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
-
 /**
  * FXML Controller class
  *
@@ -15,7 +14,7 @@ import javafx.scene.layout.AnchorPane;
 public class MenuBarController {
 
     private Model model;
-    
+
     @FXML
     AnchorPane Principal;
     @FXML
@@ -23,7 +22,7 @@ public class MenuBarController {
     private static ClientEmpleatController controlador;
     private static ReservaController controlador2;
     private static FacturaController controlador3;
-    
+
     @FXML
     private void switchFxml(String nomFxml) throws IOException {
         Centre.getChildren().clear();
@@ -45,20 +44,31 @@ public class MenuBarController {
         //Obtenim els fills del panel central i afegim la nova vista.
         Centre.getChildren().add(vistaAcarregar);
     }
-    
+
     @FXML
     private void cambiarPersona() throws IOException {
         switchFxml("ClientEmpleat.fxml");
     }
+
     @FXML
     private void cambiarReserva() throws IOException {
         switchFxml("Reserva.fxml");
     }
+
     @FXML
     private void cambiarFactura() throws IOException {
         switchFxml("Factura.fxml");
     }
-    
+
+    @FXML
+    private void cambiarBienvenida() throws IOException {
+        switchFxml("Bienvenida.fxml");
+    }
+
+    public void initialize() throws IOException {
+        cambiarBienvenida();
+    }
+
     public void injecta(Model obj) {
         model = obj;
         controlador = new ClientEmpleatController();

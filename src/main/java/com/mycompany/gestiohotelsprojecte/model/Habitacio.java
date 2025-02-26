@@ -9,16 +9,6 @@ package com.mycompany.gestiohotelsprojecte.model;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Habitacio {
-    enum Tipus_Habitacio {
-        Individual,
-        Doble,
-        Familiar;
-    }
-    enum Estat_Habitacio {
-        Disponible,
-        Ocupada,
-        En_Neteja;
-    }
     private int ID_Habitacio;
     private int numero_Habitacio;
     private Tipus_Habitacio tipus_Habitacio;
@@ -27,9 +17,8 @@ public class Habitacio {
     private double preu_Nit_MP;
     private Estat_Habitacio estat_Habitacio;
     private String descripcio;
-    private int ID_Reserva;
 
-    public Habitacio(int numero_Habitacio, Tipus_Habitacio tipus_Habitacio, int capacitat, double preu_Nit_AD, double preu_Nit_MP, Estat_Habitacio estat_Habitacio, String descripcio, int ID_Reserva) {
+    public Habitacio(int numero_Habitacio, Tipus_Habitacio tipus_Habitacio, int capacitat, double preu_Nit_AD, double preu_Nit_MP, Estat_Habitacio estat_Habitacio, String descripcio) {
         this.numero_Habitacio = numero_Habitacio;
         this.tipus_Habitacio = tipus_Habitacio;
         this.capacitat = capacitat;
@@ -37,7 +26,6 @@ public class Habitacio {
         this.preu_Nit_MP = preu_Nit_MP;
         this.estat_Habitacio = estat_Habitacio;
         this.descripcio = descripcio;
-        this.ID_Reserva = ID_Reserva;
     }
 
     public String getDescripcio() {
@@ -102,14 +90,6 @@ public class Habitacio {
 
     public void setEstat_Habitacio(Estat_Habitacio estat_Habitacio) {
         this.estat_Habitacio = estat_Habitacio;
-    }
-
-    public int getID_Reserva() {
-        return ID_Reserva;
-    }
-
-    public void setID_Reserva(int ID_Reserva) {
-        this.ID_Reserva = ID_Reserva;
     }
     
     
