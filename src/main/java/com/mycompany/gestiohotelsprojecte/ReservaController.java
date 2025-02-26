@@ -6,7 +6,6 @@ import com.mycompany.gestiohotelsprojecte.model.Tipus_Reserva;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -83,7 +82,7 @@ public class ReservaController {
     private void buscarPersona() {
         if (!textDNI.getText().isEmpty()) {
             if (model.getClientReserva(textDNI.getText()) != 0) {
-                alterMos("Se ha encontrado la persona con exito.", false);
+                alterMos("Se ha encontrado el cliente con exito.", false);
                 Reserva.disableProperty().set(false);
                 model.recargarHabitaciones();
                 habitacionsCreacion.setItems(model.getHabitaciones());

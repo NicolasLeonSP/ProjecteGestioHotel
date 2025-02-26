@@ -75,7 +75,7 @@ public class FacturaController {
     private void buscarPersona() {
         if (!clienteFacturar.getText().isEmpty()) {
             if (model.getClientReserva(clienteFacturar.getText()) != 0) {
-                alterMos("Se ha encontrado la persona con exito.", false);
+                alterMos("Se ha encontrado el cliente con exito.", false);
                 reservaAFacturar.disableProperty().set(false);
                 model.recargarCodigoReserva(clienteFacturar.getText());
                 reservaAFacturar.setItems(model.getReservas());
@@ -209,7 +209,6 @@ public class FacturaController {
         FacturaAnchor.setVisible(false);
     }
 
-    // Seria hacer que solo aparezca una tab, dependiendo de si se ha creado o no la factura.
     public void injecta(Model obj) {
         model = obj;
     }
