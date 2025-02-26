@@ -39,7 +39,7 @@ public class MenuBarController {
             if (controllerType == FacturaController.class) {
                 return controlador3;
             }
-            if (controllerType == FacturaController.class) {
+            if (controllerType == CrearTascaController.class) {
                 return controlador4;
             }
             return null;

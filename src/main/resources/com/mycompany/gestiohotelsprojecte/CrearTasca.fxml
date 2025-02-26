@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
@@ -11,49 +12,48 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/18" fx:controller="com.mycompany.gestiohotelsprojecte.CrearTascaController">
+<AnchorPane id="AnchorPane" prefHeight="455.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.CrearTascaController">
    <children>
       <Text layoutX="15.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Creacio Tasca">
          <font>
             <Font size="20.0" />
          </font>
       </Text>
-      <TabPane layoutY="92.0" prefHeight="308.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane fx:id="creacioTasca" layoutY="92.0" prefHeight="308.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Creacio tasca">
+          <Tab fx:id="crearTasca" onSelectionChanged="#restartCreacioTasca" text="Creacio tasca">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <DatePicker layoutX="126.0" layoutY="14.0" />
+                        <DatePicker fx:id="dataExecucioCreacioTasca" layoutX="126.0" layoutY="14.0" />
                         <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Execuccio" />
-                        <TextArea layoutX="125.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" />
+                        <TextArea fx:id="descripcioCreacio" layoutX="125.0" layoutY="50.0" prefHeight="200.0" prefWidth="200.0" />
                         <Text layoutX="14.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcio" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Creacio tasca / Empleat">
+          <Tab fx:id="crearTascaEmpleat" onSelectionChanged="#restartCreacioTascaEmpleat" text="Creacio tasca / Empleat">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <DatePicker layoutX="126.0" layoutY="18.0" />
+                        <DatePicker fx:id="dataExecucioCreacioTascaEmpleat" layoutX="126.0" layoutY="18.0" />
                         <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Execuccio" />
-                        <TextArea layoutX="125.0" layoutY="54.0" prefHeight="200.0" prefWidth="200.0" />
+                        <TextArea fx:id="descripcioCreacioTascaEmpleat" layoutX="125.0" layoutY="54.0" prefHeight="200.0" prefWidth="200.0" />
                         <Text layoutX="14.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcio" />
-                        <TextField fx:id="textDNI" layoutX="415.0" layoutY="18.0" />
+                        <TextField fx:id="dniCreacioTascaEmpleat" layoutX="415.0" layoutY="18.0" />
                         <Text layoutX="341.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab text="Asignar tasca / empleat">
+            <Tab fx:id="asignarTasca" onSelectionChanged="#restartAsignarTasca" text="Asignar tasca / empleat">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <ComboBox layoutX="98.0" layoutY="14.0" prefWidth="150.0" />
+                        <ComboBox fx:id="seleccionarTasca" layoutX="98.0" layoutY="14.0" prefWidth="150.0" />
                         <Text layoutX="34.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasca" />
-                        <TextField fx:id="textDNI1" layoutX="393.0" layoutY="15.0" />
+                        <TextField fx:id="dniAsignarTasca" layoutX="393.0" layoutY="15.0" />
                         <Text layoutX="319.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
                      </children>
                   </AnchorPane>
@@ -61,6 +61,7 @@
             </Tab>
         </tabs>
       </TabPane>
-      <CheckBox layoutX="20.0" layoutY="65.0" mnemonicParsing="false" text="Tasca ya creada" />
+      <CheckBox fx:id="isCreada" layoutX="20.0" layoutY="65.0" mnemonicParsing="false" onAction="#isCreadaChange" text="Tasca ya creada" />
+      <Button layoutX="14.0" layoutY="407.0" mnemonicParsing="false" text="Aceptar" />
    </children>
 </AnchorPane>
