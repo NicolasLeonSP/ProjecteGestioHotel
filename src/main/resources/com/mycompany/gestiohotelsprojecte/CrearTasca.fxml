@@ -19,7 +19,7 @@
             <Font size="20.0" />
          </font>
       </Text>
-      <TabPane layoutY="64.0" prefHeight="336.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane layoutY="92.0" prefHeight="308.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Creacio tasca">
             <content>
@@ -41,16 +41,26 @@
                         <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Execuccio" />
                         <TextArea layoutX="125.0" layoutY="54.0" prefHeight="200.0" prefWidth="200.0" />
                         <Text layoutX="14.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcio" />
-                        <ComboBox layoutX="415.0" layoutY="59.0" prefWidth="150.0" />
-                        <Text layoutX="351.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasca" />
-                        <TextField fx:id="textDNI" layoutX="415.0" layoutY="102.0" />
-                        <Text layoutX="341.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
-                        <CheckBox layoutX="354.0" layoutY="21.0" mnemonicParsing="false" text="Tasca ya creada" />
+                        <TextField fx:id="textDNI" layoutX="415.0" layoutY="18.0" />
+                        <Text layoutX="341.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
+            <Tab text="Asignar tasca / empleat">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox layoutX="98.0" layoutY="14.0" prefWidth="150.0" />
+                        <Text layoutX="34.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasca" />
+                        <TextField fx:id="textDNI1" layoutX="393.0" layoutY="15.0" />
+                        <Text layoutX="319.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
         </tabs>
       </TabPane>
+      <CheckBox layoutX="20.0" layoutY="65.0" mnemonicParsing="false" text="Tasca ya creada" />
    </children>
 </AnchorPane>
