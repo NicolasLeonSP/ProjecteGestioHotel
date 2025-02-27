@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Persona {
+    // Variables de la clase persona.
     private int ID_Persona;
     private String nom;
     private String cognom;
@@ -21,7 +22,7 @@ public class Persona {
     private final Date data_Naixement;
     private String telefon;
     private String email;
-            
+    // Constructor de la clase persona.        
     public Persona(String nom, String cognom, String adreça, String document_Identitat, Date data_Naixement, String telefon, String email) {
         this.nom = nom;
         this.cognom = cognom;
@@ -31,7 +32,7 @@ public class Persona {
         this.telefon = telefon;
         this.email = email;
     }
-    
+    // Getters y setters de la clase persona.
     public int getID_Persona() {
         return ID_Persona;
     }
@@ -91,7 +92,7 @@ public class Persona {
     public void setEmail(String email) {
         this.email = email;
     }
-    
+    // Funcion que se encarga de revisar si la fecha de nacimiento es menor a la fecha actual.
     public boolean checkDateNacimiento(){
         if (data_Naixement.after(Date.valueOf(LocalDate.now()))) {
             return false;
@@ -99,7 +100,7 @@ public class Persona {
             return true;
         }
     }
-    
+    // Funcion que se encarga de revisar si el telefono esta escrito de forma correcta.
     public boolean checkTelefono(){
         Pattern regexTelefono = Pattern.compile("^(\\+34|0034|34)?[6789]\\d{8}$", Pattern.CASE_INSENSITIVE);
         Matcher telefonoCheck = regexTelefono.matcher(telefon);
@@ -109,7 +110,7 @@ public class Persona {
             return false;
         }
     }
-    
+    // Funcion que se encarga de revisar si el email esta escrito de forma correcta.
     public boolean checkEmail(){
         Pattern regexEmail = Pattern.compile("^(.+)@(.+).(.+)$", Pattern.CASE_INSENSITIVE);
         Matcher EmailCheck = regexEmail.matcher(email);
@@ -119,19 +120,21 @@ public class Persona {
             return false;
         }
     }
-    
+    // Funcion que se encarga de revisar si el DNI esta escrito de forma correcta.
     public String checkDNI(){
+        // Primero revisamos la longitud como tal.
         Pattern regexDNI = Pattern.compile("^[0-9]{8}[A-Z]{1}$",Pattern.CASE_INSENSITIVE);
         Matcher DNICheck = regexDNI.matcher(document_Identitat);
         if (!DNICheck.find()) {
             return "1";
         } else {
+            // Luego revisamos si la letra encaja correctamente.
             String letras = "TRWAGMYFPDXBNJZSQVHLCKE";
             String docCheck = document_Identitat;
-            
             docCheck = docCheck.replace(docCheck.charAt(8), ' ').strip();
             char letra = letras.charAt(Integer.parseInt(docCheck) % letras.length());
             String dniEntero = "" + docCheck + letra;
+            // Devolvemos 0 si es correcto, 1 o 2 si es erroneo.
             if (dniEntero.equals(document_Identitat)) {
                 return "0";
             } else {
@@ -139,7 +142,7 @@ public class Persona {
             }
         }
     }
-    
+    // Esta funcion SQL se encarga de añadir una persona a la base de datos. Ir a la linea 909 del modelo para mas info
     public Boolean altaPersona() {
         boolean PersonaSubidaBaseDeDatos = true;
         Connection conectar = new Connexio().connecta();

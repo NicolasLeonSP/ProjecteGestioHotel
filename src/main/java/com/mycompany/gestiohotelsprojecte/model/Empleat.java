@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.gestiohotelsprojecte.model;
 
 import java.sql.Connection;
@@ -10,12 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Empleat extends Persona {
-
+    // Variables de empleado
     private String lloc_Feina;
     private Date data_Contractacio;
     private int salari_Brut;
     private Estat_Laboral estat_Laboral;
-
+    // Constructor de empleado
     public Empleat(String nom, String cognom, String adreça, String document_Identitat, Date data_Naixement, String telefon, String email, String lloc_Feina, Date data_Contractacio, int salari_Brut, Estat_Laboral estat_Laboral) {
         super(nom, cognom, adreça, document_Identitat, data_Naixement, telefon, email);
         this.lloc_Feina = lloc_Feina;
@@ -23,7 +19,7 @@ public class Empleat extends Persona {
         this.salari_Brut = salari_Brut;
         this.estat_Laboral = estat_Laboral;
     }
-
+    // Getters y setters.
     public String getLloc_Feina() {
         return lloc_Feina;
     }
@@ -55,7 +51,7 @@ public class Empleat extends Persona {
     public void setEstat_Laboral(Estat_Laboral estat_Laboral) {
         this.estat_Laboral = estat_Laboral;
     }
-    
+    // Esta funcion SQL se encarga de subir el empleado a la base de datos. Ir a la linea 909 del modelo para mas info
     public Boolean altaEmpleado() {
         boolean EmpleadoSubidoABaseDeDatos = true;
         Connection conectar = new Connexio().connecta();

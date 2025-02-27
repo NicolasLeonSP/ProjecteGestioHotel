@@ -11,7 +11,7 @@ import java.sql.SQLException;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Factura {
-
+    // Variable de la clase facturas
     private int ID_Factura;
     private Date data_Emissio;
     private Metode_Pagament metode_Pagament;
@@ -19,7 +19,7 @@ public class Factura {
     private double iva;
     private double total;
     private int ID_Reserva;
-
+    // Constructor de la clase factura
     public Factura(Date data_Emissio, Metode_Pagament metode_Pagament, double base_Imposable, double iva, double total, int ID_Reserva) {
         this.data_Emissio = data_Emissio;
         this.metode_Pagament = metode_Pagament;
@@ -28,7 +28,7 @@ public class Factura {
         this.total = total;
         this.ID_Reserva = ID_Reserva;
     }
-
+    // Getters y setters de la clase factura
     public int getID_Factura() {
         return ID_Factura;
     }
@@ -85,26 +85,8 @@ public class Factura {
         this.ID_Reserva = ID_Reserva;
     }
 
-    public boolean editarFactura() {
-        Boolean FacturaEditada = false;
-        Connection conectar = new Connexio().connecta();
-        String sql = "UPDATE FACTURA SET metode_Pagament = ? WHERE ID_Factura = ?";
-        try {
-            PreparedStatement orden = conectar.prepareStatement(sql);
-            orden.setString(1, getMetode_Pagament().toString());
-            orden.setInt(2, getID_Factura());
-            orden.executeUpdate();
-            FacturaEditada = true;
-            return FacturaEditada;
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-            return FacturaEditada;
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            return FacturaEditada;
-        }
-    }
-
+    
+    // Esta funcion SQL se encarga de revisar si el cliente tiene una tarjeta de credito. Ir a la linea 909 del modelo para mas info
     public boolean checkClienteTarjetaCredito() {
         boolean TargetaCreditoExiste = false;
         Connection conectar = new Connexio().connecta();
@@ -127,6 +109,7 @@ public class Factura {
             return TargetaCreditoExiste;
         }
     }
+    // Esta funcion SQL se encarga de subir la factura a la base de datos. Ir a la linea 909 del modelo para mas info
     public boolean altaFactura() {
         boolean facturaSubida = false;
         Connection conectar = new Connexio().connecta();
@@ -150,10 +133,9 @@ public class Factura {
             return facturaSubida;
         }
     }
-    
-
-    public boolean modificarFactura() {
-        boolean modificadoFactura = false;
+    // Esta funcion SQL se encarga de editar una factura ya existente en la base de datos, modificando el metodo de pago. Ir a la linea 909 del modelo para mas info
+    public boolean editarFactura() {
+        Boolean FacturaEditada = false;
         Connection conectar = new Connexio().connecta();
         String sql = "UPDATE FACTURA SET metode_Pagament = ? WHERE ID_Factura = ?";
         try {
@@ -161,15 +143,14 @@ public class Factura {
             orden.setString(1, getMetode_Pagament().toString());
             orden.setInt(2, getID_Factura());
             orden.executeUpdate();
-            modificadoFactura = true;
-            return modificadoFactura;
+            FacturaEditada = true;
+            return FacturaEditada;
         } catch (SQLException e) {
             System.out.println(e.toString());
-            return modificadoFactura;
+            return FacturaEditada;
         } catch (Exception e) {
             System.out.println(e.toString());
-            return modificadoFactura;
+            return FacturaEditada;
         }
     }
-
 }

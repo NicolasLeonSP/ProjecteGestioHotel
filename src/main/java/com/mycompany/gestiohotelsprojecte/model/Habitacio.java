@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.gestiohotelsprojecte.model;
 
 /**
@@ -9,6 +5,7 @@ package com.mycompany.gestiohotelsprojecte.model;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Habitacio {
+    // Variables de una habitacion
     private int ID_Habitacio;
     private int numero_Habitacio;
     private Tipus_Habitacio tipus_Habitacio;
@@ -17,7 +14,7 @@ public class Habitacio {
     private double preu_Nit_MP;
     private Estat_Habitacio estat_Habitacio;
     private String descripcio;
-
+    // Constructor de la clase habitacion.
     public Habitacio(int numero_Habitacio, Tipus_Habitacio tipus_Habitacio, int capacitat, double preu_Nit_AD, double preu_Nit_MP, Estat_Habitacio estat_Habitacio, String descripcio) {
         this.numero_Habitacio = numero_Habitacio;
         this.tipus_Habitacio = tipus_Habitacio;
@@ -27,7 +24,7 @@ public class Habitacio {
         this.estat_Habitacio = estat_Habitacio;
         this.descripcio = descripcio;
     }
-
+    // Getters y setters de habitacion.
     public String getDescripcio() {
         return descripcio;
     }

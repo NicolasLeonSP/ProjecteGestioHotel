@@ -10,20 +10,23 @@ import java.sql.SQLException;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class Tasca {
-
+    
+    // Variables de la clase Tarea
     private int ID_Tasca;
     private String descripcio;
     private Date data_Creacio;
     private Date data_Ejecuccio;
     private Estat estat;
-
+    
+    // Constructor de la clase Tarea
     public Tasca(String descripcio, Date data_Creacio, Date data_Ejecuccio, Estat estat) {
         this.descripcio = descripcio;
         this.data_Creacio = data_Creacio;
         this.data_Ejecuccio = data_Ejecuccio;
         this.estat = estat;
     }
-
+    
+    // Getters y setters de Tarea
     public int getID_Tasca() {
         return ID_Tasca;
     }
@@ -64,6 +67,7 @@ public class Tasca {
         this.estat = estat;
     }
 
+    // Esta funcion SQL se encarga de añadir una tarea a la base de datos. Ir a la linea 909 del modelo para mas info
     public boolean altaTasca() {
         Boolean TascaSubida = false;
         Connection conectar = new Connexio().connecta();
