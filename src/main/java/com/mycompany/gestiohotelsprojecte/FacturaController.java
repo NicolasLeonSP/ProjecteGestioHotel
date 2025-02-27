@@ -134,7 +134,7 @@ public class FacturaController {
     // Esta funcion elimina la factura una vez se le de al boton de eliminar.
     private void eliminarFactura() {
         // Nos aseguraremos que es lo que quiere el cliente.
-        if (confirMos("Esteu segur que voleu eliminar la reserva seleccionada?")) {
+        if (confirMos("Esteu segur que voleu eliminar la factura seleccionada?")) {
             // Una vez aceptado, eliminaremos la factura.
             if (model.eliminarFactura(FacturaReserva.getID_Factura())) {
                 // Si se elimina con exito, lo diremos y reiniciaremos el formulario, para cargar el menu de crear factura.
