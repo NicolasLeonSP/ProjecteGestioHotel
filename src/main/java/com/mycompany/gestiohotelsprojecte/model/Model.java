@@ -605,7 +605,7 @@ public class Model {
         return emailYDocIde;
     }
 
-    // Conseguir solo el ID de la persona
+    // Esta funcion SQL se encarga de ver si la asignacion existe. Ir a la linea 891 para mas info
     public Boolean checkIfRealitzaAlrExists(int ID_Tasca, int ID_Empleat) {
         Boolean exists = false;
         Connection conectar = new Connexio().connecta();
