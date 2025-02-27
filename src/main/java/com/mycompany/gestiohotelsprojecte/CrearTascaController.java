@@ -125,7 +125,7 @@ public class CrearTascaController {
                 // Si estamos en el segundo formulario, veremos que todos esos campos esten rellenados.
                 if (dataExecucioCreacioTascaEmpleat.getValue() != null && descripcioCreacioTascaEmpleat.getText() != null && dniCreacioTascaEmpleat.getText() != null) {
                     Date date = model.LocalDateToSqlDate(dataExecucioCreacioTascaEmpleat.getValue());
-                    int ID_Empleat = model.getEmpleatTasca(dniCreacioTascaEmpleat.getText());
+                    int ID_Empleat = model.getIDEmpleatTasca(dniCreacioTascaEmpleat.getText());
                     // Primero veremos que el empleado exista.
                     if (ID_Empleat != -1) {
                         // Si existe, veremos que la fecha de ejecucion sea despues de la actual.

@@ -42,7 +42,7 @@
                         <TextArea fx:id="descripcioCreacioTascaEmpleat" layoutX="125.0" layoutY="54.0" prefHeight="200.0" prefWidth="200.0" />
                         <Text layoutX="14.0" layoutY="81.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcio" />
                         <TextField fx:id="dniCreacioTascaEmpleat" layoutX="415.0" layoutY="18.0" />
-                        <Text layoutX="341.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
+                        <Text layoutX="377.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI" />
                      </children>
                   </AnchorPane>
             </content>
@@ -53,7 +53,7 @@
                      <children>
                         <Text layoutX="34.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tasca" />
                         <TextField fx:id="dniAsignarTasca" layoutX="393.0" layoutY="15.0" />
-                        <Text layoutX="319.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
+                        <Text layoutX="351.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI" />
                         <ListView fx:id="seleccionarTasca" layoutX="82.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
                      </children>
                   </AnchorPane>

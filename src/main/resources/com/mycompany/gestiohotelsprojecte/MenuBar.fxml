@@ -14,7 +14,7 @@
                <menus>
                   <Menu text="Empleats i Clients">
                      <items>
-                        <MenuItem onAction="#cambiarPersona" text="Entrar" />
+                        <MenuItem onAction="#cambiarClientEmpleat" text="Entrar" />
                      </items>
                   </Menu>
                   <Menu text="Reserves">

@@ -27,8 +27,8 @@
                         <AnchorPane layoutY="36.0" minHeight="0.0" minWidth="0.0" prefHeight="98.0" prefWidth="598.0">
                            <children>
                               <TextField fx:id="textDNI" layoutX="80.0" layoutY="14.0" />
-                              <Text layoutX="14.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
-                              <Button layoutX="13.0" layoutY="60.0" mnemonicParsing="false" onAction="#buscarPersona" text="Buscar" />
+                              <Text layoutX="28.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI" />
+                              <Button layoutX="13.0" layoutY="60.0" mnemonicParsing="false" onAction="#buscarCliente" text="Buscar" />
                            </children>
                         </AnchorPane>
                         <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Persona fent la reserva">

@@ -27,7 +27,7 @@
                         <TextField fx:id="textAdreça" layoutX="63.0" layoutY="51.0" />
                         <Text layoutX="9.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Adreça" />
                         <TextField fx:id="textDNI" layoutX="323.0" layoutY="51.0" />
-                        <Text layoutX="257.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI / NIE" />
+                        <Text layoutX="289.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DNI" />
                         <DatePicker fx:id="textData" layoutX="134.0" layoutY="90.0" />
                         <Text layoutX="10.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Data Naixement" />
                         <TextField fx:id="textTelefon" layoutX="69.0" layoutY="129.0" />

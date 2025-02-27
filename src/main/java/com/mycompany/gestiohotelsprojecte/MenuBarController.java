@@ -12,9 +12,8 @@ import javafx.scene.layout.AnchorPane;
  * @author alumne
  */
 public class MenuBarController {
-
+    // Variables del controlador.
     private Model model;
-
     @FXML
     AnchorPane Principal;
     @FXML
@@ -27,10 +26,12 @@ public class MenuBarController {
     private static ModificarEstatTascaController controlador6;
 
     @FXML
+    // Esta funcion se encarga de cambiar al FXML que se le diga en los parametros.
     private void switchFxml(String nomFxml) throws IOException {
+        // Limpiamos el que habia
         Centre.getChildren().clear();
-        //Crear el fxml a visualitar
         FXMLLoader loader = new FXMLLoader(getClass().getResource(nomFxml));
+        // Y aqui vemos cual de todos los controladores, devolviendo el equivalente a objeto.
         loader.setControllerFactory(controllerType -> {
             if (controllerType == ClientEmpleatController.class) {
                 return controlador;
@@ -52,50 +53,58 @@ public class MenuBarController {
             }
             return null;
         });
+        // Aqui los cargamos como tal
         AnchorPane vistaAcarregar = loader.load();
-        //Obtenim els fills del panel central i afegim la nova vista.
+        // Y añadimos la nueva vista.
         Centre.getChildren().add(vistaAcarregar);
     }
-
+    
     @FXML
-    private void cambiarPersona() throws IOException {
+    // Funcion para cambiar al FXML de clienteEmpleado
+    private void cambiarClientEmpleat() throws IOException {
         switchFxml("ClientEmpleat.fxml");
     }
 
     @FXML
+    // Funcion para cambiar al FXML de Reserva
     private void cambiarReserva() throws IOException {
         switchFxml("Reserva.fxml");
     }
 
     @FXML
+    // Funcion para cambiar al FXML de Factura
     private void cambiarFactura() throws IOException {
         switchFxml("Factura.fxml");
     }
     
     @FXML
+    // Funcion para cambiar al FXML de CrearTarea
     private void cambiarCrearTasca() throws IOException {
         switchFxml("CrearTasca.fxml");
     }
     
     @FXML
+    // Funcion para cambiar al FXML de ListarTareas
     public void cambiarListarTasques() throws IOException {
         switchFxml("ListarTasques.fxml");
     }
     
     @FXML
+    // Funcion para cambiar al FXML de ModificarEstadoTarea
     public void cambiarModificarEstatTasca() throws IOException {
         switchFxml("ModificarEstatTasca.fxml");
     }
 
     @FXML
+    // Funcion para cambiar al FXML de Bienvenida
     private void cambiarBienvenida() throws IOException {
         switchFxml("Bienvenida.fxml");
     }
-
+    // Funcion para inicializar este formulario, en este caso, para mostrar el formulario de bienvenida.
     public void initialize() throws IOException {
         cambiarBienvenida();
     }
-
+    // Funcion para inyectar el modelo en todos los formularios, ademas de crearlos como tal.
     public void injecta(Model obj) {
         model = obj;
         controlador = new ClientEmpleatController();

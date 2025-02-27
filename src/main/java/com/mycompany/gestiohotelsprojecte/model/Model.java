@@ -26,6 +26,7 @@ import javafx.collections.ObservableList;
  */
 public class Model {
 
+    // Variables de model
     ObservableList tipoCliente = FXCollections.observableArrayList();
     ObservableList estatLaboral = FXCollections.observableArrayList();
     ObservableList tipoReserva = FXCollections.observableArrayList();
@@ -40,9 +41,11 @@ public class Model {
     private int IDClienteReserva;
     private Tipus_Client TipusClienteReserva;
 
+    // Constructor de model
     public Model() {
     }
 
+    // Inicializador de modelo, principalmente para las ObservableList
     public void initModel() {
         for (Tipus_Client value : Tipus_Client.values()) {
             tipoCliente.add(value);
@@ -61,12 +64,9 @@ public class Model {
         }
     }
 
+    // Getters de modelo.
     public String getIDTascaORealitzaSeleccionada() {
         return IDTascaORealitzaSeleccionada;
-    }
-
-    public void setIDTascaORealitzaSeleccionada(String IDTascaORealitzaSeleccionada) {
-        this.IDTascaORealitzaSeleccionada = IDTascaORealitzaSeleccionada;
     }
 
     public ObservableList getTareas() {
@@ -101,14 +101,6 @@ public class Model {
         return reservas;
     }
 
-    public void setTipusClienteReserva(Tipus_Client TipusClienteReserva) {
-        this.TipusClienteReserva = TipusClienteReserva;
-    }
-
-    public void setIDClienteReserva(int IDClienteReserva) {
-        this.IDClienteReserva = IDClienteReserva;
-    }
-
     public ObservableList getHabitaciones() {
         return habitaciones;
     }
@@ -125,17 +117,35 @@ public class Model {
         return tipoReserva;
     }
 
+    // Setters de modelo
+    public void setTipusClienteReserva(Tipus_Client TipusClienteReserva) {
+        this.TipusClienteReserva = TipusClienteReserva;
+    }
+
+    public void setIDClienteReserva(int IDClienteReserva) {
+        this.IDClienteReserva = IDClienteReserva;
+    }
+
+    public void setIDTascaORealitzaSeleccionada(String IDTascaORealitzaSeleccionada) {
+        this.IDTascaORealitzaSeleccionada = IDTascaORealitzaSeleccionada;
+    }
+
+    // Esta funcion se encarga de hacer los checks a una persona.
     public String checkPersona(Persona persona) {
         String msgError = "";
+        // Verificar fecha si es correcta
         if (!checkDateIsBefore(persona.getData_Naixement())) {
             msgError += "- Verifiqueu que la data de naixement sigui correcta, ja que supera la data actual.\n";
         }
+        // Verificar telefono si es correcto
         if (!persona.checkTelefono()) {
             msgError += "- Verifiqueu que el telèfon estigui escrit correctament.\n";
         }
+        // Verificar email si es correcto
         if (!persona.checkEmail()) {
             msgError += "- Verifiqueu que el correu electrònic està escrit de forma correcta.\n";
         } else {
+            // Comprobar si el correo ya existe previamente.
             ArrayList<String> check = getEmailDocIdeCheck();
             boolean errorYaIntroducido = false;
             for (String string : check) {
@@ -150,15 +160,19 @@ public class Model {
 
             }
         }
+        // Verificar que el DNI este correcto
         String errorDNI = persona.checkDNI();
         if (!errorDNI.equals("0")) {
+            // Si el DNI no tiene la longitud correcta...
             if (errorDNI.equals("1")) {
                 msgError += "- Verifiqueu que el DNI conté 9 caràcters, sent 8 números i una lletra.\n";
             }
+            // Si el DNI no tiene la letra correcta...
             if (errorDNI.charAt(0) == '2') {
                 msgError += "- Verifiqueu que la lletra del DNI sigui correcta. La lletra retornada pel generador és " + errorDNI.charAt(1) + " .\n";
             }
         } else {
+            // Comprobar si el documento de identidad ya existe.
             ArrayList<String> check = getEmailDocIdeCheck();
             boolean errorYaIntroducido = false;
             for (String string : check) {
@@ -171,36 +185,50 @@ public class Model {
                 }
             }
         }
+        // Y luego, devolvemos los mensaje de error.
         return msgError;
     }
 
+    // Funcion para los checks del cliente.
     public String checkCliente(Date date, String credito) {
         String msgError = "";
+        // Comprobaremos que la fecha introducida sea mayor a la actual.
         if (!checkDateIsBefore(date)) {
             msgError += "- Verifiqueu que la data de registre del client sigui correcta, ja que supera la data actual.\n";
         }
+        // Si la tarjeta no es nula...
         if (credito != null) {
+            // Veremos si esta bien escrita.
             if (!checkTargetaCredito(credito)) {
                 msgError += "- Verifiqueu que la targeta de crèdit estigui escrit en un format correcte. Ex (1111 1111 1111 1111 o 111111111111111)\n";
             }
         }
+        // Devolvemos el resultado.
         return msgError;
     }
 
+    // Funcion para los checks de Empleado
     public String checkEmpleado(Date date, String salario) {
         String msgError = "";
+        // Veremos si la fecha de contratacion es superior a la actual.
         if (!checkDateIsBefore(date)) {
             msgError += "- Verifiqueu que la data de contractació de l'empleat sigui correcta, ja que supera la data actual.\n";
         }
+        // Veremos si el salario son numeros.
         if (!checkStringToInt(salario)) {
             msgError += "- Verifiqueu que el vostre salari siguin només números.";
         }
+        // Devolvemos el resultado..
         return msgError;
     }
 
+    // Esta funcion se encarga de comprobar que la tarjeta de credito este bien formatada
     public boolean checkTargetaCredito(String targeta) {
+        // Definimos el patron
         Pattern regexCredito = Pattern.compile("([0-9]{4}\\s?){4}", Pattern.CASE_INSENSITIVE);
+        // Lo comparamos
         Matcher creditoCheck = regexCredito.matcher(targeta);
+        // Y vemos si es correcto o no.
         if (creditoCheck.find()) {
             return true;
         } else {
@@ -208,14 +236,16 @@ public class Model {
         }
     }
 
+    // Esta funcion comprueba si la fecha es antes de la fecha actual.
     public boolean checkDateIsBefore(Date date) {
-        if (date.after(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))) {
-            return false;
-        } else {
+        if (date.before(Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()))) {
             return true;
+        } else {
+            return false;
         }
     }
 
+    // Esta funcion comprueba si un string esta formado por solo numeros o no.
     public boolean checkStringToInt(String string) {
         try {
             Integer.valueOf(string);
@@ -227,6 +257,7 @@ public class Model {
         }
     }
 
+    // Esta funcion pasa un LocalDate a java.sql.Date
     public java.sql.Date LocalDateToSqlDate(LocalDate fecha) {
         try {
             Date date = new java.sql.Date(Date.from(fecha.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant()).getTime());
@@ -236,6 +267,7 @@ public class Model {
         }
     }
 
+    // Esta funcion pilla un atributo del enumerator tipoCliente segun el string que se le pase.
     public Tipus_Client getTipoCliente(String tipoCliente) {
         Tipus_Client cliente = null;
         for (Tipus_Client e : Tipus_Client.values()) {
@@ -246,6 +278,7 @@ public class Model {
         return cliente;
     }
 
+    // Esta funcion pilla un atributo del enumerator IVA segun el string que se le pase.
     public Tipus_IVA getIVAClient(Tipus_Client TipusClient) {
         switch (TipusClient) {
             case Regular:
@@ -263,6 +296,7 @@ public class Model {
         }
     }
 
+    // Esta funcion elige un IVA segun el numero que se le pase.
     public Tipus_IVA getIVAFromValue(int Iva) {
         switch (Iva) {
             case 0:
@@ -276,6 +310,7 @@ public class Model {
         }
     }
 
+    // Esta funcion pilla un atributo del enumerator TipoReserva segun el string que se le pase.
     public Tipus_Reserva getReservaFromString(String tipo) {
         switch (tipo) {
             case "AD":
@@ -287,6 +322,7 @@ public class Model {
         }
     }
 
+    // Esta funcion pilla un atributo del enumerator MetodePagament segun el string que se le pase.
     public Metode_Pagament getMetodePagamentFromString(String tipo) {
         switch (tipo) {
             case "Targeta":
@@ -302,6 +338,7 @@ public class Model {
         }
     }
 
+    // Esta funcion pilla un atributo del enumerator TipusHabitacio segun el string que se le pase.
     public Tipus_Habitacio getTipusHabitacioFromString(String tipo) {
         switch (tipo) {
             case "Doble":
@@ -315,6 +352,7 @@ public class Model {
         }
     }
 
+    // Esta funcion pilla un atributo del enumerator EstatHabitacio segun el string que se le pase.
     public Estat_Habitacio getEstatHabitacioFromString(String tipo) {
         switch (tipo) {
             case "Disponible":
@@ -328,24 +366,27 @@ public class Model {
         }
     }
 
+    // Esta funcion devuelve la posicion de un string, si se encuentra en el observableList que se le pase.
     public int getIDFromObservableList(String buscar, ObservableList ol) {
         int ID_Conseguida = -1;
         for (int i = 0; i < ol.size(); i++) {
             if (ol.get(i).toString().equals(buscar)) {
                 ID_Conseguida = i;
             }
-
         }
         return ID_Conseguida;
     }
 
+    // Esta funcion retorna un campo del mensaje de error de SQL que se le pase.
     public String retornarMensajeCorrectoReserva(String msgError) {
         String[] msgErrorPartido = msgError.split("`");
         String[] campoErrorPartido = msgErrorPartido[1].split("\\.");
         return campoErrorPartido[1];
     }
 
+    // Esta funcion se encarga de calcular la factura, la cual encontraremos con el ID de Reserva.
     public double[] calcularFactura(int ID_Reserva) {
+        // Agarremos los datos que necesitamos antes de comenzar, de entre ellos, la reserva, habitacion, duracion de la estadia e inicializar variables.
         Reserva reserva = getReserva(ID_Reserva);
         Habitacio habitacion = getHabitacion(reserva.getID_Habitacio());
         Duration duration = Duration.between(reserva.getData_Inici().toLocalDate().atStartOfDay(), reserva.getData_Fi().toLocalDate().atStartOfDay());
@@ -354,21 +395,24 @@ public class Model {
         Double IVA = null;
         Double PreuTotal = null;
         double[] calculosFactura = new double[3];
+        // Y luego veremos, si el tipo de reserva es AD, lo calcularemos con el precio de AD
         if (reserva.getTipus_Reserva() == Tipus_Reserva.AD) {
             PreuTotalNoIva = habitacion.getPreu_Nit_AD() * diasDiferencia;
             IVA = PreuTotalNoIva * reserva.getTipus_IVA().getPorIVA() / 100;
             PreuTotal = PreuTotalNoIva + IVA;
-        } else if (reserva.getTipus_Reserva() == Tipus_Reserva.MP) {
+        } // Si no, con el precio de MP
+        else if (reserva.getTipus_Reserva() == Tipus_Reserva.MP) {
             PreuTotalNoIva = habitacion.getPreu_Nit_MP() * diasDiferencia;
             IVA = PreuTotalNoIva * reserva.getTipus_IVA().getPorIVA() / 100;
             PreuTotal = PreuTotalNoIva + IVA;
         }
+        // Una vez terminado los calculos, los añadimos al array y devolvemos el resultado.
         calculosFactura[0] = PreuTotalNoIva;
         calculosFactura[1] = IVA;
         calculosFactura[2] = PreuTotal;
         return calculosFactura;
     }
-
+    // Esta funcion SQL se encarga de eliminar una reserva de la base de datos, segun el ID que se le pase. Ir a la linea 891 para mas info
     public boolean eliminarReserva(int ID_Reserva) {
         boolean ReservaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -388,7 +432,7 @@ public class Model {
             return ReservaEliminada;
         }
     }
-
+    // Esta funcion SQL se encarga de eliminar una factura de la base de datos, segun el ID que se le pase. Ir a la linea 891 para mas info
     public boolean eliminarFactura(int ID_Factura) {
         boolean facturaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -408,7 +452,7 @@ public class Model {
             return facturaEliminada;
         }
     }
-
+    // Esta funcion SQL se encarga de editar una reserva de la base de datos, añadiendole el precio total que se le pase, segun el ID que se le pase. Ir a la linea 891 para mas info
     public boolean actualizarReserva(int ID_Reserva, double preu_Total) {
         boolean reservaActualizada = false;
         Connection conectar = new Connexio().connecta();
@@ -429,7 +473,7 @@ public class Model {
         }
     }
 
-    // Conseguir solo el ID de la persona
+    // Esta funcion SQL se encarga de conseguir el ID de Persona de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 891 para mas info
     public int getIdPersona(String document_Identitat) {
         int ID_Persona = 0;
         Connection conectar = new Connexio().connecta();
@@ -451,7 +495,7 @@ public class Model {
         return ID_Persona;
     }
 
-    // Conseguir toda la persona
+    // Esta funcion SQL se encarga de conseguir una Persona de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 891 para mas info
     public int getClientReserva(String document_Identitat) {
         int ID_Client = -1;
         Tipus_Client tipoCliente = null;
@@ -476,8 +520,9 @@ public class Model {
         }
         return ID_Client;
     }
-
-    public int getEmpleatTasca(String document_Identitat) {
+    
+    // Esta funcion SQL se encarga de conseguir el ID de Empleado de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 891 para mas info
+    public int getIDEmpleatTasca(String document_Identitat) {
         int ID_Empleat = -1;
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT ID_Empleat FROM EMPLEAT WHERE ID_Empleat = (SELECT ID_Persona FROM PERSONA WHERE Document_Identitat = ?)";
@@ -497,7 +542,7 @@ public class Model {
         }
         return ID_Empleat;
     }
-
+    // Esta funcion SQL se encarga de conseguir el ID de Habitacion de la base de datos, segun el Numero de Habitacion que se le pase. Ir a la linea 891 para mas info
     public int getIDHabitacion(int numeroHabitacio) {
         int ID_Habitacio = 0;
         Connection conectar = new Connexio().connecta();
@@ -516,7 +561,7 @@ public class Model {
         }
         return ID_Habitacio;
     }
-
+    // Esta funcion SQL se encarga de conseguir una Habitacion de la base de datos, segun el ID de Habitacion que se le pase. Ir a la linea 891 para mas info
     public Habitacio getHabitacion(int ID_Habitacio) {
         Habitacio habitacio = null;
         Connection conectar = new Connexio().connecta();
@@ -537,7 +582,7 @@ public class Model {
         return habitacio;
     }
 
-    // Conseguir solo el ID de la persona
+    // Esta funcion SQL se encarga de conseguir todos los Email y Documentos de Identidad que hayan en Persona. Ir a la linea 891 para mas info
     public ArrayList<String> getEmailDocIdeCheck() {
         ArrayList<String> emailYDocIde = new ArrayList<>();
         Connection conectar = new Connexio().connecta();
@@ -678,7 +723,7 @@ public class Model {
         }
         return estado;
     }
-    
+
     public String getEstatRealitza(int ID_Tasca, int ID_Empleat) {
         String estadoRealitza = null;
         Connection conectar = new Connexio().connecta();
@@ -698,7 +743,7 @@ public class Model {
         }
         return estadoRealitza;
     }
-    
+
     public Boolean changeEstatTasca(int ID_Tasca, String Estat) {
         Boolean estadoCambiado = false;
         Connection conectar = new Connexio().connecta();
@@ -716,8 +761,8 @@ public class Model {
         }
         return estadoCambiado;
     }
-    
-    public Boolean changeEstatRealitza(int ID_Tasca, int ID_Empleat , String Estat) {
+
+    public Boolean changeEstatRealitza(int ID_Tasca, int ID_Empleat, String Estat) {
         Boolean estadoCambiado = false;
         Connection conectar = new Connexio().connecta();
         String sql = "UPDATE REALITZA SET estat_Per_Empleat = ? WHERE ID_Tasca = ? AND ID_Empleat = ?";
@@ -735,7 +780,7 @@ public class Model {
         }
         return estadoCambiado;
     }
-    
+
     public Boolean changeFinalizadoRealizado(int ID_Tasca) {
         Boolean estadosCambiados = false;
         Connection conectar = new Connexio().connecta();
@@ -843,3 +888,40 @@ public class Model {
         }
     }
 }
+
+    // Para evitar repeticion, comentare el estilo basico de una funcion SQL, y arriba de cada funcion solo pondre lo que hace.
+    //        # Aqui se introduce la variable que retornaremos, sea un booleano o el resultado como tal de la busqueda.
+    //        variable nombreVariable = otraVariable;
+    //        # Debajo, se define la conexion con la base de datos y la sentencia SQL
+    //        Connection conectar = new Connexio().connecta();
+    //        String sql = "(Sentencia SQL)";
+    //        try {
+    //        # Ahora, aqui dentro, pueden haber distintas diferencias. El primer formato es con PreparedStatement, que es cuando se requiere introducir cosas extra a la sentencia SQL
+    //        PreparedStatement orden = conectar.prepareStatement(sql);
+    //        orden.setInt(1, ID_Reserva);
+    //        # O si no se require nada extra, solo se pondra esto.
+    //        Statement orden = conectar.createStatement();
+    //        # Ahora, hay dos formas de ejecutar el SQL, la primera es ejecutandolo y ya. Esto solo seria para cosas como eliminar o editar.
+    //        orden.executeUpdate();
+    //        # La segunda es cuando se obtienen resultados y se quieren introducir en una variable, que seria con lo siguiente:
+    //        ResultSet resultados = orden.executeQuery();
+    //        while (resultados.next()) {
+    //              nombreVariable = resultados.getX(1) [X siendo replazado por el tipo de dato que obtiene]
+    //        }
+    //            return nombreVariable;
+    //        } 
+    //        # Ahora, si por algun casual fallara o espero que falle, agarraria la excepcion con esto y retornaria el resultado que quisiese.
+    //        catch (SQLException e) {
+    //            System.out.println(e.toString());
+    //            ReservaEliminada = false;
+    //            return ReservaEliminada;
+    //        }  
+    //        # Y esto es un catch de excepciones extras, por si las dudas.
+    //        catch (Exception e) {
+    //            System.out.println(e.toString());
+    //            ReservaEliminada = false;
+    //            return ReservaEliminada;
+    //        }
+    // 
+    //      # Y esto seria el contenido de una funcion SQL normal. Indicare que con funciones SQL en las que lo sean.
+    
