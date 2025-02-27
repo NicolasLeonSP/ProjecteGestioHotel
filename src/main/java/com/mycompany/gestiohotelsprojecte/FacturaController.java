@@ -20,7 +20,7 @@ import javafx.scene.layout.AnchorPane;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class FacturaController {
-
+    // Variables del controlador
     private Model model;
     private Factura FacturaReserva;
 
@@ -47,7 +47,7 @@ public class FacturaController {
     @FXML
     TextField preuTotal;
 
-    // Funcion para crear una alerta, pasandole el mensaje por un parametro
+    // Funcion para crear una alerta, pasandole el mensaje por un parametro y tambien si es un mensaje de error o no
     private void alterMos(String misgg, boolean error) {
         Alert alerta;
         if (error) {
@@ -58,7 +58,7 @@ public class FacturaController {
         alerta.setContentText(misgg);
         alerta.show();
     }
-
+    // Funcion para crear una alerta de confirmacion, pasandole el mensaje por un parametro
     private boolean confirMos(String misgg) {
         Alert alerta;
         alerta = new Alert(Alert.AlertType.CONFIRMATION);
