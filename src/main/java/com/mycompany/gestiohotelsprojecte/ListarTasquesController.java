@@ -2,7 +2,12 @@ package com.mycompany.gestiohotelsprojecte;
 
 import com.mycompany.gestiohotelsprojecte.model.Model;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Optional;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 
 /**
@@ -11,6 +16,7 @@ import javafx.scene.control.ListView;
  * @author Nicolas Leon Sapoznik Pancani
  */
 public class ListarTasquesController {
+
     // Variables del controlador.
     private Model model;
     private MenuBarController menuBar;
@@ -29,6 +35,20 @@ public class ListarTasquesController {
     public void initialize() {
         model.recargarTareasAvanzadas();
         tasques.setItems(model.getTareasAvanzadas());
+        empleatsAsignats.setItems(null);
+    }
+
+    // Funcion para crear una alerta de confirmacion, pasandole el mensaje por un parametro
+    private boolean confirMos(String misgg) {
+        Alert alerta;
+        alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setContentText(misgg);
+        Optional<ButtonType> confir = alerta.showAndWait();
+        if (confir.isPresent() && confir.get().equals(ButtonType.OK)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     @FXML
@@ -55,6 +75,27 @@ public class ListarTasquesController {
             menuBar.cambiarModificarEstatTasca();
         } catch (IOException e) {
         }
+    }
+
+    @FXML
+    // Funcion para comprobar si alguna tarea sin completar tiene todas las asignaciones en completado.
+    private void comprobarTareas() {
+        if (confirMos("Aixo modificara totes les tasques que tinguin totes les asignacions completades.")) {
+            ArrayList<Integer> tareasAComprobar = new ArrayList();
+            ObservableList temp = tasques.getItems();
+            for (Object object : temp) {
+                String e = object.toString();
+                String[] split = e.split("\\|");
+                tareasAComprobar.add(Integer.valueOf(split[0].strip()));
+            }
+            for (Integer integer : tareasAComprobar) {
+                if (model.comprobarSiCompletadoRealitza(integer)) {
+                    model.changeEstatTasca(integer, "Completada");
+                    initialize();
+                }
+            }
+        }
+
     }
 
     @FXML

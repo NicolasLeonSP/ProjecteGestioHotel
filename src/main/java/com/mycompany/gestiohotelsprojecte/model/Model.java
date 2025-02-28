@@ -753,6 +753,28 @@ public class Model {
         return estadoRealitza;
     }
 
+    // Esta funcion SQL se encarga de conseguir el estado de una asignacion. Ir a la linea 909 para mas info
+    public Boolean comprobarSiCompletadoRealitza(int ID_Tasca) {
+        Boolean estadoRealitza = true;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT estat_Per_Empleat FROM REALITZA WHERE ID_Tasca = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Tasca);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                if (!resultados.getString(1).equals("Completada")) {
+                    estadoRealitza = false;
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return estadoRealitza;
+    }
+    
     // Esta funcion SQL se encarga de cambiar el estado de una tarea al estado que se le ponga en la funcion, seleccionando la tarea segun el ID_Tasca. Ir a la linea 909 para mas info
     public Boolean changeEstatTasca(int ID_Tasca, String Estat) {
         Boolean estadoCambiado = false;
@@ -829,7 +851,6 @@ public class Model {
             System.out.println(e.toString());
         }
         return factura;
-
     }
 
     // Esta funcion SQL se encarga de conseguir la asignacion de una tarea, de una forma que los datos sean leibles. Todo segun el ID_Tarea. Ir a la linea 909 para mas info

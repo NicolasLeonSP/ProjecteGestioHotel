@@ -6,8 +6,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="468.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.mycompany.gestiohotelsprojecte.ListarTasquesController">
+<AnchorPane id="AnchorPane" prefHeight="468.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.ListarTasquesController">
    <children>
       <Text layoutX="24.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Llistar Tasques">
          <font>
@@ -20,5 +19,6 @@
       <Text layoutX="322.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Empleats asignats" />
       <Button layoutX="24.0" layoutY="394.0" mnemonicParsing="false" onAction="#editarTasca" text="Editar" />
       <Button layoutX="322.0" layoutY="394.0" mnemonicParsing="false" onAction="#editarRealitza" text="Editar" />
+      <Button layoutX="173.0" layoutY="394.0" mnemonicParsing="false" onAction="#comprobarTareas" text="Recargar Tasques" />
    </children>
 </AnchorPane>
