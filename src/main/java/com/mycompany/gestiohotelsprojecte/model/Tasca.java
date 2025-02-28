@@ -67,7 +67,7 @@ public class Tasca {
         this.estat = estat;
     }
 
-    // Esta funcion SQL se encarga de añadir una tarea a la base de datos. Ir a la linea 909 del modelo para mas info
+    // Esta funcion SQL se encarga de añadir una tarea a la base de datos. Ir a la linea 933 del modelo para mas info
     public boolean altaTasca() {
         Boolean TascaSubida = false;
         Connection conectar = new Connexio().connecta();

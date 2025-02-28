@@ -58,7 +58,7 @@ public class Realitza {
         this.data_Assignacio = data_Assignacio;
     }
     
-    // Esta funcion SQL se encarga de añadir una asignacion a la base de datos. Ir a la linea 909 del modelo para mas info
+    // Esta funcion SQL se encarga de añadir una asignacion a la base de datos. Ir a la linea 933 del modelo para mas info
     public boolean altaRealitza() {
         Boolean RealitzaSubida = false;
         Connection conectar = new Connexio().connecta();

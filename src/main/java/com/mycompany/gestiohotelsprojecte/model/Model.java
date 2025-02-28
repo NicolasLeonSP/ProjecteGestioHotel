@@ -136,6 +136,10 @@ public class Model {
         // Verificar fecha si es correcta
         if (!checkDateIsBefore(persona.getData_Naixement())) {
             msgError += "- Verifiqueu que la data de naixement sigui correcta, ja que supera la data actual.\n";
+            // Veremos si la edad es superior a 16.
+        }
+        if (persona.getData_Naixement().after(Date.valueOf(LocalDate.now().minusYears(18)))) {
+            msgError += "- Has de ser major de 18 anys per a inscribirte en el hotel, cambia la data de naixement per ser major de 18.\n";
         }
         // Verificar telefono si es correcto
         if (!persona.checkTelefono()) {
@@ -208,10 +212,10 @@ public class Model {
     }
 
     // Funcion para los checks de Empleado
-    public String checkEmpleado(Date date, String salario) {
+    public String checkEmpleado(Date dateContratacion, String salario) {
         String msgError = "";
         // Veremos si la fecha de contratacion es superior a la actual.
-        if (!checkDateIsBefore(date)) {
+        if (!checkDateIsBefore(dateContratacion)) {
             msgError += "- Verifiqueu que la data de contractació de l'empleat sigui correcta, ja que supera la data actual.\n";
         }
         // Veremos si el salario son numeros.
@@ -413,7 +417,7 @@ public class Model {
         return calculosFactura;
     }
 
-    // Esta funcion SQL se encarga de eliminar una reserva de la base de datos, segun el ID que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de eliminar una reserva de la base de datos, segun el ID que se le pase. Ir a la linea 933 para mas info
     public boolean eliminarReserva(int ID_Reserva) {
         boolean ReservaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -434,7 +438,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de eliminar una factura de la base de datos, segun el ID que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de eliminar una factura de la base de datos, segun el ID que se le pase. Ir a la linea 933 para mas info
     public boolean eliminarFactura(int ID_Factura) {
         boolean facturaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -455,7 +459,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de editar una reserva de la base de datos, añadiendole el precio total que se le pase, segun el ID que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de editar una reserva de la base de datos, añadiendole el precio total que se le pase, segun el ID que se le pase. Ir a la linea 933 para mas info
     public boolean actualizarReserva(int ID_Reserva, double preu_Total) {
         boolean reservaActualizada = false;
         Connection conectar = new Connexio().connecta();
@@ -476,7 +480,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de conseguir el ID de Persona de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir el ID de Persona de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 933 para mas info
     public int getIdPersona(String document_Identitat) {
         int ID_Persona = 0;
         Connection conectar = new Connexio().connecta();
@@ -498,7 +502,7 @@ public class Model {
         return ID_Persona;
     }
 
-    // Esta funcion SQL se encarga de conseguir una Persona de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir una Persona de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 933 para mas info
     public int getClientReserva(String document_Identitat) {
         int ID_Client = -1;
         Tipus_Client tipoCliente = null;
@@ -524,7 +528,7 @@ public class Model {
         return ID_Client;
     }
 
-    // Esta funcion SQL se encarga de conseguir el ID de Empleado de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir el ID de Empleado de la base de datos, segun el Documento de Identidad que se le pase. Ir a la linea 933 para mas info
     public int getIDEmpleatTasca(String document_Identitat) {
         int ID_Empleat = -1;
         Connection conectar = new Connexio().connecta();
@@ -546,7 +550,27 @@ public class Model {
         return ID_Empleat;
     }
 
-    // Esta funcion SQL se encarga de conseguir el ID de Habitacion de la base de datos, segun el Numero de Habitacion que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir el nombre del empleado, segun el ID que se le pase. Ir a la linea 933 para mas info
+    public String getNomEmpleat(int ID_Empleat) {
+        String nomEmpleat = null;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT nom, cognom FROM EMPLEAT e INNER JOIN PERSONA p ON e.ID_Empleat = p.ID_Persona WHERE ID_Empleat = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Empleat);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                nomEmpleat = resultados.getString(1) + " " + resultados.getString(2);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return nomEmpleat;
+    }
+
+    // Esta funcion SQL se encarga de conseguir el ID de Habitacion de la base de datos, segun el Numero de Habitacion que se le pase. Ir a la linea 933 para mas info
     public int getIDHabitacion(int numeroHabitacio) {
         int ID_Habitacio = 0;
         Connection conectar = new Connexio().connecta();
@@ -566,7 +590,7 @@ public class Model {
         return ID_Habitacio;
     }
 
-    // Esta funcion SQL se encarga de conseguir una Habitacion de la base de datos, segun el ID de Habitacion que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir una Habitacion de la base de datos, segun el ID de Habitacion que se le pase. Ir a la linea 933 para mas info
     public Habitacio getHabitacion(int ID_Habitacio) {
         Habitacio habitacio = null;
         Connection conectar = new Connexio().connecta();
@@ -587,7 +611,7 @@ public class Model {
         return habitacio;
     }
 
-    // Esta funcion SQL se encarga de conseguir todos los Email y Documentos de Identidad que hayan en Persona. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir todos los Email y Documentos de Identidad que hayan en Persona. Ir a la linea 933 para mas info
     public ArrayList<String> getEmailDocIdeCheck() {
         ArrayList<String> emailYDocIde = new ArrayList<>();
         Connection conectar = new Connexio().connecta();
@@ -610,7 +634,7 @@ public class Model {
         return emailYDocIde;
     }
 
-    // Esta funcion SQL se encarga de ver si la asignacion que se quiere hacer existe. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de ver si la asignacion que se quiere hacer existe. Ir a la linea 933 para mas info
     public Boolean checkIfRealitzaAlrExists(int ID_Tasca, int ID_Empleat) {
         Boolean exists = false;
         Connection conectar = new Connexio().connecta();
@@ -631,7 +655,7 @@ public class Model {
         return exists;
     }
 
-    // Esta funcion SQL se encarga de conseguir una reserva segun el ID que le pases.. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir una reserva segun el ID que le pases.. Ir a la linea 933 para mas info
     public Reserva getReserva(int ID_Reserva) {
         Reserva reserva = null;
         Connection conectar = new Connexio().connecta();
@@ -652,7 +676,7 @@ public class Model {
         return reserva;
     }
 
-    // Esta funcion SQL de añadir las reservas de un cliente en reservas. El cliente se busca cdon el documento de identidad. Ir a la linea 909 para mas info
+    // Esta funcion SQL de añadir las reservas de un cliente en reservas. El cliente se busca cdon el documento de identidad. Ir a la linea 933 para mas info
     public void recargarCodigoReserva(String document_Identitat) {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT ID_Reserva FROM RESERVA WHERE ID_Client = (SELECT ID_Client FROM CLIENT WHERE ID_Client = (SELECT ID_Persona FROM PERSONA WHERE Document_Identitat = ?))";
@@ -671,7 +695,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de conseguir el numero de la habitacion segun el ID de la Habitacion. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir el numero de la habitacion segun el ID de la Habitacion. Ir a la linea 933 para mas info
     public int getNumeroHabitacion(int ID_Habitacion) {
         int Num_Habitacion = -1;
         Connection conectar = new Connexio().connecta();
@@ -691,7 +715,7 @@ public class Model {
         return Num_Habitacion;
     }
 
-    // Esta funcion SQL se encarga de conseguir la tarea recien creada, o la mas nueva, en la fecha que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir la tarea recien creada, o la mas nueva, en la fecha que se le pase. Ir a la linea 933 para mas info
     public int getIDTasca(Date data) {
         int ID_Tasca = -1;
         Connection conectar = new Connexio().connecta();
@@ -712,7 +736,7 @@ public class Model {
         return ID_Tasca;
     }
 
-    // Esta funcion SQL se encarga de conseguir el estado de una tarea segun el ID de la tarea. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir el estado de una tarea segun el ID de la tarea. Ir a la linea 933 para mas info
     public String getEstatTasca(int ID_Tasca) {
         String estado = null;
         Connection conectar = new Connexio().connecta();
@@ -732,7 +756,7 @@ public class Model {
         return estado;
     }
 
-    // Esta funcion SQL se encarga de conseguir el estado de una asignacion. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir el estado de una asignacion. Ir a la linea 933 para mas info
     public String getEstatRealitza(int ID_Tasca, int ID_Empleat) {
         String estadoRealitza = null;
         Connection conectar = new Connexio().connecta();
@@ -753,7 +777,7 @@ public class Model {
         return estadoRealitza;
     }
 
-    // Esta funcion SQL se encarga de cambiar el estado de una tarea al estado que se le ponga en la funcion, seleccionando la tarea segun el ID_Tasca. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de cambiar el estado de una tarea al estado que se le ponga en la funcion, seleccionando la tarea segun el ID_Tasca. Ir a la linea 933 para mas info
     public Boolean changeEstatTasca(int ID_Tasca, String Estat) {
         Boolean estadoCambiado = false;
         Connection conectar = new Connexio().connecta();
@@ -772,7 +796,7 @@ public class Model {
         return estadoCambiado;
     }
 
-    // Esta funcion SQL se encarga de cambiar el estado de una asignacion a una tarea. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de cambiar el estado de una asignacion a una tarea. Ir a la linea 933 para mas info
     public Boolean changeEstatRealitza(int ID_Tasca, int ID_Empleat, String Estat) {
         Boolean estadoCambiado = false;
         Connection conectar = new Connexio().connecta();
@@ -792,7 +816,7 @@ public class Model {
         return estadoCambiado;
     }
 
-    // Esta funcion SQL se encarga de poner completado a todas las subtareas del ID_Tarea que se le especifique. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de poner completado a todas las subtareas del ID_Tarea que se le especifique. Ir a la linea 933 para mas info
     public Boolean changeFinalizadoRealizado(int ID_Tasca) {
         Boolean estadosCambiados = false;
         Connection conectar = new Connexio().connecta();
@@ -810,7 +834,7 @@ public class Model {
         return estadosCambiados;
     }
 
-    // Esta funcion SQL se encarga de conseguir la factura de una reserva, segun el ID_Reserva que se le pase. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir la factura de una reserva, segun el ID_Reserva que se le pase. Ir a la linea 933 para mas info
     public Factura getFactura(int ID_Reserva) {
         Factura factura = null;
         Connection conectar = new Connexio().connecta();
@@ -832,7 +856,7 @@ public class Model {
 
     }
 
-    // Esta funcion SQL se encarga de conseguir la asignacion de una tarea, de una forma que los datos sean leibles. Todo segun el ID_Tarea. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de conseguir la asignacion de una tarea, de una forma que los datos sean leibles. Todo segun el ID_Tarea. Ir a la linea 933 para mas info
     public void getEmpleadosTasca(int ID_Tasca) {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT nom, cognom, document_Identitat, data_Assignacio FROM EMPLEAT e INNER JOIN PERSONA p ON e.ID_Empleat = p.ID_Persona INNER JOIN REALITZA r ON e.ID_Empleat = r.ID_Empleat WHERE r.ID_Tasca = ?";
@@ -851,7 +875,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de recargar las habitaciones disponibles en la lista de habitaciones. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de recargar las habitaciones disponibles en la lista de habitaciones. Ir a la linea 933 para mas info
     public void recargarHabitaciones() {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT Numero_Habitacio FROM HABITACIO";
@@ -869,7 +893,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de recargar las tareas en la lista de tareas. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de recargar las tareas en la lista de tareas. Ir a la linea 933 para mas info
     public void recargarTareas() {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT ID_Tasca FROM TASCA";
@@ -887,7 +911,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de recargar las tareas, pero con mas informacion, ademas de filtrando las que esten completadas. Ir a la linea 909 para mas info
+    // Esta funcion SQL se encarga de recargar las tareas, pero con mas informacion, ademas de filtrando las que esten completadas. Ir a la linea 933 para mas info
     public void recargarTareasAvanzadas() {
         Connection conectar = new Connexio().connecta();
         String sql = "SELECT ID_Tasca, estat FROM TASCA WHERE estat != 'Completada'";

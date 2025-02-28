@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.text.Text;
 
 /**
  * FXML Controller class
@@ -18,6 +19,8 @@ public class ModificarEstatTascaController {
     // Variables del controlador.
     @FXML
     ComboBox EstatTasca;
+    @FXML
+    Text textTasca;
 
     private Model model;
     private MenuBarController menuBar;
@@ -61,12 +64,15 @@ public class ModificarEstatTascaController {
             isTasca = true;
             ID = Integer.parseInt(ID_Comp[1]);
             EstatTasca.getSelectionModel().select(model.getIDFromObservableList(model.getEstatTasca(ID), model.getEstados()));
+            textTasca.setText("Editar estat de la Tasca " + ID);
         } else if (ID_Comp[0].equals("R")) {
             // Si es una asignacion, cambia isRealitza to true y carga su estado.
             isRealitza = true;
             ID = Integer.parseInt(ID_Comp[1]);
             IDEmpleat = Integer.parseInt(ID_Comp[2]);
             EstatTasca.getSelectionModel().select(model.getIDFromObservableList(model.getEstatRealitza(ID, IDEmpleat), model.getEstados()));
+            String nomEmpleat = model.getNomEmpleat(IDEmpleat);
+            textTasca.setText("Editar estat de la Asignacion de la Tasca " + ID + "\ndel Empleat " + nomEmpleat);
         }
     }
 
