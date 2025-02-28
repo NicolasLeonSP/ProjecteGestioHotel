@@ -83,11 +83,13 @@ public class ListarTasquesController {
         if (confirMos("Aixo modificara totes les tasques que tinguin totes les asignacions completades.")) {
             ArrayList<Integer> tareasAComprobar = new ArrayList();
             ObservableList temp = tasques.getItems();
+            // Esta parte es para extraer el ID de las tareas.
             for (Object object : temp) {
                 String e = object.toString();
                 String[] split = e.split("\\|");
                 tareasAComprobar.add(Integer.valueOf(split[0].strip()));
             }
+            // Y aqui es para comprobar cada tarea si esta completada o no.
             for (Integer integer : tareasAComprobar) {
                 if (model.comprobarSiCompletadoRealitza(integer)) {
                     model.changeEstatTasca(integer, "Completada");
