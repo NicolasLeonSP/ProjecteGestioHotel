@@ -105,7 +105,13 @@ public class FacturaController {
         // Si se ha seleccionado de verdad una reserva
         if (!reservaAFacturar.selectionModelProperty().isNull().get()) {
             // Cargaremos la factura de la reserva, si es que existe.
-            FacturaReserva = model.getFactura(Integer.parseInt(reservaAFacturar.getValue().toString()));
+            try {
+                FacturaReserva = model.getFactura(Integer.parseInt(reservaAFacturar.getValue().toString()));
+            } catch (NumberFormatException e) {
+                FacturaReserva = null;
+            } catch (Exception e) {
+                FacturaReserva = null;
+            }
             if (FacturaReserva != null) {
                 // Si existe, cargaremos el campo de modificacion de factura.
                 FacturaAnchor.setVisible(true);
@@ -255,6 +261,7 @@ public class FacturaController {
     public void initialize() {
         FacturaAnchor.setVisible(false);
     }
+
     // Esta funcion inserta el modelo que se le pasa a la clase.
     public void injecta(Model obj) {
         model = obj;
