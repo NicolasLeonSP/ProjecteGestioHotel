@@ -48,7 +48,7 @@ public class Client extends Persona {
     public void setTargeta_Credit(String targeta_Credit) {
         this.targeta_Credit = targeta_Credit;
     }
-    // Esta funcion SQL se encarga de subir el cliente a la base de datos. Ir a la linea 933 del modelo para mas info
+    // Esta funcion SQL se encarga de subir el cliente a la base de datos. Ir a la linea 980 del modelo para mas info
     public Boolean altaCliente() {
         boolean ClienteSubidoABaseDeDatos = true;
         Connection conectar = new Connexio().connecta();
