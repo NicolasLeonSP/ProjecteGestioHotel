@@ -3,7 +3,6 @@ package com.mycompany.gestiohotelsprojecte;
 import com.mycompany.gestiohotelsprojecte.model.Model;
 import com.mycompany.gestiohotelsprojecte.model.Reserva;
 import com.mycompany.gestiohotelsprojecte.model.Tipus_Reserva;
-import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Optional;

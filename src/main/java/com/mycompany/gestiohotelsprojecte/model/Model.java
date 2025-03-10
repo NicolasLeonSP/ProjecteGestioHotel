@@ -798,7 +798,7 @@ public class Model {
         }
         return estadoRealitza;
     }
-    
+
     // Esta funcion SQL se encarga de cambiar el estado de una tarea al estado que se le ponga en la funcion, seleccionando la tarea segun el ID_Tasca. Ir a la linea 909 para mas info
     public Boolean changeEstatTasca(int ID_Tasca, String Estat) {
         Boolean estadoCambiado = false;

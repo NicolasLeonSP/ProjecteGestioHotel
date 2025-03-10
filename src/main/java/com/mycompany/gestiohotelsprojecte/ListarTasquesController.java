@@ -57,7 +57,7 @@ public class ListarTasquesController {
         // Ahora comprobaremos si de verdad se ha seleccionado una tarea.
         if (tasques.getSelectionModel().getSelectedItem() != null) {
             // En el caso de que sea correcto, cargaremos los empleados asignados a esa tarea.
-            String[] separado = tasques.getSelectionModel().getSelectedItem().toString().split("|");
+            String[] separado = tasques.getSelectionModel().getSelectedItem().toString().split("\\|");
             String ID_Tasca = separado[0].strip();
             model.getEmpleadosTasca(Integer.parseInt(ID_Tasca));
             empleatsAsignats.setItems(model.getEmpleadosTarea());

@@ -119,7 +119,6 @@ public class ModificarEstatTascaController {
                     if (confirMos("Esteu segur que voleu avançar l'estat de la tasca? Recordeu que un cop pujat, no es pot tornar a canviar.")) {
                         // Si ese es el caso, cambiaremos el estado de la tarea al ya dado.
                         model.changeEstatRealitza(ID, IDEmpleat, EstatTasca.getValue().toString());
-                        System.out.println("a");
                         try {
                             // Y luego de eso, nos volveremos a la lista de tareas.
                             menuBar.cambiarListarTasques();
