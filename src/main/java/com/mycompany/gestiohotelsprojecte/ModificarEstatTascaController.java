@@ -60,14 +60,16 @@ public class ModificarEstatTascaController {
         String[] ID_Comp = model.getIDTascaORealitzaSeleccionada().split(",");
         // Eso se comprube aqui, viendo la primera parte del mensaje donde determina esto.
         if (ID_Comp[0].equals("T")) {
-            // Si es una tarea, cambia isTasca to true y carga su estado.
+            // Si es una tarea, cambia isTasca to true y isRealitza to false y carga su estado.
             isTasca = true;
+            isRealitza = false;
             ID = Integer.parseInt(ID_Comp[1]);
             EstatTasca.getSelectionModel().select(model.getIDFromObservableList(model.getEstatTasca(ID), model.getEstados()));
             textTasca.setText("Editar estat de la Tasca " + ID);
         } else if (ID_Comp[0].equals("R")) {
-            // Si es una asignacion, cambia isRealitza to true y carga su estado.
+            // Si es una asignacion, cambia isRealitza to true y isTasca to false y carga su estado.
             isRealitza = true;
+            isTasca = false;
             ID = Integer.parseInt(ID_Comp[1]);
             IDEmpleat = Integer.parseInt(ID_Comp[2]);
             EstatTasca.getSelectionModel().select(model.getIDFromObservableList(model.getEstatRealitza(ID, IDEmpleat), model.getEstados()));

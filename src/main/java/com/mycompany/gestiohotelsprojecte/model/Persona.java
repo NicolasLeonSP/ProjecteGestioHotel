@@ -157,6 +157,7 @@ public class Persona {
             orden.setString(6, getTelefon());
             orden.setString(7, getEmail());
             orden.executeUpdate();
+            orden.close();
             return PersonaSubidaBaseDeDatos;
         } catch (SQLException e) {
             System.out.println(e.toString());

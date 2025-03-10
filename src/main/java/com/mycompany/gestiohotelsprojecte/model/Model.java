@@ -426,6 +426,7 @@ public class Model {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setInt(1, ID_Reserva);
             orden.executeUpdate();
+            orden.close();
             return ReservaEliminada;
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -447,6 +448,7 @@ public class Model {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setInt(1, ID_Factura);
             orden.executeUpdate();
+            orden.close();
             return facturaEliminada;
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -469,6 +471,7 @@ public class Model {
             orden.setDouble(1, preu_Total);
             orden.setInt(2, ID_Reserva);
             orden.executeUpdate();
+            orden.close();
             reservaActualizada = true;
             return reservaActualizada;
         } catch (SQLException e) {
@@ -492,6 +495,7 @@ public class Model {
             while (resultados.next()) {
                 ID_Persona = resultados.getInt(1);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
             return 0;
@@ -518,6 +522,7 @@ public class Model {
                 tipoCliente = getTipoCliente(resultados.getString(2));
                 setTipusClienteReserva(tipoCliente);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
             return ID_Client;
@@ -540,6 +545,7 @@ public class Model {
             while (resultados.next()) {
                 ID_Empleat = resultados.getInt(1);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
             return ID_Empleat;
@@ -562,6 +568,7 @@ public class Model {
             while (resultados.next()) {
                 nomEmpleat = resultados.getString(1) + " " + resultados.getString(2);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -582,6 +589,7 @@ public class Model {
             while (resultados.next()) {
                 ID_Habitacio = resultados.getInt(1);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -603,6 +611,7 @@ public class Model {
                 habitacio = new Habitacio(resultados.getInt(2), getTipusHabitacioFromString(resultados.getString(3)), resultados.getInt(4), resultados.getDouble(5), resultados.getDouble(6), getEstatHabitacioFromString(resultados.getString(7)), resultados.getString(8));
                 habitacio.setID_Habitacio(resultados.getInt(1));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -624,6 +633,7 @@ public class Model {
                 temp += "," + resultados.getString(2);
                 emailYDocIde.add(temp);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
             return null;
@@ -647,6 +657,7 @@ public class Model {
             while (resultados.next()) {
                 exists = true;
             }
+            orden.close();
         } catch (SQLException e) {
             // Al ser esperado que de error la mayoria de veces, quitamos esto.
         } catch (Exception e) {
@@ -668,6 +679,7 @@ public class Model {
                 reserva = new Reserva(resultados.getDate(2), resultados.getDate(3), resultados.getDate(4), getReservaFromString(resultados.getString(5)), getIVAFromValue(resultados.getInt(6)), resultados.getDouble(7), resultados.getInt(8), resultados.getInt(9));
                 reserva.setID_Reserva(resultados.getInt(1));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -688,6 +700,7 @@ public class Model {
             while (resultados.next()) {
                 reservas.add(String.valueOf(resultados.getInt(1)));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -707,6 +720,7 @@ public class Model {
             while (resultados.next()) {
                 Num_Habitacion = resultados.getInt(1);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -728,6 +742,7 @@ public class Model {
             while (resultados.next()) {
                 ID_Tasca = resultados.getInt(1);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -748,6 +763,7 @@ public class Model {
             while (resultados.next()) {
                 estado = resultados.getString(1);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -769,6 +785,7 @@ public class Model {
             while (resultados.next()) {
                 estadoRealitza = resultados.getString(1);
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -791,6 +808,7 @@ public class Model {
                     estadoRealitza = false;
                 }
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -810,6 +828,7 @@ public class Model {
             orden.setInt(2, ID_Tasca);
             orden.executeUpdate();
             estadoCambiado = true;
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -830,6 +849,7 @@ public class Model {
             orden.setInt(3, ID_Empleat);
             orden.executeUpdate();
             estadoCambiado = true;
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -848,6 +868,7 @@ public class Model {
             orden.setInt(1, ID_Tasca);
             orden.executeUpdate();
             estadosCambiados = true;
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -869,6 +890,7 @@ public class Model {
                 factura = new Factura(resultados.getDate(2), getMetodePagamentFromString(resultados.getString(3)), resultados.getDouble(4), resultados.getDouble(5), resultados.getDouble(6), resultados.getInt(7));
                 factura.setID_Factura(resultados.getInt(1));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -889,6 +911,7 @@ public class Model {
             while (resultados.next()) {
                 empleadosTarea.add(resultados.getString(1) + " " + resultados.getString(2) + " | " + resultados.getString(3) + " | " + resultados.getString(4));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -907,6 +930,7 @@ public class Model {
             while (resultados.next()) {
                 habitaciones.add(String.valueOf(resultados.getInt(1)));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -917,7 +941,7 @@ public class Model {
     // Esta funcion SQL se encarga de recargar las tareas en la lista de tareas. Ir a la linea 933 para mas info
     public void recargarTareas() {
         Connection conectar = new Connexio().connecta();
-        String sql = "SELECT ID_Tasca FROM TASCA";
+        String sql = "SELECT ID_Tasca FROM TASCA WHERE estat != 'Completada'";
         try {
             Statement orden = conectar.createStatement();
             ResultSet resultados = orden.executeQuery(sql);
@@ -925,6 +949,7 @@ public class Model {
             while (resultados.next()) {
                 tareas.add(String.valueOf(resultados.getInt(1)));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {
@@ -943,6 +968,7 @@ public class Model {
             while (resultados.next()) {
                 tareasAvanzadas.add(String.valueOf(resultados.getInt(1)) + " | " + resultados.getString(2));
             }
+            orden.close();
         } catch (SQLException e) {
             System.out.println(e.toString());
         } catch (Exception e) {

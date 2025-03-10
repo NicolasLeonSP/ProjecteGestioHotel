@@ -100,6 +100,7 @@ public class Factura {
                     TargetaCreditoExiste = true;
                 }
             }
+            orden.close();
             return TargetaCreditoExiste;
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -124,6 +125,7 @@ public class Factura {
             orden.setInt(6, getID_Reserva());
             orden.executeUpdate();
             facturaSubida = true;
+            orden.close();
             return facturaSubida;
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -144,6 +146,7 @@ public class Factura {
             orden.setInt(2, getID_Factura());
             orden.executeUpdate();
             FacturaEditada = true;
+            orden.close();
             return FacturaEditada;
         } catch (SQLException e) {
             System.out.println(e.toString());

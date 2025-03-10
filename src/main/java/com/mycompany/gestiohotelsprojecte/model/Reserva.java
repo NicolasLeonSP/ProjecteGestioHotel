@@ -120,6 +120,7 @@ public class Reserva {
             orden.setInt(7, getID_Client());
             orden.setInt(8, getID_Habitacio());
             orden.executeUpdate();
+            orden.close();
             return ReservaMensaje;
         } catch (SQLException e) {
             ReservaMensaje = e.getMessage();
@@ -144,6 +145,7 @@ public class Reserva {
             orden.setInt(4, getID_Habitacio());
             orden.setInt(5, getID_Reserva());
             orden.executeUpdate();
+            orden.close();
             return ReservaMensaje;
         } catch (SQLException e) {
             System.out.println(e.toString());

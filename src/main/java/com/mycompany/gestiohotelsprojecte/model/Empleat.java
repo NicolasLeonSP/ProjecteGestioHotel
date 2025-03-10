@@ -64,6 +64,7 @@ public class Empleat extends Persona {
             orden.setInt(4, getSalari_Brut());
             orden.setString(5, getEstat_Laboral().name());
             orden.executeUpdate();
+            orden.close();
             return EmpleadoSubidoABaseDeDatos;
         } catch (SQLException e) {
             System.out.println(e.toString());

@@ -80,6 +80,7 @@ public class Tasca {
             orden.setString(4, getEstat().name());
             orden.executeUpdate();
             TascaSubida = true;
+            orden.close();
             return TascaSubida;
         } catch (SQLException e) {
             System.out.println(e.getMessage());

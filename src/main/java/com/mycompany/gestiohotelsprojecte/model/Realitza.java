@@ -71,6 +71,7 @@ public class Realitza {
             orden.setDate(4, getData_Assignacio());
             orden.executeUpdate();
             RealitzaSubida = true;
+            orden.close();
             return RealitzaSubida;
         } catch (SQLException e) {
             System.out.println(e.getMessage());
