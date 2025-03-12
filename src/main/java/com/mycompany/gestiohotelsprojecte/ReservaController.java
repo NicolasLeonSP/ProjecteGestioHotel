@@ -118,30 +118,37 @@ public class ReservaController {
             Date dataIniciTemp = model.LocalDateToSqlDate(dataIniciCreacion.getValue());
             Date dataFinalTemp = model.LocalDateToSqlDate(dataFinalCreacion.getValue());
             int ID_Habitacio = model.getIDHabitacion(Integer.parseInt(habitacionsCreacion.getValue().toString()));
-            Reserva reserva = new Reserva(dataActual, dataIniciTemp, dataFinalTemp, (Tipus_Reserva) tipusReservaCreacion.getValue(), model.getIVAClient(model.getTipusClienteReserva()), 0, model.getIDClienteReserva(), ID_Habitacio);
-            String errorReserva = reserva.altaReserva();
-            // Veremos a ver si ha habido algun error
-            if (errorReserva.equals("")) {
-                // Caso que no, soltaremos un mensaje y reiniciaremos creacion y recargaremos las reservas.
-                alterMos("Creació de la reserva completada.", false);
-                restartCamposCreacion();
-                recargarReservas();
-            } else {
-                // Caso que si haya, separaremos el mensaje para que nos retorne el campo en concreto.
-                String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
-                // Si el campo que ha dado error es fecha de inicio, lo decimos.
-                if (campoError.equals("data_Inici")) {
-                    alterMos("Verifiqueu que la data d'inici estigui ben posada. Ha de ser superior a l'actual i menor a la data final.", true);
-                } // Si el campo que ha dado error es la fecha final, lo decimos tambien.
-                else if (campoError.equals("data_Fi")) {
-                    alterMos("Verifiqueu que la data final estigui ben posada. Deu ser més gran a la data d'inici.", true);
-                } // Si el campo que ha dado error no es ninguno de los dos anteriores, lo soltaremos en el mensaje.
-                else {
-                    alterMos(campoError, true);
+            // Check fechas no esten ya asignadas
+            if (!model.fechaYaAsignada(dataIniciTemp, dataFinalTemp, ID_Habitacio)) {
+                Reserva reserva = new Reserva(dataActual, dataIniciTemp, dataFinalTemp, (Tipus_Reserva) tipusReservaCreacion.getValue(), model.getIVAClient(model.getTipusClienteReserva()), 0, model.getIDClienteReserva(), ID_Habitacio);
+                String errorReserva = reserva.altaReserva();
+                // Veremos a ver si ha habido algun error
+                if (errorReserva.equals("")) {
+                    // Caso que no, soltaremos un mensaje y reiniciaremos creacion y recargaremos las reservas.
+                    alterMos("Creació de la reserva completada.", false);
+                    restartCamposCreacion();
+                    recargarReservas();
+                } else {
+                    // Caso que si haya, separaremos el mensaje para que nos retorne el campo en concreto.
+                    String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
+                    // Si el campo que ha dado error es fecha de inicio, lo decimos.
+                    if (campoError.equals("data_Inici")) {
+                        alterMos("Verifiqueu que la data d'inici estigui ben posada. Ha de ser superior a l'actual i menor a la data final.", true);
+                    } // Si el campo que ha dado error es la fecha final, lo decimos tambien.
+                    else if (campoError.equals("data_Fi")) {
+                        alterMos("Verifiqueu que la data final estigui ben posada. Deu ser més gran a la data d'inici.", true);
+                    } // Si el campo que ha dado error no es ninguno de los dos anteriores, lo soltaremos en el mensaje.
+                    else {
+                        alterMos(campoError, true);
+                    }
                 }
+            } else {
+                // Caso que el rango de fechas este dentro de una reserva ya hecha
+                alterMos("Les dates que heu introduit ja estan agafades per una reserva, introdueixi un altre rang de dades", true);
             }
+
         } else {
-            // Caso que todoso los campos no esten rellenados.
+            // Caso que todos los campos no esten rellenados.
             alterMos("Verifiqueu que tots els camps han estat emplenats", true);
         }
     }
@@ -258,6 +265,7 @@ public class ReservaController {
     private void restarCamposEliminacion() {
         reservaEliminacio.valueProperty().set(null);
     }
+
     // Esta funcion inserta el modelo que se le pasa a la clase.
     public void injecta(Model obj) {
         model = obj;

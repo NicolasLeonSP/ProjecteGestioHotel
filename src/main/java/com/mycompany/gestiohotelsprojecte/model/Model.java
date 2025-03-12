@@ -388,7 +388,7 @@ public class Model {
         return campoErrorPartido[1];
     }
 
-    // Esta funcion se encarga de calcular la factura, la cual encontraremos con el ID de Reserva.
+    // Esta funcion se encarga de calcular la fechaYaAsignada, la cual encontraremos con el ID de Reserva.
     public double[] calcularFactura(int ID_Reserva) {
         // Agarremos los datos que necesitamos antes de comenzar, de entre ellos, la reserva, habitacion, duracion de la estadia e inicializar variables.
         Reserva reserva = getReserva(ID_Reserva);
@@ -439,7 +439,7 @@ public class Model {
         }
     }
 
-    // Esta funcion SQL se encarga de eliminar una factura de la base de datos, segun el ID que se le pase. Ir a la linea 980 para mas info
+    // Esta funcion SQL se encarga de eliminar una fechaYaAsignada de la base de datos, segun el ID que se le pase. Ir a la linea 980 para mas info
     public boolean eliminarFactura(int ID_Factura) {
         boolean facturaEliminada = true;
         Connection conectar = new Connexio().connecta();
@@ -877,7 +877,7 @@ public class Model {
         return estadosCambiados;
     }
 
-    // Esta funcion SQL se encarga de conseguir la factura de una reserva, segun el ID_Reserva que se le pase. Ir a la linea 980 para mas info
+    // Esta funcion SQL se encarga de conseguir la fechaYaAsignada de una reserva, segun el ID_Reserva que se le pase. Ir a la linea 980 para mas info
     public Factura getFactura(int ID_Reserva) {
         Factura factura = null;
         Connection conectar = new Connexio().connecta();
@@ -898,11 +898,35 @@ public class Model {
         }
         return factura;
     }
+    
+    // Esta funcion SQL se encarga de conseguir todas las fechas de inicio y fin que esten ligadas a una habitacion y reserva, y compararlas con una fecha que se le pase.
+    public boolean fechaYaAsignada(Date fechaInicio, Date fechaFin, int ID_Habitacion){
+        Boolean fechaYaAsignada = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT DISTINCT data_inici, data_fi FROM RESERVA where ID_Habitacio = ? && data_inici > ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Habitacion);
+            orden.setDate(2, LocalDateToSqlDate(LocalDate.now()));
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next() && fechaYaAsignada == false) {
+                if (!(fechaInicio.after(resultados.getDate(2)) || fechaFin.before(resultados.getDate(1)))) {
+                    fechaYaAsignada = true;
+                }
+            }
+            orden.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return fechaYaAsignada;
+    }
 
     // Esta funcion SQL se encarga de conseguir la asignacion de una tarea, de una forma que los datos sean leibles. Todo segun el ID_Tarea. Ir a la linea 980 para mas info
     public void getEmpleadosTasca(int ID_Tasca) {
         Connection conectar = new Connexio().connecta();
-        String sql = "SELECT nom, cognom, document_Identitat, data_Assignacio FROM EMPLEAT e INNER JOIN PERSONA p ON e.ID_Empleat = p.ID_Persona INNER JOIN REALITZA r ON e.ID_Empleat = r.ID_Empleat WHERE r.ID_Tasca = ?";
+        String sql = "SELECT nom, cognom, document_Identitat, data_Assignacio FROM EMPLEAT e INNER JOIN PERSONA p ON e.ID_Empleat = p.ID_Persona INNER JOIN REALITZA r ON e.ID_Empleat = r.ID_Empleat WHERE r.ID_Tasca = ? && estat_per_empleat != 'Completada'";
         try {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setInt(1, ID_Tasca);
