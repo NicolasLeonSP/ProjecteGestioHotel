@@ -104,7 +104,7 @@ public class Reserva {
         this.preu_Total_Reserva = preu_Total_Reserva;
     }
 
-    // Esta funcion SQL se encarga de añadir una reserva a la base de datos. Ir a la linea 980 del modelo para mas info
+    // Esta funcion SQL se encarga de añadir una reserva a la base de datos. Ir a la linea 1004 del modelo para mas info
     public String altaReserva() {
         String ReservaMensaje = "";
         Connection conectar = new Connexio().connecta();
@@ -132,7 +132,7 @@ public class Reserva {
         }
     }
 
-    // Esta funcion SQL se encarga de modificar una reserva ya existente en la base de datos, modificando la mitad sus datos. Ir a la linea 980 del modelo para mas info
+    // Esta funcion SQL se encarga de modificar una reserva ya existente en la base de datos, modificando la mitad sus datos. Ir a la linea 1004 del modelo para mas info
     public String modificarReserva() {
         String ReservaMensaje = "";
         Connection conectar = new Connexio().connecta();
