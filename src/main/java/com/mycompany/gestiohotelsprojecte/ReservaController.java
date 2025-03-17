@@ -1,5 +1,6 @@
 package com.mycompany.gestiohotelsprojecte;
 
+import com.mycompany.gestiohotelsprojecte.model.Factura;
 import com.mycompany.gestiohotelsprojecte.model.Model;
 import com.mycompany.gestiohotelsprojecte.model.Reserva;
 import com.mycompany.gestiohotelsprojecte.model.Tipus_Reserva;
@@ -191,27 +192,47 @@ public class ReservaController {
             ReservaEnEdicion.setData_Fi(model.LocalDateToSqlDate(dataFinalEdicion.getValue()));
             ReservaEnEdicion.setTipus_Reserva((Tipus_Reserva) tipusReservaEdicion.getValue());
             ReservaEnEdicion.setID_Habitacio(model.getIDHabitacion(Integer.parseInt(habitacionsEdicion.getValue().toString())));
-            String errorReserva = ReservaEnEdicion.modificarReserva();
-            // Veremos si retorna algun error.
-            if (errorReserva.equals("")) {
-                // Caso que no, soltaremos un mensaje y reiniciaremos creacion y recargaremos las reservas.
-                alterMos("S'ha modificat la reserva amb èxit", false);
-                restartCamposEdicion();
-                ReservaEnEdicion = null;
-            } else {
-                // Caso que si haya, separaremos el mensaje para que nos retorne el campo en concreto.
-                String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
-                // Si el campo que ha dado error es fecha de inicio, lo decimos.
-                if (campoError.equals("data_Inici")) {
-                    alterMos("Verifiqueu que la data d'inici estigui ben posada. Ha de ser superior a l'actual i menor a la data final.", true);
-                } // Si el campo que ha dado error es la fecha final, lo decimos tambien.
-                else if (campoError.equals("data_Fi")) {
-                    alterMos("Verifiqueu que la data final estigui ben posada. Deu ser més gran a la data d'inici.", true);
-                } // Si el campo que ha dado error no es ninguno de los dos anteriores, lo soltaremos en el mensaje.
-                else {
-                    alterMos(campoError, true);
+            // Veremos si las fechas ya han sido asignadas o no sobre esa habitacion.
+            if (!model.fechaYaAsignadaYExisteReserva(ReservaEnEdicion.getData_Inici(), ReservaEnEdicion.getData_Fi(), ReservaEnEdicion.getID_Habitacio(), ReservaEnEdicion.getID_Reserva())) {
+                String errorReserva = ReservaEnEdicion.modificarReserva();
+                // Veremos si retorna algun error.
+                if (errorReserva.equals("")) {
+                    // Ara, veremos si hay alguna factura asignada previamente.
+                    Factura factura = model.getFactura(ReservaEnEdicion.getID_Reserva());
+                    if (factura != null) {
+                        // Lo que haremos con esta factura sera modificar los datos para que corresponda a los nuevos de la reserva.
+                        double[] calculosFactura = model.calcularFactura(ReservaEnEdicion.getID_Reserva());
+                        factura.setBase_Imposable(calculosFactura[0]);
+                        factura.setIva(calculosFactura[1]);
+                        factura.setTotal(calculosFactura[2]);
+                        // Ahora, editaremos la factura con los nuevos datos
+                        if (factura.editarFactura()) {
+                            alterMos("La factura tambe ha sigut editada, per a que correspongui a les noves dades", false);
+                        }
+                    }
+                    // Caso que no, soltaremos un mensaje y reiniciaremos creacion y recargaremos las reservas.
+                    alterMos("S'ha modificat la reserva amb èxit", false);
+                    restartCamposEdicion();
+                    ReservaEnEdicion = null;
+                } else {
+                    // Caso que si haya, separaremos el mensaje para que nos retorne el campo en concreto.
+                    String campoError = model.retornarMensajeCorrectoReserva(errorReserva);
+                    // Si el campo que ha dado error es fecha de inicio, lo decimos.
+                    if (campoError.equals("data_Inici")) {
+                        alterMos("Verifiqueu que la data d'inici estigui ben posada. Ha de ser superior a l'actual i menor a la data final.", true);
+                    } // Si el campo que ha dado error es la fecha final, lo decimos tambien.
+                    else if (campoError.equals("data_Fi")) {
+                        alterMos("Verifiqueu que la data final estigui ben posada. Deu ser més gran a la data d'inici.", true);
+                    } // Si el campo que ha dado error no es ninguno de los dos anteriores, lo soltaremos en el mensaje.
+                    else {
+                        alterMos(campoError, true);
+                    }
                 }
+            } else {
+                // Caso que la fecha puesta choque con alguna fecha ya existente
+                alterMos("El rang de dates posades ja esta reservat per la habitacio seleccionada.", true);
             }
+
         } else {
             // Caso que ningun campo haya sido editado.
             alterMos("Modifiqueu algun camp dels presents si voleu modificar la reserva.", true);
@@ -225,7 +246,13 @@ public class ReservaController {
         if (reservaEliminacio.getValue() != null) {
             // Preguntaremos al usuario si es eso lo que queria.
             if (confirMos("Esteu segur que voleu eliminar la reserva seleccionada?")) {
-                // Si es el caso, eliminaremos la reserva.
+                // Si es el caso, eliminaremos la reserva, antes comprobando si hay una factura.
+                Factura factura = model.getFactura(Integer.parseInt(reservaEliminacio.getValue().toString()));
+                // Si hay una factura...
+                if (factura != null) {
+                    // Lo que haremos sera eliminar la factura como tal
+                    model.eliminarFactura(factura.getID_Factura());
+                }
                 if (model.eliminarReserva(Integer.parseInt(reservaEliminacio.getValue().toString()))) {
                     // Si se ha eliminado correctamente, soltamos mensaje y recargamos reserva.
                     alterMos("S'ha eliminat la reserva amb èxit.", false);

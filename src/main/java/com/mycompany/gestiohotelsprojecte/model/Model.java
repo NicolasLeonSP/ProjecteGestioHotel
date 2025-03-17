@@ -922,6 +922,31 @@ public class Model {
         }
         return fechaYaAsignada;
     }
+    
+    // Esta funcion SQL se encarga de conseguir todas las fechas de inicio y fin que esten ligadas a una habitacion y reserva, y compararlas con una fecha que se le pase. Lo unico diferente con la anterior es que supone que esto se hace sobre una reserva ya existente, entonces, esa fecha no la trae.
+    public boolean fechaYaAsignadaYExisteReserva(Date fechaInicio, Date fechaFin, int ID_Habitacion, int ID_Reserva){
+        Boolean fechaYaAsignada = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT DISTINCT data_inici, data_fi FROM RESERVA where ID_Habitacio = ? && data_inici > ? && ID_Reserva != ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Habitacion);
+            orden.setDate(2, LocalDateToSqlDate(LocalDate.now()));
+            orden.setInt(3, ID_Reserva);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next() && fechaYaAsignada == false) {
+                if (!(fechaInicio.after(resultados.getDate(2)) || fechaFin.before(resultados.getDate(1)))) {
+                    fechaYaAsignada = true;
+                }
+            }
+            orden.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return fechaYaAsignada;
+    }
 
     // Esta funcion SQL se encarga de conseguir la asignacion de una tarea, de una forma que los datos sean leibles. Todo segun el ID_Tarea. Ir a la linea 1004 para mas info
     public void getEmpleadosTasca(int ID_Tasca) {

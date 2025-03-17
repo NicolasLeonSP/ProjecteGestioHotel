@@ -136,7 +136,7 @@ public class Factura {
         }
     }
     // Esta funcion SQL se encarga de editar una factura ya existente en la base de datos, modificando el metodo de pago. Ir a la linea 1004 del modelo para mas info
-    public boolean editarFactura() {
+    public boolean editarFacturaMetodoPago() {
         Boolean FacturaEditada = false;
         Connection conectar = new Connexio().connecta();
         String sql = "UPDATE FACTURA SET metode_Pagament = ? WHERE ID_Factura = ?";
@@ -144,6 +144,30 @@ public class Factura {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setString(1, getMetode_Pagament().toString());
             orden.setInt(2, getID_Factura());
+            orden.executeUpdate();
+            FacturaEditada = true;
+            orden.close();
+            return FacturaEditada;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return FacturaEditada;
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return FacturaEditada;
+        }
+    }
+    
+    // Esta funcion SQL se encarga de editar una factura ya existente en la base de datos, modificando basicamente todo. Ir a la linea 1004 del modelo para mas info
+    public boolean editarFactura() {
+        Boolean FacturaEditada = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "UPDATE FACTURA SET base_Imposable = ?, iva = ?, total = ? WHERE ID_Factura = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setDouble(1, getBase_Imposable());
+            orden.setDouble(2, getIva());
+            orden.setDouble(3, getTotal());
+            orden.setInt(4, getID_Factura());
             orden.executeUpdate();
             FacturaEditada = true;
             orden.close();

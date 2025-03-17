@@ -213,7 +213,7 @@ public class FacturaController {
                 if (FacturaReserva.checkClienteTarjetaCredito()) {
                     // Si es el caso, cambiaremos eso en el Java y luego haremos la funcion para editar factura.
                     FacturaReserva.setMetode_Pagament(Metode_Pagament.Targeta);
-                    if (FacturaReserva.editarFactura()) {
+                    if (FacturaReserva.editarFacturaMetodoPago()) {
                         // Si funciona, soltamos un mensaje sobre ello.
                         alterMos("Modificació feta amb èxit.", false);
 
@@ -228,7 +228,7 @@ public class FacturaController {
             } else {
                 // En el caso de que el metodo de pago no sea tarjeta, lo cambiaremos a ese metodo de pago y editaremos la factura
                 FacturaReserva.setMetode_Pagament(model.getMetodePagamentFromString(metodePagamentVerFactura.getValue().toString()));
-                if (FacturaReserva.editarFactura()) {
+                if (FacturaReserva.editarFacturaMetodoPago()) {
                     // Si se edita correctamente, soltaremos un mensaje sobre ello.
                     alterMos("Modificació feta amb èxit.", false);
                 } else {
