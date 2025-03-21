@@ -51,7 +51,7 @@ public class Empleat extends Persona {
     public void setEstat_Laboral(Estat_Laboral estat_Laboral) {
         this.estat_Laboral = estat_Laboral;
     }
-    // Esta funcion SQL se encarga de subir el empleado a la base de datos. Ir a la linea 1004 del modelo para mas info
+    // Esta funcion SQL se encarga de subir el empleado a la base de datos. Ir a la linea 1029 del modelo para mas info
     public Boolean altaEmpleado() {
         boolean EmpleadoSubidoABaseDeDatos = true;
         Connection conectar = new Connexio().connecta();

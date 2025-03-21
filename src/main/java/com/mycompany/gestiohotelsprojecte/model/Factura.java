@@ -86,7 +86,7 @@ public class Factura {
     }
 
     
-    // Esta funcion SQL se encarga de revisar si el cliente tiene una tarjeta de credito. Ir a la linea 1004 del modelo para mas info
+    // Esta funcion SQL se encarga de revisar si el cliente tiene una tarjeta de credito. Ir a la linea 1029 del modelo para mas info
     public boolean checkClienteTarjetaCredito() {
         boolean TargetaCreditoExiste = false;
         Connection conectar = new Connexio().connecta();
@@ -110,7 +110,7 @@ public class Factura {
             return TargetaCreditoExiste;
         }
     }
-    // Esta funcion SQL se encarga de subir la factura a la base de datos. Ir a la linea 1004 del modelo para mas info
+    // Esta funcion SQL se encarga de subir la factura a la base de datos. Ir a la linea 1029 del modelo para mas info
     public boolean altaFactura() {
         boolean facturaSubida = false;
         Connection conectar = new Connexio().connecta();
@@ -135,7 +135,7 @@ public class Factura {
             return facturaSubida;
         }
     }
-    // Esta funcion SQL se encarga de editar una factura ya existente en la base de datos, modificando el metodo de pago. Ir a la linea 1004 del modelo para mas info
+    // Esta funcion SQL se encarga de editar una factura ya existente en la base de datos, modificando el metodo de pago. Ir a la linea 1029 del modelo para mas info
     public boolean editarFacturaMetodoPago() {
         Boolean FacturaEditada = false;
         Connection conectar = new Connexio().connecta();
@@ -157,7 +157,7 @@ public class Factura {
         }
     }
     
-    // Esta funcion SQL se encarga de editar una factura ya existente en la base de datos, modificando basicamente todo. Ir a la linea 1004 del modelo para mas info
+    // Esta funcion SQL se encarga de editar una factura ya existente en la base de datos, modificando basicamente todo. Ir a la linea 1029 del modelo para mas info
     public boolean editarFactura() {
         Boolean FacturaEditada = false;
         Connection conectar = new Connexio().connecta();

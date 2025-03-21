@@ -91,10 +91,12 @@ public class ListarTasquesController {
             }
             // Y aqui es para comprobar cada tarea si esta completada o no.
             for (Integer integer : tareasAComprobar) {
-            System.out.println(model.comprobarSiCompletadoRealitza(integer));
-                if (model.comprobarSiCompletadoRealitza(integer)) {
-                    model.changeEstatTasca(integer, "Completada");
-                    initialize();
+                // Pero antes de nada, veremos si hay alguien siquiera asignado.
+                if (model.getTascaNumAsignados(integer) > 0) {
+                    if (model.comprobarSiCompletadoRealitza(integer)) {
+                        model.changeEstatTasca(integer, "Completada");
+                        initialize();
+                    }
                 }
             }
         }

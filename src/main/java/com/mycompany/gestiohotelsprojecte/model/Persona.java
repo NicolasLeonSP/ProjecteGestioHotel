@@ -142,7 +142,7 @@ public class Persona {
             }
         }
     }
-    // Esta funcion SQL se encarga de añadir una persona a la base de datos. Ir a la linea 1004 del modelo para mas info
+    // Esta funcion SQL se encarga de añadir una persona a la base de datos. Ir a la linea 1029 del modelo para mas info
     public Boolean altaPersona() {
         boolean PersonaSubidaBaseDeDatos = true;
         Connection conectar = new Connexio().connecta();
