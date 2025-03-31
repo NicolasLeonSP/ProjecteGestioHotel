@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.ReservaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.ReservaController">
    <children>
       <AnchorPane layoutX="1.0" minHeight="0.0" minWidth="0.0" prefHeight="522.0" prefWidth="598.0">
          <children>
@@ -87,6 +87,24 @@
                                           <ComboBox fx:id="reservaEliminacio" layoutX="39.0" layoutY="46.0" prefWidth="150.0" />
                                           <Text layoutX="42.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Reserva" />
                                           <Button layoutX="35.0" layoutY="107.0" mnemonicParsing="false" onAction="#eliminarReservaSeleccionada" prefHeight="24.0" prefWidth="146.0" style="-fx-background-color: red;" text="Eliminar" textFill="WHITE" />
+                                       </children>
+                                    </AnchorPane>
+                                 </content>
+                              </Tab>
+                              <Tab onSelectionChanged="#restartCamposServei" text="Asignar Serveis">
+                                 <content>
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                       <children>
+                                          <ComboBox fx:id="reservaServei" layoutX="47.0" layoutY="43.0" onAction="#reservaServeiSeleccionada" prefWidth="150.0" />
+                                          <Text layoutX="50.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Seleccionar Reserva" />
+                                          <ComboBox fx:id="serveiDisponible" disable="true" layoutX="217.0" layoutY="119.0" onAction="#servicioSeleccionado" prefWidth="150.0" />
+                                          <Text layoutX="217.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Servei" />
+                                          <Button layoutX="50.0" layoutY="211.0" mnemonicParsing="false" onAction="#crearServiciosReserva" text="Asignar" />
+                                          <Button layoutX="151.0" layoutY="211.0" mnemonicParsing="false" onAction="#restartCamposServei" text="Reiniciar" />
+                                          <TextField fx:id="quantitatAIntroduir" disable="true" layoutX="413.0" layoutY="119.0" prefHeight="24.0" prefWidth="124.0" />
+                                          <Text layoutX="47.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preu" />
+                                          <Text layoutX="413.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Quantitat" />
+                                          <TextField fx:id="preuServei" disable="true" editable="false" layoutX="47.0" layoutY="119.0" prefHeight="24.0" prefWidth="144.0" />
                                        </children>
                                     </AnchorPane>
                                  </content>

@@ -4,6 +4,7 @@ import com.mycompany.gestiohotelsprojecte.model.Factura;
 import com.mycompany.gestiohotelsprojecte.model.Metode_Pagament;
 import com.mycompany.gestiohotelsprojecte.model.Model;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Optional;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -47,6 +48,11 @@ public class FacturaController {
     TextField IVA;
     @FXML
     TextField preuTotal;
+    @FXML
+    TextField preuServeis;
+    @FXML
+    TextField preuReserva;
+    
 
     // Funcion para crear una alerta, pasandole el mensaje por un parametro y tambien si es un mensaje de error o no
     private void alterMos(String misgg, boolean error) {
@@ -124,6 +130,8 @@ public class FacturaController {
                 baseImposable.setText(String.valueOf(FacturaReserva.getBase_Imposable()));
                 IVA.setText(String.valueOf(FacturaReserva.getIva()));
                 preuTotal.setText(String.valueOf(FacturaReserva.getTotal()));
+                preuServeis.setText(String.valueOf(model.preuTotalServei(Integer.parseInt(reservaAFacturar.getValue().toString()))));
+                preuReserva.setText(String.valueOf(model.getReserva(Integer.parseInt(reservaAFacturar.getValue().toString())).getPreu_Total_Reserva()));
             } else {
                 // En cambio, si no existe, cargaremos el menu de crear factura.
                 metodePagamentGenerar.setItems(model.getMetodePagament());
@@ -165,14 +173,15 @@ public class FacturaController {
             if (metodePagamentGenerar.getValue().toString().equals("Targeta")) {
                 // Si lo es, aparte de generar la factura como tal
                 double[] calculosFactura = model.calcularFactura(ID_Reserva);
-                Factura factura = new Factura(model.LocalDateToSqlDate(LocalDate.now()), model.getMetodePagamentFromString(metodePagamentGenerar.getValue().toString()), calculosFactura[0], calculosFactura[1], calculosFactura[2], ID_Reserva);
+                // Asignar servei a factura
+                Factura factura = new Factura(model.LocalDateToSqlDate(LocalDate.now()), model.getMetodePagamentFromString(metodePagamentGenerar.getValue().toString()), calculosFactura[2], calculosFactura[3], calculosFactura[4], ID_Reserva);
                 // Tambien comprobaremos que el cliente tenga una tarjeta de credito.
                 if (factura.checkClienteTarjetaCredito() == true) {
                     // Si la tiene, haremos el alta de factura.
                     if (factura.altaFactura()) {
                         // Una vez hecho, reiniciaremos el formulario por si se quiere introducir otra factura.
                         resetFactura();
-                        model.actualizarReserva(Integer.parseInt(reservaAFacturar.getValue().toString()), calculosFactura[2]);
+                        model.actualizarReserva(Integer.parseInt(reservaAFacturar.getValue().toString()), calculosFactura[0]);
                         reservaSeleccionada();
                         alterMos("S'ha creat la factura amb èxit.", false);
                     } else {
@@ -186,11 +195,11 @@ public class FacturaController {
             } else {
                 // En el caso de que no sea tarjeta, crearemos la factura y la subiremos.
                 double[] calculosFactura = model.calcularFactura(ID_Reserva);
-                Factura factura = new Factura(model.LocalDateToSqlDate(LocalDate.now()), model.getMetodePagamentFromString(metodePagamentGenerar.getValue().toString()), calculosFactura[0], calculosFactura[1], calculosFactura[2], ID_Reserva);
+                Factura factura = new Factura(model.LocalDateToSqlDate(LocalDate.now()), model.getMetodePagamentFromString(metodePagamentGenerar.getValue().toString()), calculosFactura[2], calculosFactura[3], calculosFactura[4], ID_Reserva);
                 if (factura.altaFactura()) {
                     // Una vez hecho, reiniciaremos el formulario por si se quiere introducir otra factura.
                     resetFactura();
-                    model.actualizarReserva(Integer.parseInt(reservaAFacturar.getValue().toString()), calculosFactura[2]);
+                    model.actualizarReserva(Integer.parseInt(reservaAFacturar.getValue().toString()), calculosFactura[0]);
                     reservaSeleccionada();
                     alterMos("S'ha creat la factura amb èxit.", false);
                 } else {

@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" prefHeight="514.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.FacturaController">
+<AnchorPane id="AnchorPane" prefHeight="514.0" prefWidth="593.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.gestiohotelsprojecte.FacturaController">
    <children>
       <Text layoutX="7.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestio de factures">
          <font>
@@ -60,16 +60,20 @@
                            <content>
                               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                  <children>
-                                    <ComboBox fx:id="metodePagamentVerFactura" layoutX="215.0" layoutY="70.0" prefWidth="150.0" />
-                                    <TextField fx:id="baseImposable" disable="true" layoutX="42.0" layoutY="131.0" prefHeight="24.0" prefWidth="113.0" />
-                                    <TextField fx:id="IVA" disable="true" layoutX="230.0" layoutY="131.0" prefHeight="24.0" prefWidth="120.0" />
-                                    <TextField fx:id="preuTotal" disable="true" layoutX="407.0" layoutY="131.0" prefHeight="24.0" prefWidth="120.0" />
+                                    <ComboBox fx:id="metodePagamentVerFactura" layoutX="32.0" layoutY="166.0" prefWidth="150.0" />
+                                    <TextField fx:id="baseImposable" disable="true" layoutX="427.0" layoutY="36.0" prefHeight="24.0" prefWidth="113.0" />
+                                    <TextField fx:id="IVA" disable="true" layoutX="423.0" layoutY="93.0" prefHeight="24.0" prefWidth="120.0" />
+                                    <TextField fx:id="preuTotal" disable="true" layoutX="423.0" layoutY="154.0" prefHeight="24.0" prefWidth="120.0" />
                                     <Button layoutX="133.0" layoutY="202.0" mnemonicParsing="false" onAction="#editarFactura" prefHeight="24.0" prefWidth="151.0" text="Editar" />
                                     <Button layoutX="315.0" layoutY="202.0" mnemonicParsing="false" onAction="#eliminarFactura" prefHeight="24.0" prefWidth="146.0" style="-fx-background-color: red;" text="Eliminar" textFill="WHITE" />
-                                    <Text layoutX="220.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Metode de pagament" />
-                                    <Text layoutX="42.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Base imposable" />
-                                    <Text layoutX="230.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IVA" />
-                                    <Text layoutX="407.0" layoutY="121.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preu total" />
+                                    <Text layoutX="37.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Metode de pagament" />
+                                    <Text layoutX="427.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Base imposable" />
+                                    <Text layoutX="423.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="IVA" />
+                                    <Text layoutX="423.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Preu total" />
+                                    <TextField fx:id="preuReserva" disable="true" layoutX="32.0" layoutY="104.0" prefHeight="24.0" prefWidth="120.0" />
+                                    <Text layoutX="32.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reserva" />
+                                    <TextField fx:id="preuServeis" disable="true" layoutX="32.0" layoutY="48.0" prefHeight="24.0" prefWidth="120.0" />
+                                    <Text layoutX="32.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Serveis" />
                                  </children>
                               </AnchorPane>
                            </content>

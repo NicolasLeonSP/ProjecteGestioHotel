@@ -3,6 +3,8 @@ package com.mycompany.gestiohotelsprojecte;
 import com.mycompany.gestiohotelsprojecte.model.Factura;
 import com.mycompany.gestiohotelsprojecte.model.Model;
 import com.mycompany.gestiohotelsprojecte.model.Reserva;
+import com.mycompany.gestiohotelsprojecte.model.Reserva_Serveis_Complementaris;
+import com.mycompany.gestiohotelsprojecte.model.Servei;
 import com.mycompany.gestiohotelsprojecte.model.Tipus_Reserva;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -44,6 +46,15 @@ public class ReservaController {
     ComboBox reservaEdicio;
     @FXML
     ComboBox reservaEliminacio;
+    // Campos añadir servicio a una reserva
+    @FXML
+    ComboBox reservaServei;
+    @FXML
+    ComboBox serveiDisponible;
+    @FXML
+    TextField preuServei;
+    @FXML
+    TextField quantitatAIntroduir;
 
     // Funcion para crear una alerta, pasandole el mensaje por un parametro y tambien si es un mensaje de error o no
     private void alterMos(String misgg, boolean error) {
@@ -88,6 +99,7 @@ public class ReservaController {
                 model.recargarCodigoReserva(textDNI.getText());
                 reservaEdicio.setItems(model.getReservas());
                 reservaEliminacio.setItems(model.getReservas());
+                reservaServei.setItems(model.getReservas());
             } else {
                 // Caso que no exista el cliente.
                 Reserva.disableProperty().set(true);
@@ -107,12 +119,14 @@ public class ReservaController {
         model.recargarCodigoReserva(textDNI.getText());
         reservaEdicio.setItems(model.getReservas());
         reservaEliminacio.setItems(model.getReservas());
+        reservaServei.setItems(model.getReservas());
+        serveiDisponible.setItems(model.getReservas());
     }
 
     @FXML
     // Funcion que se encargara de crear la reserva una vez le demos a crear.
     private void crearReserva() {
-        // Nos aseguraremosq ue los campos no esten vacios.
+        // Nos aseguraremos que los campos no esten vacios.
         if (dataIniciCreacion.getValue() != null && dataFinalCreacion.getValue() != null && habitacionsCreacion.getValue() != null && tipusReservaCreacion.getValue() != null) {
             // Si no lo estan, formataremos las fechas y subiremos la reserva.
             Date dataActual = model.LocalDateToSqlDate(LocalDate.now());
@@ -169,6 +183,17 @@ public class ReservaController {
     }
 
     @FXML
+    // Esta funcion se encarga de cargar los datos una vez una reserva a asignar un servicio haya sido seleccionada
+    private void reservaServeiSeleccionada() {
+        if (reservaServei.getValue() != null) {
+            model.recargarServeis();
+            serveiDisponible.setItems(model.getServeis());
+            serveiDisponible.disableProperty().set(false);
+            quantitatAIntroduir.disableProperty().set(false);
+        }
+    }
+
+    @FXML
     // Esta funcion se encarga de editar la reserva una vez le demos al boton.
     private void editarReservaSeleccionada() {
         // Primero, verificaremos que algo haya cambiado como tal.
@@ -202,9 +227,12 @@ public class ReservaController {
                     if (factura != null) {
                         // Lo que haremos con esta factura sera modificar los datos para que corresponda a los nuevos de la reserva.
                         double[] calculosFactura = model.calcularFactura(ReservaEnEdicion.getID_Reserva());
-                        factura.setBase_Imposable(calculosFactura[0]);
-                        factura.setIva(calculosFactura[1]);
-                        factura.setTotal(calculosFactura[2]);
+                        ReservaEnEdicion.setPreu_Total_Reserva(calculosFactura[0]);
+                        factura.setBase_Imposable(calculosFactura[2]);
+                        factura.setIva(calculosFactura[3]);
+                        factura.setTotal(calculosFactura[4]);
+                        // Volvemos a editar reserva, debido al cambio de precio reserva
+                        ReservaEnEdicion.modificarReserva();
                         // Ahora, editaremos la factura con los nuevos datos
                         if (factura.editarFactura()) {
                             alterMos("La factura tambe ha sigut editada, per a que correspongui a les noves dades", false);
@@ -269,6 +297,50 @@ public class ReservaController {
     }
 
     @FXML
+    // Esta funcion se encarga de, cuando se seleccione un servicio, se pondra automaticamente su precio.
+    private void servicioSeleccionado() {
+        if (serveiDisponible.getValue() != null) {
+            Servei servicio = model.getServei(serveiDisponible.getValue().toString());
+            if (servicio != null) {
+                preuServei.setText(String.valueOf(servicio.getPreu()));
+            }
+        }
+    }
+
+    @FXML
+    // Esta funcion se encarga de, una vez se le de al boton de crear, crear una asignacion de servicio a una reserva.
+    private void crearServiciosReserva() {
+        // Comprobamos que todos los campos esten rellenados
+        if (preuServei.getText() != null && serveiDisponible.getValue() != null && quantitatAIntroduir.getText() != null) {
+            // Comprobamos que el campo sea numerico de verdad
+            if (model.checkStringToInt(quantitatAIntroduir.getText())) {
+                // Comprobamos si el servicio ya ha sido asignado
+                Servei servicio = model.getServei(serveiDisponible.getValue().toString());
+                if (!model.serveiYaAsignat(Integer.parseInt(reservaServei.getValue().toString()), servicio.getID_Servei())) {
+                    // Y por ultimo, subimos la asignacion. Si algo falla, soltaremos error.
+                    Reserva_Serveis_Complementaris reseSerCom = new Reserva_Serveis_Complementaris(Integer.parseInt(reservaServei.getValue().toString()), servicio.getID_Servei(), Integer.parseInt(quantitatAIntroduir.getText()));
+                    if (reseSerCom.altaReservaServeiComplementari()) {
+                        alterMos("S'ha pujat la asignacio del servei de forma correcta", false);
+                        restartCamposServei();
+                    } else {
+                        alterMos("Alguna cosa ha fallat a l'hora de pujar la asignacio.", true);
+                    }
+                } else {
+                    // Caso que el servicio ya este asignado
+                    alterMos("Aquest servei ja esta asignat a aquesta reserva.", true);
+                }
+
+            } else {
+                // Caso que la cantidad introducida no sea solo numeros
+                alterMos("La quantitat introduida sols ha de contenir numeros.", true);
+            }
+        } else {
+            // Caso que todos los campos no hayan sido rellenados
+            alterMos("Relleni tots els camps abans de crear la asignacio de servei a una reserva.", true);
+        }
+    }
+
+    @FXML
     // Esta funcion se encarga de reiniciar los campos de la pestaña de creacion
     private void restartCamposCreacion() {
         dataIniciCreacion.getEditor().clear();
@@ -285,6 +357,17 @@ public class ReservaController {
         dataFinalEdicion.setValue(null);
         habitacionsEdicion.valueProperty().set(null);
         tipusReservaEdicion.valueProperty().set(null);
+    }
+
+    @FXML
+    // Esta funcion se encarga de reiniciar los campos de la pestaña reiniciar campos servicio
+    private void restartCamposServei() {
+        reservaServei.valueProperty().set(null);
+        serveiDisponible.valueProperty().set(null);
+        quantitatAIntroduir.clear();
+        preuServei.clear();
+        serveiDisponible.disableProperty().set(true);
+        quantitatAIntroduir.disableProperty().set(true);
     }
 
     @FXML

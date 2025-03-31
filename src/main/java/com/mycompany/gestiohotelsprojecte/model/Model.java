@@ -38,6 +38,7 @@ public class Model {
     ObservableList tareas = FXCollections.observableArrayList();
     ObservableList tareasAvanzadas = FXCollections.observableArrayList();
     ObservableList empleadosTarea = FXCollections.observableArrayList();
+    ObservableList serveis = FXCollections.observableArrayList();
     private String IDTascaORealitzaSeleccionada;
     private int IDClienteReserva;
     private Tipus_Client TipusClienteReserva;
@@ -104,6 +105,10 @@ public class Model {
         return tipoReserva;
     }
 
+    public ObservableList getServeis() {
+        return serveis;
+    }
+    
     // Setters de modelo
     public void setTipusClienteReserva(Tipus_Client TipusClienteReserva) {
         this.TipusClienteReserva = TipusClienteReserva;
@@ -374,25 +379,34 @@ public class Model {
         Habitacio habitacion = getHabitacion(reserva.getID_Habitacio());
         Duration duration = Duration.between(reserva.getData_Inici().toLocalDate().atStartOfDay(), reserva.getData_Fi().toLocalDate().atStartOfDay());
         long diasDiferencia = duration.toDays();
+        Double PreuReserva = null;
+        Double PreuServei = null;
         Double PreuTotalNoIva = null;
         Double IVA = null;
         Double PreuTotal = null;
-        double[] calculosFactura = new double[3];
+        double[] calculosFactura = new double[5];
         // Y luego veremos, si el tipo de reserva es AD, lo calcularemos con el precio de AD
+        // Calculos modificados
         if (reserva.getTipus_Reserva() == Tipus_Reserva.AD) {
-            PreuTotalNoIva = habitacion.getPreu_Nit_AD() * diasDiferencia;
+            PreuReserva = habitacion.getPreu_Nit_AD() * diasDiferencia;
+            PreuServei =  preuTotalServei(ID_Reserva);
+            PreuTotalNoIva = PreuServei + PreuReserva;
             IVA = PreuTotalNoIva * reserva.getTipus_IVA().getPorIVA() / 100;
             PreuTotal = PreuTotalNoIva + IVA;
         } // Si no, con el precio de MP
         else if (reserva.getTipus_Reserva() == Tipus_Reserva.MP) {
-            PreuTotalNoIva = habitacion.getPreu_Nit_MP() * diasDiferencia;
+            PreuReserva = habitacion.getPreu_Nit_MP()* diasDiferencia;
+            PreuServei =  preuTotalServei(ID_Reserva);
+            PreuTotalNoIva = PreuServei + PreuReserva;
             IVA = PreuTotalNoIva * reserva.getTipus_IVA().getPorIVA() / 100;
             PreuTotal = PreuTotalNoIva + IVA;
         }
         // Una vez terminado los calculos, los añadimos al array y devolvemos el resultado.
-        calculosFactura[0] = PreuTotalNoIva;
-        calculosFactura[1] = IVA;
-        calculosFactura[2] = PreuTotal;
+        calculosFactura[0] = PreuReserva;
+        calculosFactura[1] = PreuServei;
+        calculosFactura[2] = PreuTotalNoIva;
+        calculosFactura[3] = IVA;
+        calculosFactura[4] = PreuTotal;
         return calculosFactura;
     }
 
@@ -968,6 +982,91 @@ public class Model {
         }
         return Num_Tasca;
     }
+    
+    // Esta funcion SQL se encarga de devolver todos los nombres de los servicios, para ser asignados en una lista observable.
+    public void recargarServeis() {
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT nom FROM SERVEIS_COMPLEMENTARIS";
+        try {
+            Statement orden = conectar.createStatement();
+            ResultSet resultados = orden.executeQuery(sql);
+            serveis.clear();
+            while (resultados.next()) {
+                serveis.add(resultados.getString(1));
+            }
+            orden.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+    }
+    
+    // Esta funcion SQL se encarga de verificar si un servicio especifico ya ha sido asignado previamente a la reserva que se le pase.
+    public boolean serveiYaAsignat(int ID_Reserva, int ID_Servei){
+    boolean serveiYaAsignat = false;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT * FROM RESERVA_SERVEIS_COMPLEMENTARIS WHERE idReserva = ? AND idServei = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Reserva);
+            orden.setInt(2, ID_Servei);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                serveiYaAsignat = true;
+            }
+            orden.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return serveiYaAsignat;
+    }
+    
+    // Esta funcion SQL se encarga de conseguir toda la informacion de un servicio a partir de su nombre
+    public Servei getServei(String nom) {
+        Servei servicio = null;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT * FROM SERVEIS_COMPLEMENTARIS WHERE nom = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setString(1, nom);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                servicio = new Servei(resultados.getString(2), resultados.getString(3), resultados.getInt(4));
+                servicio.setID_Servei(resultados.getInt(1));
+            }
+            orden.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return servicio;
+    }
+    
+    // Esta funcion SQL se encarga de calcular el precio total de un servicio a partir de una reserva que se le pase.
+    public double preuTotalServei(int ID_Reserva){
+        int precioTotalServicios = 0;
+        Connection conectar = new Connexio().connecta();
+        String sql = "SELECT preu, quantitat FROM RESERVA_SERVEIS_COMPLEMENTARIS rs INNER JOIN SERVEIS_COMPLEMENTARIS s ON rs.idServei = s.idServei WHERE idReserva = ?";
+        try {
+            PreparedStatement orden = conectar.prepareStatement(sql);
+            orden.setInt(1, ID_Reserva);
+            ResultSet resultados = orden.executeQuery();
+            while (resultados.next()) {
+                precioTotalServicios += resultados.getDouble(1) * resultados.getInt(2);
+            }
+            orden.close();
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+        return precioTotalServicios;
+    }
+    
     // Esta funcion SQL se encarga de recargar las habitaciones disponibles en la lista de habitaciones. Ir a la linea 1029 para mas info
     public void recargarHabitaciones() {
         Connection conectar = new Connexio().connecta();

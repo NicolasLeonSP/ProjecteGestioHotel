@@ -136,14 +136,15 @@ public class Reserva {
     public String modificarReserva() {
         String ReservaMensaje = "";
         Connection conectar = new Connexio().connecta();
-        String sql = "UPDATE RESERVA SET data_Inici = ?, data_Fi = ?, tipus_Reserva = ?, ID_Habitacio = ?  WHERE ID_Reserva = ?";
+        String sql = "UPDATE RESERVA SET data_Inici = ?, data_Fi = ?, tipus_Reserva = ?, ID_Habitacio = ? , preu_Total_Reserva = ? WHERE ID_Reserva = ?";
         try {
             PreparedStatement orden = conectar.prepareStatement(sql);
             orden.setDate(1, getData_Inici());
             orden.setDate(2, getData_Fi());
             orden.setString(3, getTipus_Reserva().name());
             orden.setInt(4, getID_Habitacio());
-            orden.setInt(5, getID_Reserva());
+            orden.setDouble(5, getPreu_Total_Reserva());
+            orden.setInt(6, getID_Reserva());
             orden.executeUpdate();
             orden.close();
             return ReservaMensaje;
